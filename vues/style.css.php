@@ -1,4 +1,3 @@
-<?php
 /***********************************************************************************************
 La seule est unique feuille de style CSS du site refuges.info
 
@@ -13,85 +12,30 @@ Sommaire:
     -4 PUB
 ***********************************************************************************************/
 
-header('content-type: text/css');
-//Évitons que soit rechargée cette page à chaque coup, elle ne bouge pas beaucoup
-header('Cache-Control: max-age=86000');
-
-
-//Génération dynamique de certaines couleurs selon la saison
-$mois=date("n");
-if ($mois>9 and $mois<12)
-  $periode="automne";
-elseif ($mois>=4 and $mois<=6)
-  $periode="printemps";
-elseif ($mois>=7 and $mois<=9)
-  $periode="été";
-else
-  $periode="hiver"; // notre thème par défaut
-
-switch ($periode)
-{
-  case "hiver":
-    $couleur_fond="f2f2f2";
-    $couleur_lien="006699";
-    $couleur_lien_visite="006699";
-    $couleur_decoration_titres="A6CEE7";
-    $couleur_legende="EEF";
-    break;
-  case "printemps":case "été":
-    $couleur_fond="f5fde8";
-    $couleur_lien="5f8c11";
-    $couleur_lien_visite="5f8c11";
-    $couleur_decoration_titres="77dc63";
-    $couleur_legende="d1f0d0";
-    break;
-  case "automne":
-    $couleur_fond="f6e8c2";
-    $couleur_lien="cf5d32";
-    $couleur_lien_visite=$couleur_lien;
-    $couleur_decoration_titres="bd742c";
-    $couleur_legende="c1ac96";
-    break;
-}
-
-?>
 /*==================================================================*/
 /* MISE EN PAGE GENERALE DES TYPES                                  */
 /*==================================================================*/
 /*=====GENERAL=======*/
 
-HTML {
+html {
   width: 100%; /* jmb 01/2008 , pour gmaps */
+  font-family: "Fira Sans", "Open Sans", Arial, sans-serif;
+  font-size: 18px;
   height: 100%;
   }
-BODY { 
+body { 
   margin: 0px; /* il le faut pour FF */
   width: 100%; /* jmb 01/2008 , pour gmaps */
   height: 100%;
-  background-color: #<?=$couleur_fond?>;
- /*
-  background-image:url(../images/<?=$periode?>.gif);
-  background-repeat:no-repeat;
-  background-position: 60% top;
- */
+  background-color: white;
   }
-/* zone de contenu */
-.contenu {
-  margin: 0.8%;
-  margin-top:3px;
-  }
-.couleur_fond_amplifiee {
-    background-color: #cef99c;
-}
 
 /*=====TEXTE=======*/
 EM { /* Emphasis: gras+italic */
-  font-weight: bold ;
   font-style: italic ;
   }
 STRONG { /* Strong Emphasis: gras+italic+rouge */
   font-weight: bold;
-  font-style: italic;
   color: #FF0000 ;
   }
 CITE { /* Citation: gras+droit */
@@ -133,7 +77,6 @@ H3 { /* titres de pages */
   margin: 0em; 
   text-align: center;
   margin-bottom:3px;
-  background-color: #<?=$couleur_decoration_titres?>;
   }
 H4 { /* sous titres */
   padding-top: 4px; /* sous FF, la padding par defo est immense */
@@ -141,11 +84,8 @@ H4 { /* sous titres */
   padding-left: 10px;
   font-size: large;
   margin: 0px; /* sous FF, la padding par defo est immense */
-  border-bottom: 2px solid #<?=$couleur_decoration_titres?>;
-  border-left: 2px solid #<?=$couleur_decoration_titres?>;
   }
 H5 { /* sou-sou titre, pour l'instant que dans les fiches de refuges */
-  border-bottom: thin solid #<?=$couleur_decoration_titres?> ;
   font-size: medium; /* sinon H5 cest tout petit ... */
   margin-top:15px;
   margin-bottom:3px;
@@ -253,7 +193,6 @@ FORM .champs_null_masque > LABEL { /* permet a la case de s'intercaler au bon en
   }
 
 .fauxfieldset-legend {
-  background-color: #<?=$couleur_legende?> ;
   border: thin solid black ;
   font-weight: bold;
   }
@@ -274,23 +213,22 @@ TEXTAREA {
   max-width: 100%;
 }
 /*=========LIENS==========*/
-A:hover { /*met en valeur les liens qd on est dessus */
-  background-color: #<?=$couleur_legende?>;
-  text-decoration: none;
-  }
 /* 
 J'intègre également les class des liens du forum 
 en gros je veux tout de la même couleur
 */
-
-A,a.mainmenu,a.nav,a.forumlink,a.cattitle,a.topictitle,a.postlink,a.gen,a.genmed,a.gensmall {
-  color : #<?=$couleur_lien?>; /* en accord avec le thème du forum, et moins agressif */
+a,a.mainmenu,a.nav,a.forumlink,a.cattitle,a.topictitle,a.postlink,a.gen,a.genmed,a.gensmall {
+  color : orangered; /* en accord avec le thème du forum, et moins agressif */
   text-decoration: none;
-  }
-  
-A:visited {
-  color : #<?=$couleur_lien_visite?>;
-  }
+}
+a:hover, a:visited:hover { /*met en valeur les liens qd on est dessus */
+  background-color: #FFECE5;
+  color: black;
+  border-radius: 5px;
+}
+a:visited {
+  color : orange;
+}
 
 /*=========ADRESSES MAILS CODEES==========*/
 .mail {
@@ -330,7 +268,6 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 
 /*=========WIKIS SURGISSANTS==========*/
 .wiki {
-	border: 5px solid #<?=$couleur_decoration_titres?>;
 	background-color: #f8fff4;
     z-index: 500000;
 }
@@ -344,38 +281,65 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 /*==================================================================*/
 /*  ENTETE DE PAGE : Logo, identification & recherche               */
 /*==================================================================*/
-#entete {
+header {
 	position: relative;
 	z-index: 40000;
+  font-size: 18px;
 }
-#entete > DIV { /* Définit le bloc à positionner à droite */
+header > aside { /* Définit le bloc à positionner à droite */
 	float: right;
-	margin: 2px 5%;
+	margin: 4px 5% 0 0;
+  font-weight: 300;
 }
-#entete A, #entete SPAN {
-	font-size: 18px;
-	font-weight: bold;
-	float: right;
+header > aside .droite {
+  float: right;
 }
-#entete > A, #entete A:first-child {
-    color: #<?=$couleur_lien_visite?>;
-	float: none;
-}
-#entete FORM {
+header form {
 	display: block;
+  margin: 4px 0 0 0;
 }
-#entete INPUT:first-child {
-    border: solid 1px #<?=$couleur_decoration_titres?>;
-	height: 18px;
-	position: relative; top: -3px;
+header input[type=text] {
+  border: solid 1px orangered;
+  height: 18px;
+  padding: 2px 5px;
+  vertical-align: middle;
 }
-#entete A:hover {
-    color: white;
-    background-color: #<?=$couleur_decoration_titres?>;
-    text-decoration: none;
+header input[type=image] {
+  background: orangered;
+  border: solid 1px orangered;
+  border-radius: 0 5px 5px 0;
+  height: 18px;
+  padding: 2px 4px;
+  margin-left: -5px;
+  vertical-align: middle;
 }
-#entete > A:hover {
-    background-color: #<?=$couleur_fond?>;
+header > aside a {
+  padding: 0 5px;
+}
+header > #logo {
+  height: 55px;
+  width: 400px;
+  padding-top: 5px;
+  margin-left: 5%;
+}
+header > #logo > a:hover {
+  background: transparent;
+  height: 55px;
+}
+header > #logo img {
+  height: 55px;
+  margin-right: 20px;
+  float: left;
+}
+header > #logo h1 {
+  margin: 5px 0;
+  font-size: 2em;
+  font-weight: 300;
+  color: black;
+}
+header > #logo h1 span {
+  font-style: italic;
+  color: orange;
 }
 
 /*==================================================================*/
@@ -393,7 +357,6 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
     width: 100%;
   }
   #menu-normal > UL {
-    border-top: solid 2px #<?=$couleur_decoration_titres?>;
   }
 
 /* 2/ Paramétrage du menu surgissant et fixe en haut de fenetre */
@@ -436,18 +399,13 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
     text-align: left;
     margin: 0px;
     padding: 0px;
-    background-color: #<?=$couleur_fond?>;
     height: 20px;
   }
   .menu UL {
-    border-bottom: solid 2px #<?=$couleur_decoration_titres?>;
   }
   .menu UL LI {
     float: left; /* Distribue le premier niveau de menu de façon horizontale tout en permettant d'inclure des UL de type block */
     text-align: center;
-    color: #<?=$couleur_lien?>;
-    background-color: #<?=$couleur_fond?>;
-    border-bottom: solid 2px #<?=$couleur_decoration_titres?>;
     height: 20px;
   }
   .menu UL LI UL {
@@ -463,17 +421,12 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
     float: none;
     text-align: left;
     font-size: 16px;
-    background-color: #<?=$couleur_fond?>;
-    border-left: solid 2px #<?=$couleur_decoration_titres?>;
-    border-right: solid 2px #<?=$couleur_decoration_titres?>;
     padding: 0;
     margin: 0;
   }
   .menu UL LI UL LI:first-child {
-    border-top: solid 0px #<?=$couleur_decoration_titres?>;
   }
   .menu UL LI UL {
-    border-bottom: solid 2px #<?=$couleur_decoration_titres?>;
   }
   .menu UL A {
     padding: 0em 0.5em;
@@ -484,7 +437,6 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
   }
   .menu UL LI UL LI:hover,
   .menu UL A:hover {
-    background-color: #<?=$couleur_decoration_titres?>;
     color: white;
     text-decoration: none;
   }
@@ -492,17 +444,13 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
     position: relative;
     top: -3px;
     margin: 0 -18px 0 -2px;
-    border-left: 1px solid #<?=$couleur_fond?>;
-    border-right: 1px solid #<?=$couleur_fond?>;
     border-top: 0;
     border-bottom: 0;
-    background-color: #<?=$couleur_fond?>;
     background-image: url(../images/loupe.png);
     background-position: center center;
     background-repeat: no-repeat;
   }
   .menu UL INPUT:hover {
-    border: 1px solid #<?=$couleur_decoration_titres?>;
     background-color: white;
     background-image: none;
   }
@@ -525,7 +473,6 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
     width:98%;
   }
   .menu {
-    border: solid 2px #<?=$couleur_decoration_titres?>;
     padding: 2px;
 	font-size: 16px;
   }
@@ -554,7 +501,6 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
     display: block;
   }
   .menu > ul > li {
-    border-top: solid 2px #<?=$couleur_decoration_titres?>;
 	text-align: left;
   }
   .menu ul li span {
@@ -599,7 +545,6 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
   }
   .lien_ajout_commentaire A {
     border-style: solid; 
-    border-color: #<?=$couleur_decoration_titres?>; 
     padding-right: 0.5em; 
     padding-left: 0.5em;
   }

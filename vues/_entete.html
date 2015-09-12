@@ -6,9 +6,9 @@
 // Un couple <ouverture de balise> </fermeture de balise> doit se trouver dans le même fichier et avec la même indentation
 // Ce fichier ne contient que des balises HTML et des balises de contrôle PHP
 ?>
-<?='<?'?>xml version="1.0" encoding="<?=$config['encodage_des_contenu_web']?>"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+
+<!DOCTYPE html>
+<html lang="fr" xml:lang="fr">
 	<head>
 		<title><?=$vue->titre?></title>
 		<link rel="shortcut icon" href="<?=$config['sous_dossier_installation']?>images/favicon.ico" />
@@ -46,34 +46,39 @@
 		<?if (file_exists ("vues/$vue->type.js")) {?>
 			<script type="text/javascript">
 			//<![CDATA[
-				<?include ("vues/$vue->type.js")?>
+				<?include ("vues/$vue->type.js") ?>
 			//]]>
 			</script>
 		<?}?>
 	</head>
 
 	<body>
-		<div id="entete">
-			<div>
-				<?if ($_SESSION['id_utilisateur']>=1) {?>
-					<a href="<?=$config['sous_dossier_installation']?>forum/profile.php?mode=editprofile" title="Modifier votre profil"><?=$_SESSION['login_utilisateur']?></a>
-					<a href="<?=$config['lien_forum']?>login.php?logout=true">Se déconnecter</a>
-				<?} else {?>
-					<a href="<?=$config['lien_forum']?>profile.php?mode=register" title="Pour créer un compte">S'inscrire</a>
-					<a href="<?=$config['lien_forum']?>login.php" title="Si vous avez déjà un compte">Connexion</a>
-				<?}?>
+		<header>
+			<aside>
+				<div id="liens-utilisateur">
+					<?if ($_SESSION['id_utilisateur']>=1) {?>
+						<a class="gauche" href="<?=$config['sous_dossier_installation']?>forum/profile.php?mode=editprofile" title="Modifier votre profil"><?=$_SESSION['login_utilisateur']?></a>
+						<a class="droite" href="<?=$config['lien_forum']?>login.php?logout=true">Se déconnecter</a>
+					<?} else {?>
+						<a class="gauche" href="<?=$config['lien_forum']?>profile.php?mode=register" title="Pour créer un compte">S'inscrire</a>
+						<a class="droite" href="<?=$config['lien_forum']?>login.php" title="Si vous avez déjà un compte">Connexion</a>
+					<?}?>
+				</div>
 				
 				<form method="post" action="<?=$config['sous_dossier_installation']?>point_recherche/">
-				<div>
-					<input type="text" name="nom" size="35" value="Recherche de refuge par le nom" onfocus="javascript:this.value=''" />
                     <input type="hidden" name="ids_types_point" value="<?=$config['tout_type_refuge']?>" />
                     <input type="hidden" name="avec_point_osm" value="1" />
+					<input type="text" name="nom" size="35" value="Recherche de refuge par le nom" onfocus="javascript:this.value=''" />
 					<input type="image" src="<?=$config['sous_dossier_installation']?>images/loupe.png" title="Lancer la recherche" />
-				</div>
 				</form>
+			</aside>
+			<div id="logo">
+				<a href="<?=$config['sous_dossier_installation']?>">
+				<img alt="Photo d'ambiance" src="<?=$config['sous_dossier_installation']?>images/bandeau-haut/logo.svg" />
+				<h1>Refuges<span>.info</span></h1>
+				</a>
 			</div>
-			<a href="<?=$config['sous_dossier_installation']?>"><img alt="Photo d'ambiance" src="<?=$config['sous_dossier_installation']?>images/bandeau-haut/titrehorizontal_<?=date('m')?>.png" /></a>
-		</div>
+		</header>
 
 		<? // Barres de menus
 		$menus = array ('menu-normal'); // On commence par la barre normale, dans tous les cas
