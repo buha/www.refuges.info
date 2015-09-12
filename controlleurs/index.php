@@ -38,7 +38,7 @@ $vue->stat = stat_site ();
 
 // Préparation de la liste des photos récentes
 $conditions = new stdclass();
-$conditions->limite=5;
+$conditions->limite=25;
 $conditions->avec_photo=True;
 $conditions->avec_infos_point=True;
 $commentaires_avec_photos_recentes=infos_commentaires($conditions);

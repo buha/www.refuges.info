@@ -203,7 +203,7 @@ DIV#switch_nav LABEL {
   }
 
 /*==========DIVERS=======*/
-IMG { /* images sans bordures */
+img { /* images sans bordures */
   border: 0px;
   margin: 0px;
   padding: 0px;
@@ -222,12 +222,12 @@ a,a.mainmenu,a.nav,a.forumlink,a.cattitle,a.topictitle,a.postlink,a.gen,a.genmed
   text-decoration: none;
 }
 a:hover, a:visited:hover { /*met en valeur les liens qd on est dessus */
-  background-color: #FFECE5;
+  background-color: #fff1eb;
   color: black;
   border-radius: 5px;
 }
 a:visited {
-  color : orange;
+  color : #ff6a33;
 }
 
 /*=========ADRESSES MAILS CODEES==========*/
@@ -339,7 +339,7 @@ header > #logo h1 {
 }
 header > #logo h1 span {
   font-style: italic;
-  color: orange;
+  color: #ff6a33;
 }
 
 @media screen and (max-width: 900px) {
@@ -398,7 +398,7 @@ header > #logo h1 span {
   }
 
   nav > ul {
-    background: #ffece5;
+    background: #fff1eb;
     border-top: 1px solid orangered;
     border-bottom: 4px solid orangered;
     clear: left;
@@ -469,7 +469,7 @@ header > #logo h1 span {
     display: block;
   }
   nav > ul > li > ul > li > a:hover, nav > ul > li > ul > li > a:visited:hover {
-    background: #ffece5;
+    background: #fff1eb;
     color: orangered;
   }
 }
@@ -490,7 +490,7 @@ header > #logo h1 span {
     width:100%;
   }
   nav {
-    background: #ffece5;
+    background: #fff1eb;
     border-bottom: 4px solid orangered;
     padding: 5px 0;
     font-size: 16px;
@@ -555,7 +555,7 @@ header > #logo h1 span {
 /* en bas, il y a un gros <footer> qui englobe la fin */
   footer {
     background: orangered;
-    color: #ffece5;
+    color: #fff1eb;
     clear: both;
     height: 20px;
     padding: 5px 0px;
@@ -589,6 +589,43 @@ header > #logo h1 span {
 /* LA PAGES DES MASSIFS (Accueil)                                   */
 /*==================================================================*/
 
+  #presentation {
+    margin: 25px 5%;
+    padding: 8px;
+    background: #ebfaff;
+    border: 1px solid #00baff;
+  }
+  #presentation > .titre-categorie {
+    background: #00baff;
+    color: white;
+    font-variant: small-caps;
+    margin: -8px -8px 8px -8px;
+    padding: 5px;
+  }
+  #derouleur-photos {
+    background: #303030;
+    clear: both;
+    padding: 8px 10px;
+    min-height: 105px;
+    box-shadow: inset 0 0 5px black;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  #derouleur-photos > .titre-categorie {
+    color: white;
+    font-variant: small-caps;
+    margin: -4px 8px 0 -4px;
+    padding: 5px;
+  }
+  #derouleur-photos > div > a:first-child {
+    margin-left: -17px;
+  }
+  #derouleur-photos img {
+    height: 105px;
+  }
+  #derouleur-photos a:hover {
+    background: none;
+  }
   .tablo { /* DIV imite une table */
     display:table-cell;
     vertical-align: top;

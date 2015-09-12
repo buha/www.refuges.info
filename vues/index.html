@@ -1,10 +1,24 @@
-<div class="contenu">
+<section>
 	<!-- PRESENTATION   -->
 
-	<p style="margin-top:0">
-	<?=$vue->contenu_accueil?>
-	</p>
-	
+	<article id="presentation">
+		<div class="titre-categorie">À propos...</div>
+		<?=$vue->contenu_accueil?>
+	</article>
+
+	<!-- PHOTOS -->
+	<article id="derouleur-photos">
+		<div class="titre-categorie"><?=$vue->stat->nbphotos?> photos.</div>
+		<div>
+			<?php if (isset($vue->photos_recentes)) 
+				foreach ($vue->photos_recentes as $vignette) {?>
+				<a href="<?=$vignette->lien?>" title="<?=$vignette->nom?>">
+					<img alt="photo" src="<?=$vignette->lien_photo['vignette']?>" />
+				</a>
+			<?php } ?>
+		</div>
+	</article>
+
 	<!-- CARTE DES MASSIFS -->
 	<div class="tablo">
 		<h4><?=$vue->stat->nbmassifs?> massifs</h4>
@@ -17,22 +31,6 @@
 					<a href="<?=$lien?>"><?=$nom_zone?></a>
 				</li>
 			<?}?>
-		</ul>
-	</div>
-	
-	<!-- PHOTOS -->
-	<div class="tablo" style="float:right">
-		<h4><?=$vue->stat->nbphotos?> photos</h4>
-		<br/>
-		<ul>
-			<?php if (isset($vue->photos_recentes)) 
-				foreach ($vue->photos_recentes as $vignette) {?>
-			<li>
-				<a href="<?=$vignette->lien?>" title="<?=$vignette->nom?>">
-					<img alt="photo" src="<?=$vignette->lien_photo['vignette']?>" />
-				</a>
-			</li>
-			<?php } ?>
 		</ul>
 	</div>
 
@@ -75,4 +73,4 @@
 		</ul>
 		<br/>
 	</div>
-</div>
+</section>

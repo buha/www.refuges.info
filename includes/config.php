@@ -22,8 +22,8 @@ $config['racine_projet']=str_replace($config['includes_directory'],"",__DIR__);
 // Ceci est le chemin relatif à la racine web d'accès au projet wri : / si on est à la racine ou /mon/installation/ par exemple. Commence et fini par un "/"
 $config['sous_dossier_installation']=str_replace($_SERVER['DOCUMENT_ROOT'],"",$config['racine_projet']);
 
-$config['rep_web_photos_points']=$config['sous_dossier_installation']."photos_points/";
-$config['rep_photos_points']=$config['racine_projet']."photos_points/";
+$config['rep_web_photos_points']="http://www.refuges.info/photos_points/";
+$config['rep_photos_points']="/home/sites/refuges/www.refuges.info/photos_points/";
 $config['chemin_vues']=$config['racine_projet']."vues/";
 $config['chemin_modeles']=$config['racine_projet']."modeles/";
 $config['chemin_controlleurs']=$config['racine_projet']."controlleurs/";
