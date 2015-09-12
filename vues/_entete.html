@@ -18,7 +18,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
 		<meta http-equiv="Content-Type" content="text/html;charset=<?=$config[encodage_des_contenu_web]?>" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
-		<link type="text/css" rel="stylesheet" href="<?=$config['sous_dossier_installation']?>vues/style.css.php" />
+		<link type="text/css" rel="stylesheet" href="<?=$config['sous_dossier_installation']?>vues/style.css" />
 		<?if (count ($vue->css))
 			foreach ($vue->css as $css) {?>
 				<link type="text/css" rel="stylesheet" href="<?=$css?>" />
@@ -89,9 +89,9 @@
 			$menus [] = 'menu-scroll';
 
 		foreach ($menus AS $id) {?>
-			<div id="<?=$id?>" class="menu">
+			<nav id="<?=$id?>" class="menu">
 				<a href="<?=$config['sous_dossier_installation']?>" title="Retour à l'accueil">Refuges.info</a>
-				<span onclick="flip(this.parentNode,'deroule')">Menu</span>
+				<span class="bouton-menu" onclick="flip(this.parentNode,'deroule')">Menu</span>
 				<ul>
 					<li><a href="<?=$config['sous_dossier_installation']?>">Accueil</a></li>
 					<li class="mobile-only"><a href="<?=$config['sous_dossier_installation']?>forum/login.php">Connexion</a>
@@ -120,7 +120,7 @@
 							<li><a href="<?=$config['sous_dossier_installation']?>formulaire_exportations/" title="Exportation de la base refuges.info aux formats kmz (googlearth compressé), kml (googlearth), gml (Geography Markup Language), GPS (gpx), GPS (gpx simplifié), Garmin points d'intérêts, csv (tableurs)">Exportations</a></li>
 						</ul>
 					</li>
-					<li>Zones couvertes
+					<li><span class="sans-lien">Zones couvertes</span>
 						<span onclick="flip(this.parentNode,'deroule')" title="Plus de fonctions">&nbsp;&nbsp;&raquo;&nbsp;&nbsp;</span>
 						<ul>
 							<li><a href="<?=$config['sous_dossier_installation']?>nav/352?mode_affichage=zone">Alpes</a></li>
@@ -192,7 +192,7 @@
 						</li>
 					<?}?>
 				</ul>
-			</div>
+			</nav>
 		<?}?>
 
 		<?/* Juste pour que les repliements de la ligne de menus sur une page étroite ne bavent pas sur la page */?>
