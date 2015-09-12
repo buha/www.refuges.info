@@ -1,14 +1,14 @@
-<section>
+<section id="page-accueil">
 	<!-- PRESENTATION   -->
 
 	<article id="presentation">
-		<div class="titre-categorie">À propos...</div>
+		<h4 class="titre-categorie">À propos...</h4>
 		<?=$vue->contenu_accueil?>
 	</article>
 
 	<!-- PHOTOS -->
 	<article id="derouleur-photos">
-		<div class="titre-categorie"><?=$vue->stat->nbphotos?> photos.</div>
+		<h4 class="titre-categorie"><?=$vue->stat->nbphotos?> photos.</h4>
 		<div>
 			<?php if (isset($vue->photos_recentes)) 
 				foreach ($vue->photos_recentes as $vignette) {?>
@@ -20,11 +20,10 @@
 	</article>
 
 	<!-- CARTE DES MASSIFS -->
-	<div class="tablo">
-		<h4><?=$vue->stat->nbmassifs?> massifs</h4>
-		<div>Passez la souris et cliquez sur un massif</div>
+	<article id="carte-accueil">
+		<h4 class="titre-categorie"><?=$vue->stat->nbmassifs?> massifs.</h4>
 		<div class="carte" id="accueil"></div>
-		<h5>Et encore...</h5>
+		<h4 class="titre-categorie">Et encore...</h4>
 		<ul class="basdepage">
 			<?php if (isset($vue->zones)) foreach ($vue->zones AS $nom_zone => $lien) {?>
 				<li>
@@ -32,13 +31,11 @@
 				</li>
 			<?}?>
 		</ul>
-	</div>
+	</article>
 
 	<!-- NEWS -->
-	<div class="tablo" style="float:none;padding-left:15px">
-		<?=$vue->nouvelles_generales?>
-
-		<h4><?=$vue->stat->nbrefuges?> cabanes et refuges</h4>
+	<article id="nouvelles-accueil">
+		<h4 class="titre-categorie"><?=$vue->stat->nbrefuges?> cabanes et refuges.</h4>
 		<ul>
                     <?php foreach ($vue->nouveaux_points as $nouveau_point) { ?>
                         <li>
@@ -61,7 +58,7 @@
 			<li><a href="<?=$config['sous_dossier_installation']?>point_formulaire_recherche/" title="Recherche d'un points de refuges.info par le nom"><b>Recherche...</b></a></li>
 		</ul>
 		<br/>
-		<h4><?=$vue->stat->nbcomm?> commentaires</h4>
+		<h4 class="titre-categorie"><?=$vue->stat->nbcomm?> commentaires.</h4>
 		<ul>
                     <?php foreach ($vue->nouveaux_commentaires as $nouveau_commentaire) { ?>
                         <li>
@@ -72,5 +69,6 @@
                         <li><a href="<?=$config['sous_dossier_installation']?>nouvelles/" title="Les dernières entrées dans refuges.info"><b>Plus...</b></a></li>
 		</ul>
 		<br/>
-	</div>
+		<?=$vue->nouvelles_generales?>
+	</article>
 </section>

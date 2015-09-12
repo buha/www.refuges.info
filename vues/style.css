@@ -589,6 +589,19 @@ header > #logo h1 span {
 /* LA PAGES DES MASSIFS (Accueil)                                   */
 /*==================================================================*/
 
+  .titre-categorie {
+    background: orangered;
+    color: white;
+    font-variant: small-caps;
+    margin: -8px -8px 8px -8px;
+    padding: 5px;
+    font-weight: 400;
+  }
+  article {
+    border: 1px solid orangered;
+    padding: 8px;
+    background: #fff1eb;
+  }
   #presentation {
     margin: 25px 5%;
     padding: 8px;
@@ -597,13 +610,10 @@ header > #logo h1 span {
   }
   #presentation > .titre-categorie {
     background: #00baff;
-    color: white;
-    font-variant: small-caps;
-    margin: -8px -8px 8px -8px;
-    padding: 5px;
   }
   #derouleur-photos {
     background: #303030;
+    border: none;
     clear: both;
     padding: 8px 10px;
     min-height: 105px;
@@ -612,10 +622,8 @@ header > #logo h1 span {
     overflow: hidden;
   }
   #derouleur-photos > .titre-categorie {
-    color: white;
-    font-variant: small-caps;
-    margin: -4px 8px 0 -4px;
-    padding: 5px;
+    background: none;
+    margin: -4px -8px 8px -4px;
   }
   #derouleur-photos > div > a:first-child {
     margin-left: -17px;
@@ -626,11 +634,30 @@ header > #logo h1 span {
   #derouleur-photos a:hover {
     background: none;
   }
-  .tablo { /* DIV imite une table */
-    display:table-cell;
-    vertical-align: top;
-    float: left; /* pour IE7 */
+  #carte-accueil {
+    float: left;
+    margin: 25px 25px 25px 5%;
+    padding: 0;
+    width: 25%;
   }
+  #carte-accueil > .titre-categorie {
+    margin: 0;
+  }
+  #nouvelles-accueil {
+    float: right;
+    margin: 25px 5% 25px 0;
+    width: 60%;
+  }
+@media screen and (max-width: 450px) {
+  #page-accueil article {
+    width: inherit;
+    float: none;
+    margin-left: 0;
+    border-left: 0;
+    margin-right: 0;
+    border-right: 0;
+  }
+}
 
 /*==================================================================*/
 /* LES PAGES POINTS                                                 */
@@ -692,7 +719,7 @@ header > #logo h1 span {
     background-repeat: no-repeat;
   }
   #accueil {
-    width:  300px;
+    width:  100%;
 	/* La hauteur est automatiquement ajustée mar Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
   }
   #massifs {
@@ -757,8 +784,8 @@ header > #logo h1 span {
     min-width: 300px;
   }
 }
+
 @media screen and (max-width: 450px) {
- .tablo,
   #accueil {
     width: 100%;
   }
