@@ -16,15 +16,12 @@
 		<meta name="robots" content="index,follow" />
 		<meta name="description" content="<?=$vue->description?>" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
-		<meta http-equiv="Content-Type" content="text/html;charset=<?=$config[encodage_des_contenu_web]?>" />
-		<meta http-equiv="Content-Style-Type" content="text/css" />
+		<meta charset="<?=$config[encodage_des_contenu_web]?>" />
 		<link type="text/css" rel="stylesheet" href="<?=$config['sous_dossier_installation']?>vues/style.css" />
 		<?if (count ($vue->css))
 			foreach ($vue->css as $css) {?>
 				<link type="text/css" rel="stylesheet" href="<?=$css?>" />
 		<?	}?>
-
-		<meta http-equiv="Content-Script-Type" content="text/javascript" />
 		<script type="text/javascript">
 			var key = {
 				ign:  '<?=$config['ign_key']?>',
@@ -69,7 +66,7 @@
                     <input type="hidden" name="ids_types_point" value="<?=$config['tout_type_refuge']?>" />
                     <input type="hidden" name="avec_point_osm" value="1" />
 					<input type="text" name="nom" size="35" value="Recherche de refuge par le nom" onfocus="javascript:this.value=''" />
-					<input type="image" src="<?=$config['sous_dossier_installation']?>images/loupe.png" title="Lancer la recherche" />
+					<input type="image" src="<?=$config['sous_dossier_installation']?>images/loupe.png" title="Lancer la recherche" alt="Lancer la recherche" />
 				</form>
 			</aside>
 			<div id="logo">

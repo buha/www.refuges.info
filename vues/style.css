@@ -552,30 +552,27 @@ header > #logo h1 span {
 }
 
 /* ==========MENU DU BAS ========== */
-/* en bas, il y a un gros div "basdepage" qui englobe la fin */
-  #basdepage {
+/* en bas, il y a un gros <footer> qui englobe la fin */
+  footer {
+    background: orangered;
+    color: #ffece5;
     clear: both;
-    padding-top: 15px;
+    height: 20px;
+    padding: 5px 0px;
     text-align: center;
+    font-size: 14px;
+    line-height: 20px;
   }
-  /* c'est la liste en bas de page */
-  #basdepage #racourcismenus {
-    clear: both;
-    border: dashed thin #096EA1;
-    text-align: center;
-    margin: 0px;
+  footer a, footer a:visited {
+    color: white;
   }
-  #basdepage UL {
-    clear: both;
-    text-align: center;
-  }
-  #basdepage LI {
+  footer img { /* tout le bazar de pub de bas de page, en ligne! */
     display: inline;
-    margin-right: 2em;
-  }
-  #basdepage IMG,IFRAME,FORM { /* tout le bazar de pub de bas de page, en ligne! */
-    display: inline;
+    max-height: 17px;
     vertical-align: middle;
+  }
+  footer #validators a:hover {
+    background: none;
   }
 
 /*==================================================================*/

@@ -12,28 +12,23 @@
 			foreach ($vue->java_lib_foot as $js_lib) {?>
 				<script type="text/javascript" src="<?=$js_lib?>"></script>
 		<?	}?>
-		<div id="basdepage">
+		<footer>
 			<a id="lien-mobile" href="<?=$config['sous_dossier_installation']?>mobile/" title="Passer sur l'application mobile">
-				Version mobile
-			</a> &mdash; 
+				Version mobile</a> &mdash; 
 			<a id="lien-api" href="<?=$config['sous_dossier_installation']?>api/doc/" title="API">
-				API développeurs
-			</a> &mdash; 
+				API développeurs</a> &mdash; 
 			<a href="<?=$vue->lien_wiki["licence"]?>" title="Quelle est la licence du contenu de refuges.info ?">
 				<img src="<?=$config['sous_dossier_installation']?>images/copyleft.png" alt="Copyleft" />
-				Licence des contenus
-			</a>
+				Licence des contenus</a>
 			<?php if ($config['debug']) { ?>
-			<a href="http://validator.w3.org/check?uri=referer">
-				<img src="<?=$config['sous_dossier_installation']?>images/valide/xhtml10-blue.png" alt="Valid XHTML 1.0 Strict" />
-			</a>
-			<a href="http://jigsaw.w3.org/css-validator/check/referer">
-				<img src="<?=$config['sous_dossier_installation']?>images/valide/css21-blue.gif" alt="Valid CSS niveau 2.1" />
-			</a>
-			<a href="http://www.validome.org/referer">
-				<img src="<?=$config['sous_dossier_installation']?>images/valide/xhtml_1_0.gif" alt="Valid XHTML 1.0" />
-			</a>
+			<span id="validators">
+				&mdash;
+				<a href="http://validator.w3.org/check?uri=referer">
+					<img src="<?=$config['sous_dossier_installation']?>images/valide/html5.png" alt="Validateur HTML" /></a>
+				<a href="http://jigsaw.w3.org/css-validator/check/referer">
+					<img src="<?=$config['sous_dossier_installation']?>images/valide/css3.png" alt="Validateur CSS" /></a>
+			</span>
 			<?php } ?>
-		</div>
+		</footer>
 	</body>
 </html>
