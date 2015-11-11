@@ -167,9 +167,9 @@
 					</li>
 					
 					<? if ($_SESSION['niveau_moderation']>=1) {?>
-						<li>
+						<li class="admin">
 							<a href="<?=$config['sous_dossier_installation']?>gestion/" title="Zone de gestion pour les modérateurs">Gestion</a>
-							<?if ($vue->demande_correction) {?>
+							<? if ($vue->demande_correction) {?>
 								<a href="<?=$config['sous_dossier_installation']?>gestion/?page=commentaires_attente_correction" title="Commentaires en attente d'une correction">*</a>
 							<?}?>
 							<? // Ajout d'un lien de test pour Dominique seulement....
