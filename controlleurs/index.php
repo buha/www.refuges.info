@@ -77,6 +77,7 @@ $nouveaux_points=infos_points($conditions_nouveaux_points);
 foreach ($nouveaux_points as $nouveau_point)
 {
     $nouveau_point->lien=lien_point($nouveau_point);
+    $nouveau_point->icone=chemin_icone(choix_icone($nouveau_point));
     $nouveau_point->nom=mb_ucfirst(bbcode2html($nouveau_point->nom));
     $vue->nouveaux_points[]=$nouveau_point;
 }

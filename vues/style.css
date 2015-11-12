@@ -296,7 +296,7 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 /*==================================================================*/
 header {
 	position: relative;
-  background: white;
+  background: #eee;
 	z-index: 40000;
   font-size: 18px;
 }
@@ -621,6 +621,16 @@ header > #logo h1 span {
     padding: 5px;
     font-weight: 400;
   }
+  .titre-categorie a {
+    float: right;
+    padding: 0 5px;
+    background: #fff1eb;
+    font-weight: normal;
+    border-radius: 5px;
+  }
+  .titre-categorie a:hover {
+    background: white;
+  }
   article {
     border: 1px solid orangered;
     padding: 8px;
@@ -658,22 +668,63 @@ header > #logo h1 span {
   #derouleur-photos a:hover {
     background: none;
   }
-  #carte-accueil {
-    float: left;
-    margin: 25px 0 25px 5%;
-    padding: 0;
-    width: 25%;
+  #flexcontainer {
+    width: 90%;
+    margin: 25px auto;
+    display: flex;
   }
-  #carte-accueil > .titre-categorie {
-    margin: 0;
+  #carte-accueil {
+    flex: 1;
+    border-color: #777;
+    box-shadow: 0 0 10px black;
+    padding: 0;
   }
   #nouvelles-accueil {
-    float: right;
-    margin: 25px 5% 25px 0;
-    width: 60%;
+    margin-left: 25px;
+    flex: 2;
+  }
+  #nouvelles-accueil em {
+    font-weight: 300;
+    position: absolute;
+    left: 0px;
+    bottom: 3px;
+    background: white;
+    padding: 3px 10px;
+    margin-bottom: -3px;
+  }
+  #nouvelles-accueil li {
+    padding-bottom: 3px;
+    padding-left: 90px;
+    margin-top: 3px;
+    position: relative;
+  }
+  #nouvelles-accueil li:after {
+    content:""; 
+    background: #bbb; 
+    position: absolute; 
+    bottom: 0; 
+    left: -3px; 
+    height: 1px; 
+    width: 30%;
+  }
+  #nouvelles-accueil li:last-child:after {
+    display: none;
+  }
+  #nouvelles-accueil .icone {
+    vertical-align: middle;
+  }
+@media screen and (max-width: 700px) {
+  #flexcontainer {
+    width: 90%;
+    margin: 25px auto;
+    display: block;
+  }
+  #nouvelles-accueil {
+    margin-top: 25px;
+    margin-left: 0;
   }
 @media screen and (max-width: 450px) {
-  #page-accueil article {
+  #page-accueil article, #flexcontainer {
     width: inherit;
     float: none;
     margin-left: 0;

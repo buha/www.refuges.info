@@ -19,56 +19,51 @@
 		</div>
 	</article>
 
-	<!-- CARTE DES MASSIFS -->
-	<article id="carte-accueil">
-		<h4 class="titre-categorie"><?=$vue->stat->nbmassifs?> massifs.</h4>
-		<div class="carte" id="accueil"></div>
-		<h4 class="titre-categorie">Et encore...</h4>
-		<ul class="basdepage">
-			<?php if (isset($vue->zones)) foreach ($vue->zones AS $nom_zone => $lien) {?>
-				<li>
-					<a href="<?=$lien?>"><?=$nom_zone?></a>
-				</li>
-			<?}?>
-		</ul>
-	</article>
+	<div id="flexcontainer">
+		<!-- CARTE DES MASSIFS -->
+		<article id="carte-accueil">
+			<div class="carte" style="height: 100%; min-height: 300px;" id="accueil"></div>
+		</article>
 
-	<!-- NEWS -->
-	<article id="nouvelles-accueil">
-		<h4 class="titre-categorie"><?=$vue->stat->nbrefuges?> cabanes et refuges.</h4>
-		<ul>
-                    <?php foreach ($vue->nouveaux_points as $nouveau_point) { ?>
-                        <li>
-                            <em><?=$nouveau_point->date_formatee?></em>
-                            &nbsp;Ajout <?=$nouveau_point->article_partitif_point_type?> <?=$nouveau_point->nom_type?>
-                            <?php if ($nouveau_point->nom_createur!="") { 
-                                if ($nouveau_point->id_createur==0) { ?>
-                                    par <?=$nouveau_point->nom_createur?>
-                                <?php } else { ?>
-                                par <a href="<?=$config['fiche_utilisateur'].$nouveau_point->id_createur?>"><?=$nouveau_point->nom_createur?></a>
-                                <?php } ?>
-                            <?php } ?>
-                                : <a href="<?=$nouveau_point->lien?>"><?=$nouveau_point->nom?></a>
-                                <?php if (isset($nouveau_point->id_massif)) { ?>
-                                dans le 
-                                <a href="<?=lien_polygone($nouveau_point,True)?>">massif <?=$nouveau_point->article_partitif_massif?> <?=$nouveau_point->nom_massif?></a>
-                                <?php } ?>
-                        </li>
-                    <?php } ?>
-			<li><a href="<?=$config['sous_dossier_installation']?>point_formulaire_recherche/" title="Recherche d'un points de refuges.info par le nom"><b>Recherche...</b></a></li>
-		</ul>
-		<br/>
-		<h4 class="titre-categorie"><?=$vue->stat->nbcomm?> commentaires.</h4>
-		<ul>
-                    <?php foreach ($vue->nouveaux_commentaires as $nouveau_commentaire) { ?>
-                        <li>
-                            <em><?=$nouveau_commentaire['date_formatee']?></em>
-                            &nbsp;<?=$nouveau_commentaire['texte']?>
-                        </li>
-                    <?php } ?>
-                        <li><a href="<?=$config['sous_dossier_installation']?>nouvelles/" title="Les dernières entrées dans refuges.info"><b>Plus...</b></a></li>
-		</ul>
-		<br/>
-		<?=$vue->nouvelles_generales?>
-	</article>
+		<!-- NEWS -->
+		<article id="nouvelles-accueil">
+			<h4 class="titre-categorie"><?=$vue->stat->nbrefuges?> cabanes et refuges.
+			<a href="<?=$config['sous_dossier_installation']?>point_formulaire_recherche/" title="Recherche d'un points de refuges.info par le nom"><b>Recherche...</b></a></h4>
+			<ul>
+	                    <?php foreach ($vue->nouveaux_points as $nouveau_point) { ?>
+	                        <li>
+	                            <em><?=$nouveau_point->date_formatee?></em>
+	                            <img class="icone" src="<? echo $nouveau_point->icone ?>" />
+	                            <small><?php if ($nouveau_point->nom_createur!="") { 
+	                                if ($nouveau_point->id_createur==0) { ?>
+	                                    par <?=$nouveau_point->nom_createur?>
+	                                <?php } else { ?>
+	                                par <a href="<?=$config['fiche_utilisateur'].$nouveau_point->id_createur?>"><?=$nouveau_point->nom_createur?></a>
+	                                <?php } ?>
+	                            <?php } ?>
+	                                : <a href="<?=$nouveau_point->lien?>"><?=$nouveau_point->nom?></a>
+	                                <?php if (isset($nouveau_point->id_massif)) { ?>
+	                                dans le 
+	                                <a href="<?=lien_polygone($nouveau_point,True)?>">massif <?=$nouveau_point->article_partitif_massif?> <?=$nouveau_point->nom_massif?></a>
+	                                <?php } ?></small>
+	                        </li>
+	                    <?php } ?>
+			</ul>
+			<br/>
+			<h4 class="titre-categorie"><?=$vue->stat->nbcomm?> commentaires.
+			<a href="<?=$config['sous_dossier_installation']?>nouvelles/" title="Les dernières entrées dans refuges.info"><b>Plus...</b></a></h4>
+			<ul>
+	                    <?php foreach ($vue->nouveaux_commentaires as $nouveau_commentaire) { ?>
+	                        <li>
+	                            <em><?=$nouveau_commentaire['date_formatee']?></em>
+	                            <small><?=$nouveau_commentaire['texte']?></small>
+	                        </li>
+	                    <?php } ?>
+			</ul>
+			<? 
+			if($vue->nouvelles_generales == "<br>\n")
+				echo "<br/>".$vue->nouvelles_generales;
+			?>
+		</article>
+	</div>
 </section>
