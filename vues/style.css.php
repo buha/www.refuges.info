@@ -389,7 +389,7 @@ header > #logo h1 span {
 
 /* ==========MENU POUR ECRANS ========== */
 /* Paramétrage commun aux deux menus en mode ecran large */
-@media screen and (min-width: 641px) {
+@media screen and (min-width: 641px) and (min-height: 641px) {
   /* On inhibe les affichages non souhaités */
   .menu > a,
   .menu span,
@@ -466,7 +466,7 @@ header > #logo h1 span {
 /* ==========MENU POUR MOBILES ========== */
 /* Menu simplifié pour petits écrans */
  
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 640px), screen and (max-height: 640px) {
   /* On inhibe les affichages non souhaités */
   .screen-only,
   #entete,
@@ -609,80 +609,39 @@ header > #logo h1 span {
 /*==================================================================*/
 /*                              CARTES                              */
 /*==================================================================*/
-
-  .choix_legende {
-    float: left;
-    width: 200px;
-  }
-  .carte /* utilisé par TOUTES les images cartes */
-   {
-    background-image: url(../images/sablier.png);
-    background-position: center center;
-    background-repeat: no-repeat;
-  }
+.choix_legende {
+  float: left;
+  width: 200px;
+}
+.carte /* utilisé par TOUTES les images cartes */
+ {
+  background-image: url(../images/sablier.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+#accueil {
+  width:  300px;
+/* Height n'étant pas défini, la hauteur est automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
+}
+@media screen and (max-width: 450px) {
+ .tablo,
   #accueil {
-    width:  300px;
-	/* La hauteur est automatiquement ajustée mar Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
-  }
-  #massifs {
-    width:  800px;
-	/* La hauteur est automatiquement ajustée mar Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
-  }
-  #vignette { /* utilisé par les petites des fiches points */
-    width:  280px;
-	/* La hauteur est automatiquement ajustée mar Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
-  }
-  #vignette-agrandie {
-    width:  400px;
-	/* La hauteur est automatiquement ajustée mar Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
-  }
-  #carte_edit, .carte_edit {
-    width:  450px; 
-	/* La hauteur est automatiquement ajustée mar Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
-    float: right;
-    max-width: 100%;
-  }
-  #nav_bloc_carte {
-    width: 98.4%;
-	/* La hauteur est automatiquement ajustée mar Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
-    margin: 0 0.8%;
-    max-height: calc(100% - 58px);
-  }
-  .nav_bloc {
-    padding: 0 0.7%;
-  }
-  @media screen and (min-width: 1200px) {
-    #nav_bloc_carte {
-    float: right;
-    width: 80%;
-	/* La hauteur est automatiquement ajustée mar Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
-    }
-  }
-  @media screen and (min-width: 700px) and (max-width: 1199px) {
-    #nav_bloc_carte {
-    width: 98.4%;
-	/* La hauteur est automatiquement ajustée mar Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
-    }
-    .nav_bloc {
-    display: table-cell;
-    width: 33%;
-	/* La hauteur est automatiquement ajustée mar Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
-    }
-  }
-@media screen and (min-width: 641px) {
-  #nav_bloc_carte {
-    max-height: calc(100% - 128px);
-  }
-  .container_carte {
-    float: right;
+    width: 100%;
   }
 }
-  /*Externalise le sélecteur de couche de la carte nav*/
-  #carte_nav .baseLbl, #carte_nav .dataLbl , #carte_nav .dataLayersDiv,
-  #switch_nav .baseLbl, #switch_nav .baseLayersDiv, #switch_nav .dataLbl {
-    display: none;
-  }
-@media screen and (max-width: 640px) {
+#massifs {
+  width:  800px;
+/* Height n'étant pas défini, la hauteur est automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
+}
+#vignette { /* utilisé par les petites des fiches points */
+  width:  280px;
+/* Height n'étant pas défini, la hauteur est automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
+}
+#vignette-agrandie {
+  width:  400px;
+/* Height n'étant pas défini, la hauteur est automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
+}
+@media screen and (max-width: 640px), screen and (max-height: 640px) {
   #vignette,
   #vignette-agrandie {
     width: 100%;
@@ -695,9 +654,61 @@ header > #logo h1 span {
     min-width: 300px;
   }
 }
-@media screen and (max-width: 450px) {
- .tablo,
-  #accueil {
-    width: 100%;
+/* Carte formulaire de modification */
+#carte_edit, .carte_edit {
+  width:  450px; 
+/* Height n'étant pas défini, la hauteur est automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
+  float: right;
+  max-width: 100%;
+}
+
+/* Carte NAV présentation mobile verticale */
+#nav_wrap_carte {
+  width: 98.4%;
+  max-height: calc(100% - 65px);
+}
+#nav_bloc_carte {
+  margin: 0 0.8%;
+  width: 100%;
+/* Height n'étant pas défini, la hauteur est automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
+  max-height: 100%;
+}
+.nav_bloc_selecteur {
+  padding: 0 0.7%;
+}
+/* Menu deplié */
+@media screen and (min-width: 641px) and (min-height: 641px) {
+  #nav_wrap_carte {
+    max-height: calc(100% - 126px);
+  }
+}
+/* Carte NAV présentation mobile horizontale */
+@media screen and (min-aspect-ratio: 1/1) and (max-height: 641px) {
+  #nav_wrap_carte {
+    float: right;
+    width: 67%;
+    max-height: calc(100% - 75px);
+  }
+  #nav_bloc_carte {
+    width: 98.4%;
+  }
+  .nav_bloc_selecteur {
+    display: table-cell;
+    width: 33%;
+  }
+}
+/* Carte NAV présentation écrans */
+@media screen and (min-width: 800px) {
+  #nav_wrap_carte {
+    float: right;
+    width: 80%;
+    height: 100%;
+  }
+  #nav_bloc_carte {
+    width: 98.4%;
+  }
+  .nav_bloc_selecteur {
+    display: table-cell;
+    width: 33%;
   }
 }
