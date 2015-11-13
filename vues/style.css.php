@@ -230,6 +230,13 @@ a:visited {
   color : orange;
 }
 
+/*=========ERREUR==========*/
+.erreur_saisie {
+	border: 2px double red;
+	background-color: yellow;
+	padding: 10px;
+}
+
 /*=========ADRESSES MAILS CODEES==========*/
 .mail {
   unicode-bidi: bidi-override;
@@ -585,11 +592,6 @@ header > #logo h1 span {
     display: inline;
     margin: 1px 5px 1px 0px;
   }
-@media screen and (min-width: 641px) {
-  .container_carte {
-    float: right;
-  }
-}
   .photos {
     float: left; 
     margin: 1px; 
@@ -644,6 +646,7 @@ header > #logo h1 span {
     width: 98.4%;
 	/* La hauteur est automatiquement ajustée mar Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
     margin: 0 0.8%;
+    max-height: calc(100% - 58px);
   }
   .nav_bloc {
     padding: 0 0.7%;
@@ -666,6 +669,14 @@ header > #logo h1 span {
 	/* La hauteur est automatiquement ajustée mar Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
     }
   }
+@media screen and (min-width: 641px) {
+  #nav_bloc_carte {
+    max-height: calc(100% - 128px);
+  }
+  .container_carte {
+    float: right;
+  }
+}
   /*Externalise le sélecteur de couche de la carte nav*/
   #carte_nav .baseLbl, #carte_nav .dataLbl , #carte_nav .dataLayersDiv,
   #switch_nav .baseLbl, #switch_nav .baseLayersDiv, #switch_nav .dataLbl {
