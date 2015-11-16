@@ -280,7 +280,7 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 }
 
 /*=========PUBLICITE==========*/
-@media screen and (max-width: 940px) {
+@media screen and (max-width: 940px), screen and (max-height: 550px) {
   .publicite {
     display: none;
   }
@@ -389,7 +389,7 @@ header > #logo h1 span {
 
 /* ==========MENU POUR ECRANS ========== */
 /* Paramétrage commun aux deux menus en mode ecran large */
-@media screen and (min-width: 641px) and (min-height: 641px) {
+@media screen and (min-width: 641px) and (min-height: 361px) {
   /* On inhibe les affichages non souhaités */
   .menu > a,
   .menu span,
@@ -466,7 +466,7 @@ header > #logo h1 span {
 /* ==========MENU POUR MOBILES ========== */
 /* Menu simplifié pour petits écrans */
  
-@media screen and (max-width: 640px), screen and (max-height: 640px) {
+@media screen and (max-width: 640px), screen and (max-height: 360px) {
   /* On inhibe les affichages non souhaités */
   .screen-only,
   #entete,
@@ -609,19 +609,15 @@ header > #logo h1 span {
 /*==================================================================*/
 /*                              CARTES                              */
 /*==================================================================*/
-.choix_legende {
-  float: left;
-  width: 200px;
-}
 .carte /* utilisé par TOUTES les images cartes */
  {
   background-image: url(../images/sablier.png);
   background-position: center center;
   background-repeat: no-repeat;
 }
-#accueil {
+#accueil { /* Carte de l'accueil */
   width:  300px;
-/* Height n'étant pas défini, la hauteur est automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
+/* Ne pas définir height pour que la hauteur soit automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenêtre */
 }
 @media screen and (max-width: 450px) {
  .tablo,
@@ -629,37 +625,9 @@ header > #logo h1 span {
     width: 100%;
   }
 }
-#massifs {
+#massifs { /* Carte de la page des massifs */
   width:  800px;
-/* Height n'étant pas défini, la hauteur est automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
-}
-#vignette { /* utilisé par les petites des fiches points */
-  width:  280px;
-/* Height n'étant pas défini, la hauteur est automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
-}
-#vignette-agrandie {
-  width:  400px;
-/* Height n'étant pas défini, la hauteur est automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
-}
-@media screen and (max-width: 640px), screen and (max-height: 640px) {
-  #vignette,
-  #vignette-agrandie {
-    width: 100%;
-    min-width: 450px;
-  }
-}
-@media screen and (max-width: 550px) {
-  #vignette,
-  #vignette-agrandie {
-    min-width: 300px;
-  }
-}
-/* Carte formulaire de modification */
-#carte_edit, .carte_edit {
-  width:  450px; 
-/* Height n'étant pas défini, la hauteur est automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
-  float: right;
-  max-width: 100%;
+/* Ne pas définir height pour que la hauteur soit automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenêtre */
 }
 
 /* Carte NAV présentation mobile verticale */
@@ -670,20 +638,20 @@ header > #logo h1 span {
 #nav_bloc_carte {
   margin: 0 0.8%;
   width: 100%;
-/* Height n'étant pas défini, la hauteur est automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
+/* Ne pas définir height pour que la hauteur soit automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenêtre */
   max-height: 100%;
 }
 .nav_bloc_selecteur {
   padding: 0 0.7%;
 }
 /* Menu deplié */
-@media screen and (min-width: 641px) and (min-height: 641px) {
+@media screen and (min-width: 641px) and (min-height: 361px) {
   #nav_wrap_carte {
     max-height: calc(100% - 126px);
   }
 }
 /* Carte NAV présentation mobile horizontale */
-@media screen and (min-aspect-ratio: 1/1) and (max-height: 641px) {
+@media screen and (min-aspect-ratio: 1/1) and (max-height: 360px) and (min-width: 365px) {
   #nav_wrap_carte {
     float: right;
     width: 67%;
@@ -711,4 +679,34 @@ header > #logo h1 span {
     display: table-cell;
     width: 33%;
   }
+}
+
+/* Carte de la page des points mobiles */
+#vignette,
+#vignette-agrandie {
+  width: 100%;
+  min-width: 300px;
+/* Ne pas définir height pour que la hauteur soit automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenêtre */
+}
+/* Carte de la page des points écrans */
+@media screen and (min-width: 641px) {
+  #vignette {
+    width: 280px;
+    min-width: auto;
+  }
+  #vignette-agrandie {
+    width: 400px;
+    min-width: auto;
+  }
+  .container_carte {
+    float: right;
+  }
+}
+
+/* Carte formulaire de modification */
+#carte_edit, .carte_edit {
+  width: 450px; 
+/* Ne pas définir height pour que la hauteur soit automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenêtre */
+  float: right;
+  max-width: 100%;
 }

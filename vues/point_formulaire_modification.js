@@ -9,20 +9,19 @@ var map, curseur, gps;
 
 window.addEventListener('load', function() {
 	var baseLayers = {
-		'maps.refuges.info': L.tileLayer('http://maps.refuges.info/hiking/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">Contributeurs OpenStreetMap</a> & <a href="http://wiki.openstreetmap.org/wiki/Hiking/mri">MRI</a>'
-		}),
-		'OpenStreetMap-FR': L.tileLayer('http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="http://osm.org/copyright">Contributeurs OpenStreetMap</a>'
-		}),
-		'OpenStreetMap': L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">Contributeurs OpenStreetMap</a>'
-		}),
-		'Outdoors': L.tileLayer('http://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">Contributeurs OpenStreetMap</a> & <a href="http://www.thunderforest.com">Thunderforest</a>'
-		}),
-		'Bing photo': new L.BingLayer(key.bing), // Idem type:'Aerial'
-	};
+			'Refuges.info':new L.TileLayer.OSM.MRI(),
+			'OSM fr':      new L.TileLayer.OSM.FR(),
+			'Outdoors':    new L.TileLayer.OSM.Outdoors(),
+			'IGN':         new L.TileLayer.IGN(),
+			'IGN Express': new L.TileLayer.IGN('GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.CLASSIQUE'),
+			'SwissTopo':   new L.TileLayer.SwissTopo(),
+			'Autriche':    new L.TileLayer.OSM.OB.Touristik(),
+			'Espagne':     new L.TileLayer.WMS.IDEE(),
+			'Italie':      new L.TileLayer.WMS.IGM(),
+			'Angleterre':  new L.TileLayer.OSOpenSpace(key.os,{}),
+			'Photo Bing':  new L.BingLayer(key.bing),
+			'Photo IGN':   new L.TileLayer.IGN('ORTHOIMAGERY.ORTHOPHOTOS')
+		};
 
 	map = new L.Map('carte-edit', {
 		fullscreenControl: true,
