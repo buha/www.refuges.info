@@ -16,7 +16,6 @@ $vue->description='Base de donnee de refuges, abris, gites, sommets et divers po
 
 $vue->java_lib_foot [] = $config['url_chemin_leaflet'].($config['debug']?'src/':'').'leaflet.js?' .filemtime($config['chemin_leaflet'].'leaflet.js');
 $vue->css           [] = $config['url_chemin_leaflet'].'leaflet.css?'.filemtime($config['chemin_leaflet'].'leaflet.css');
-$vue->fond_carte_par_defaut= $config['carte_base'];
 
 $conditions_notre_zone = new stdClass;
 $conditions_notre_zone->ids_polygones=$config['id_zone_accueil'];
@@ -78,7 +77,6 @@ $nouveaux_points=infos_points($conditions_nouveaux_points);
 foreach ($nouveaux_points as $nouveau_point)
 {
     $nouveau_point->lien=lien_point($nouveau_point);
-    $nouveau_point->icone=chemin_icone(choix_icone($nouveau_point));
     $nouveau_point->nom=mb_ucfirst(bbcode2html($nouveau_point->nom));
     $vue->nouveaux_points[]=$nouveau_point;
 }

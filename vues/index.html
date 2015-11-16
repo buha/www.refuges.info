@@ -21,10 +21,8 @@
 
 	<div id="flexcontainer">
 		<!-- CARTE DES MASSIFS -->
-		<article id="carte-accueil">
-			<div class="carte" style="height: 100%; min-height: 300px;" id="accueil"></div>
-		</article>
-
+		<div class="carte" id="accueil"></div>
+		
 		<!-- NEWS -->
 		<article id="nouvelles-accueil">
 			<h4 class="titre-categorie"><?=$vue->stat->nbrefuges?> cabanes et refuges.
@@ -33,19 +31,20 @@
 	                    <?php foreach ($vue->nouveaux_points as $nouveau_point) { ?>
 	                        <li>
 	                            <em><?=$nouveau_point->date_formatee?></em>
-	                            <img class="icone" src="<? echo $nouveau_point->icone ?>" />
-	                            <small><?php if ($nouveau_point->nom_createur!="") { 
+	                            <img class="icone" src="<?=$config['sous_dossier_installation']?>images/icones/sources-vectoriel/<? echo choix_icone($nouveau_point) ?>.svg" />
+	                            &mdash;
+	                            <a href="<?=$nouveau_point->lien?>"><?=$nouveau_point->nom?></a>
+	                            <span class="details"><small><?php if ($nouveau_point->nom_createur!="") { 
 	                                if ($nouveau_point->id_createur==0) { ?>
 	                                    par <?=$nouveau_point->nom_createur?>
 	                                <?php } else { ?>
 	                                par <a href="<?=$config['fiche_utilisateur'].$nouveau_point->id_createur?>"><?=$nouveau_point->nom_createur?></a>
 	                                <?php } ?>
 	                            <?php } ?>
-	                                : <a href="<?=$nouveau_point->lien?>"><?=$nouveau_point->nom?></a>
 	                                <?php if (isset($nouveau_point->id_massif)) { ?>
 	                                dans le 
 	                                <a href="<?=lien_polygone($nouveau_point,True)?>">massif <?=$nouveau_point->article_partitif_massif?> <?=$nouveau_point->nom_massif?></a>
-	                                <?php } ?></small>
+	                                <?php } ?></small></span>
 	                        </li>
 	                    <?php } ?>
 			</ul>
