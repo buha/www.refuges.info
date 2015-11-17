@@ -67,7 +67,6 @@ foreach ($vue->nouveaux_commentaires as $id => $nouvelle)
     $vue->nouveaux_commentaires[$id]['date_formatee']=date("d/m/y", $nouvelle['date']);
     $vue->nouveaux_commentaires[$id]['texte']=bbcode2html($nouvelle['texte']);
 }
-
 // Préparation de la liste des nouveaux points rentrés
 $conditions_nouveaux_points = new stdClass;
 $conditions_nouveaux_points->limite=3;

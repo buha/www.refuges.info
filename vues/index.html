@@ -31,7 +31,7 @@
 	                    <?php foreach ($vue->nouveaux_points as $nouveau_point) { ?>
 	                        <li>
 	                            <em><?=$nouveau_point->date_formatee?></em>
-	                            <img class="icone" src="<?=$config['sous_dossier_installation']?>images/icones/sources-vectoriel/<? echo choix_icone($nouveau_point) ?>.svg" />
+	                            <img class="icone" alt="<?=choix_icone($nouveau_point)?>" src="<?=$config['sous_dossier_installation']?>images/icones/sources-vectoriel/<? echo choix_icone($nouveau_point) ?>.svg" />
 	                            &mdash;
 	                            <a href="<?=$nouveau_point->lien?>"><?=$nouveau_point->nom?></a>
 	                            <span class="details"><small><?php if ($nouveau_point->nom_createur!="") { 
@@ -55,7 +55,23 @@
 	                    <?php foreach ($vue->nouveaux_commentaires as $nouveau_commentaire) { ?>
 	                        <li>
 	                            <em><?=$nouveau_commentaire['date_formatee']?></em>
-	                            <small><?=$nouveau_commentaire['texte']?></small>
+	                            <img class="icone" alt="Nouveau commentaire" src="<?=$config['sous_dossier_installation']?>images/commentaire.svg" />
+	                            <? if ($nouveau_commentaire['photo']>0) { ?>
+	                            <img class="icone" alt="Nouvelle photo" src="<?=$config['sous_dossier_installation']?>images/photo.svg" />
+	                            <? } ?>
+	                            &mdash;
+	                            <a href="<?=$nouveau_commentaire['lien']?>"><?=$nouveau_commentaire['titre']?></a>
+	                            <span class="details"><small><?php if ($nouveau_commentaire['auteur']!="") { 
+	                                if (!isset($nouveau_commentaire['lien_auteur'])) { ?>
+	                                    par <?=$nouveau_commentaire['auteur']?>
+	                                <?php } else { ?>
+	                                par <a href="<?=$nouveau_commentaire['lien_auteur']?>"><?=$nouveau_commentaire['auteur']?></a>
+	                                <?php } ?>
+	                            <?php } ?>
+	                                <?php if (isset($nouveau_commentaire['massif'])) { ?>
+	                                dans le 
+	                                <a href="<?=$nouveau_commentaire['lien_massif']?>">massif <?=$nouveau_commentaire['partitif_massif']?> <?=$nouveau_commentaire['massif']?></a>
+	                                <?php } ?></small></span>
 	                        </li>
 	                    <?php } ?>
 			</ul>

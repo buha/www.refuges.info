@@ -13,10 +13,10 @@ Sommaire:
 ***********************************************************************************************/
 
 :root {
-  --main-color: #FFA500;
-  --main-color-dark: #F57900;
-  --main-color-darkdark: orangered;
-  --main-color-light: #ffd589;
+  --main-color: #F97B00;
+  --main-color-dark: #ae5600;
+  --main-color-darkdark: #4a2400;
+  --main-color-light: #FFA500;
   --main-color-lightlight: #fff1d8;
 
   --grey-color-light: #ccc;
@@ -231,16 +231,14 @@ J'intègre également les class des liens du forum
 en gros je veux tout de la même couleur
 */
 a,a.mainmenu,a.nav,a.forumlink,a.cattitle,a.topictitle,a.postlink,a.gen,a.genmed,a.gensmall {
-  color : var(--main-color-darkdark); /* en accord avec le thème du forum, et moins agressif */
+  color : var(--main-color); /* en accord avec le thème du forum, et moins agressif */
   text-decoration: none;
 }
 a:hover, a:visited:hover { /*met en valeur les liens qd on est dessus */
-  background-color: var(--main-color-lightlight);
   color: var(--main-color-dark);
-  border-radius: 5px;
 }
 a:visited {
-  color : var(--main-color-darkdark);
+  color : var(--main-color);
 }
 
 /*=========ADRESSES MAILS CODEES==========*/
@@ -309,7 +307,7 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 /*==================================================================*/
 header {
 	position: relative;
-  background: var(--grey-color-lightlight);
+  background: white;
 	z-index: 40000;
   font-size: 18px;
 }
@@ -326,15 +324,15 @@ header form {
   margin: 4px 0 0 0;
 }
 header input[type=text] {
-  border: solid 1px var(--main-color-darkdark);
+  border: solid 1px var(--main-color);
   border-right: none;
   height: 18px;
   padding: 2px 5px;
   vertical-align: middle;
 }
 header input[type=image] {
-  background: var(--main-color-dark);
-  border: solid 1px var(--main-color-darkdark);
+  background: var(--main-color);
+  border: solid 1px var(--main-color);
   border-left: none;
   border-radius: 0 5px 5px 0;
   height: 18px;
@@ -368,7 +366,7 @@ header > #logo h1 {
 }
 header > #logo h1 span {
   font-style: italic;
-  color: var(--main-color-darkdark);
+  color: var(--main-color);
 }
 
 @media screen and (max-width: 900px) {
@@ -401,12 +399,16 @@ header > #logo h1 span {
     position: fixed; top: 0;
     height: 22px; /* Réserve un espace où rien n'est affiché mais qui est sensible à la souris */
     width: 100%;
+    background: transparent;
+    border: 0;
   }
   #menu-scroll:hover {
     z-index: 30000;
   }
   #menu-scroll > UL {
+    background: var(--main-color);
     display: none;
+    width: 100%;
   }
   #menu-scroll:hover > UL {
     display: block;
@@ -425,10 +427,12 @@ header > #logo h1 span {
   .mobile-only {
     display: none;
   }
-  nav > ul {
+  nav {
     background: var(--main-color);
     border-top: 1px solid var(--main-color);
     border-bottom: 1px solid var(--main-color);
+  }
+  nav > ul {
     /*box-shadow: 0 0 5px black;*/
     clear: left;
     white-space: nowrap;
@@ -436,7 +440,8 @@ header > #logo h1 span {
     font-size: 1em;
     font-weight: 400;
     text-align: left;
-    margin: 0px;
+    margin: 0px auto;
+    width: 90%;
     padding: 0px;
     min-height: 32px;
   }
@@ -478,8 +483,11 @@ header > #logo h1 span {
     border-radius: 0;
     background: transparent;
   }
-  nav a:visited, nav a {
-    color: black;
+  nav a:visited, nav a, .sans-lien {
+    color: white;
+  }
+  .sans-lien { /* Pour les éléments du menu sans lien */
+    cursor: default;
   }
   nav > ul > li > a, nav > ul > li > .sans-lien {
     padding: 5px 0.5em;
@@ -487,11 +495,7 @@ header > #logo h1 span {
     text-decoration: none;
   }
   nav > ul > li:hover > a, nav > ul > li:hover > .sans-lien {
-    color: var(--main-color-darkdark) !important;
-  }
-  .sans-lien { /* Pour les éléments du menu sans lien */
-    color: black;
-    cursor: default;
+    color: var(--main-color) !important;
   }
   nav > ul > li > ul > li > a, nav > ul > li > ul > li > a:visited {
     padding: 2px 0.5em;
@@ -500,7 +504,7 @@ header > #logo h1 span {
   }
   nav > ul > li > ul > li > a:hover, nav > ul > li > ul > li > a:visited:hover {
     background: var(--main-color-lightlight);
-    color: var(--main-color-darkdark);
+    color: var(--main-color);
   }
   nav .admin > a:first-child {
     float:left;
@@ -595,7 +599,7 @@ header > #logo h1 span {
 /* en bas, il y a un gros <footer> qui englobe la fin */
   footer {
     background: var(--main-color);
-    color: var(--main-color-darkdark);
+    color: var(--main-color-lightlight);
     clear: both;
     height: 20px;
     padding: 5px 0px;
@@ -604,13 +608,12 @@ header > #logo h1 span {
     line-height: 20px;
   }
   footer a, footer a:visited {
-    color: black;
+    color: white;
   }
   footer img { /* tout le bazar de pub de bas de page, en ligne! */
     display: inline;
     max-height: 17px;
     vertical-align: middle;
-    fill: black;
   }
   footer #validators a:hover {
     background: none;
@@ -635,29 +638,22 @@ header > #logo h1 span {
     color: black;
     font-variant: small-caps;
     margin: -8px -8px 8px -8px;
-    padding: 5px;
+    padding: 8px;
     font-weight: 400;
   }
-  .titre-categorie a {
-    float: right;
-    padding: 0 5px;
-    color: var(--grey-color-darkdark);
-    background: var(--grey-color-lightlight);
-    font-weight: normal;
-    border-radius: 5px;
-  }
-  .titre-categorie a:hover {
-    background: white;
-  }
-  article {
-    border: 1px solid var(--grey-color-light);
+  article, #accueil {
+    border-bottom: 4px solid var(--grey-color-light);
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
     padding: 8px;
     background: var(--grey-color-lightlight);
   }
+
   #presentation {
     margin: 25px 5%;
     padding: 8px;
   }
+
   #derouleur-photos {
     background: #303030;
     border: none;
@@ -667,6 +663,7 @@ header > #logo h1 span {
     box-shadow: inset 0 0 5px black;
     white-space: nowrap;
     overflow: hidden;
+    border-radius: 0;
   }
   #derouleur-photos > .titre-categorie {
     background: none;
@@ -682,6 +679,7 @@ header > #logo h1 span {
   #derouleur-photos a:hover {
     background: none;
   }
+
   #flexcontainer {
     width: 90%;
     margin: 25px auto;
@@ -692,6 +690,17 @@ header > #logo h1 span {
     border: 1px solid (--grey-color-darkdark);
     box-shadow: 0 0 10px black;
     min-height: 300px;
+  }
+  .titre-categorie a {
+    float: right;
+    padding: 0 5px;
+    color: var(--grey-color-darkdark);
+    background: var(--grey-color-lightlight);
+    font-weight: normal;
+    border-radius: 5px;
+  }
+  .titre-categorie a:hover {
+    background: white;
   }
   #nouvelles-accueil {
     margin-left: 25px;
@@ -726,6 +735,8 @@ header > #logo h1 span {
   }
   #nouvelles-accueil .icone {
     height: 22px;
+    width: 22px;
+    display: inline-block;
     margin-bottom: -4px;
   }
   #nouvelles-accueil .details small {
@@ -836,7 +847,6 @@ header > #logo h1 span {
     background-repeat: no-repeat;
   }
   #accueil {
-    width: 100%;
     height: 100%;
   }
   #massifs {

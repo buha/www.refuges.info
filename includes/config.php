@@ -11,7 +11,8 @@ Si vous êtes en train d'écrire un contrôleur et une règle de routage, cette 
 
 **/
 
-/******** Ce bloc gère la détection automatique des chemins et où on peut trouver les différent dossiers du projet wri **********/
+// Ce bloc gère la détection automatique des chemins et où on peut trouver les différent dossiers du projet wri
+
 // Il doit s'agir du nom du dossier dans lequel se trouve ce fichier config.php par rapport à la racine du projet wri, soit "includes" si personne ne le change
 $config['includes_directory']=basename(__DIR__);
 
@@ -42,12 +43,9 @@ $config['base_wiki']=$config['sous_dossier_installation']."wiki/";
 // des fois qu'on décide de re-bouger le forum, on ne le changera qu'ici
 $config['lien_forum']=$config['sous_dossier_installation']."forum/";
 
-// Paramètrage des cartes vignettes des fiches de points
+/******** Paramètrage des cartes vignettes des fiches de points **********/
 $config['chemin_leaflet']=$config['racine_projet'].'leaflet/';
 $config['url_chemin_leaflet']=$config['sous_dossier_installation'].'leaflet/';
-
-// En version opérationnelle, deviendra www.refuges.info, mais permet aux zones de dev sur d'autres domaine d'être plus dynamique
-$config['nom_hote']=$_SERVER['HTTP_HOST'];
 
 // Permet d'ajouter le chemin des includes et des modeles au path de recherche, ainsi, il suffit d'inclure le config.php
 // afin de pouvoir faire des require_once('modele.php');
@@ -66,15 +64,17 @@ spl_autoload_register(function ($class) {
         require_once __DIR__.'/'.$class.'.php';
 });
 
-/********** photos / images points ************/
+// voici les mensurations des taille des photos afficher sur le site ( pour éviter une guirlande )
 $config['largeur_max_photo']=700;
 $config['hauteur_max_photo']=600;
 $config['largeur_max_vignette']=140;
 $config['hauteur_max_vignette']=140*3/4;
 $config['qualite_jpeg']=80;
 
+// En version opérationnelle, deviendra www.refuges.info, mais permet aux zones de dev sur d'autres domaine d'être plus dynamique
+$config['nom_hote']=$_SERVER['HTTP_HOST'];
 
-/********** id internes liés à certains éléments remarqueable de la base. Merci d'éviter les numéros en dur dans le code, car si ça doit changer, c'est jeu de la fourmis ************/
+
 // sly  27/04/06 je préfère me baser sur l'id pour le retrouver plutôt que son type ( que je viens d'ailleurs de modifier )
 $config['id_massif']=1; //rff 21/03/06 : id du type de polygone correspondant aux 'massifs'
 $config['id_carte']=3; //sly : id du type de polygone correspondant aux 'cartes papier'
@@ -99,13 +99,7 @@ $config['champs_binaires_points']=array('couvertures','manque_un_mur','eau_a_pro
 $config['champs_choix_multiples_points']=array_merge(array('conditions_utilisation','places_matelas'),$config['champs_binaires_points']);
 $config['champs_simples_points']=array_merge(array("censure","nom","places","remark","proprio","id_point_type","id_createur","modele","id_point_gps",'places_matelas','nom_createur'),$config['champs_choix_multiples_points']);
 
-// c'est l'id pour lequel les coordonnées gps données sont volontairement fausses
-$config['id_coordonees_gps_fausses']=5;
-// c'est l'id pour lequel les coordonnées gps données sont approximatives
-$config['id_coordonees_gps_approximative']=4;
-
-
-/********** choix de maximums pour rechercher et cartes ************/
+// les numéros d'id spéciaux qu'on trouve dans les bases
 
 //nombre maximum de point que peut sortir la recherche
 $config['points_maximum_recherche']=40;
@@ -113,12 +107,16 @@ $config['points_maximum_recherche']=40;
 // nombre de point renvoyé par défaut, par l'API (/exportations/)
 $config['defaut_max_nombre_point']=121; // NicoM : pourquoi 120 ? sly: pourquoi pas 120 ? NicoM : ben 121 c'est 11^2 sly: alors va pour 121 !
 
+// c'est l'id pour lequel les coordonnées gps données sont volontairement fausses
+$config['id_coordonees_gps_fausses']=5;
+// c'est l'id pour lequel les coordonnées gps données sont approximatives
+$config['id_coordonees_gps_approximative']=4;
 
-/********** Lié au Forum / comptes / utilisateurs / login / users ************/
+/********** truc sur le Forum ************/
 // lien direct pour se connecter, ou créer un compte sur le forum
 $config['connexion_forum']=$config['lien_forum']."login.php";
 // lien vers le profil d'un utilisateur
-$config['fiche_utilisateur']=$config['lien_forum']."profile.php?mode=viewprofile&u=";
+$config['fiche_utilisateur']=$config['lien_forum']."profile.php?mode=viewprofile&amp;u=";
 $config['forum_refuge']=$config['lien_forum']."viewtopic.php?t=";
 
 // l'id des modérateurs du forum, pour qu'ils puissent devenir modérateur du site
@@ -138,18 +136,6 @@ $config['url_nominatim']="http://nominatim.openstreetmap.org/";
 $config['url_appel_nominatim']=$config['url_nominatim'] . "search.php?";
 $config['email_contact_nominatim']="sylvain@refuges.info";
 
-/********** Cartes vignettes, fond de carte ************/
-
-
-// Voici le fond de carte par défaut :
-// Si vous voulez en changer ou avoir un autre pour le développement, sans avoir à mettre à jour sur git et faire des pirouettes, vous pouvez simplement modifier cette variable
-// située dans le fichier config_privee.php qui lui ne sera pas écrasé par le prochain git pull
-$config['carte_base'] = 'Refuges.info';
-$config['carte_base_monde'] = 'OSM fr';
-
-// Pour avoir swisstopo je suppose ?
-$config['SwissTopo'] = true;
-
 /******** Nom du fichier contenant les points exportés **********/
 $config['nom_fichier_export']="refuge-info";
 
@@ -161,17 +147,9 @@ $config['copyright_API']="The data included in this document is from www.refuges
 setlocale(LC_TIME, "fr_FR.UTF-8");
 mb_internal_encoding("UTF-8");
 
-// ************* anti-spam, boulets, réservateurs et autres personnes dont on doit se protéger
-// Filtrage géographique des inscriptions
-$config['filtre_geo'] = '40 52 -5 10'; // Zone autorisée: latitude_min latitude_max longitude_min longitude_max
-
-// Censure des messages de réservation, à compléter dans config_privee.php si ça évolue trop souvent
-$config['censure']="reservat|reserver";
-
-// ************* développeurs debug & co
-
-// par défaut, pas d'information de debug, développeurs : changer cette variable dans le fichier config_privee.php si vous voulez plus de message en cas d'erreurs
-$config['debug']=false;
+// Notez que pour l'instant, suite à une histoire de layers déclaré ou pas dans openlayers, ce paramètre ne sera pas pris en compte partout
+// sauf si il vaut maps.refuges.info ou OpenCycleMap
+$config['carte_base'] = 'maps.refuges.info';
 
 // Ce fichier est privée et contient des différentes mot de passe à garder secret ou options spécifique à cette installation de refuges.info
 // que l'on ne souhaite pas du tout voir atterrir sur github, il est donc indiqué dans le .gitignore
@@ -181,31 +159,23 @@ $config['debug']=false;
 // config_privee.php, c'est donc un peu merdique comme méthode, mais j'ai pas trouvé mieux
 require_once("config_privee.php");
 
-
-// Le forum est bourré de warning que je ne compte pas vraiment reprendre, oui, j'ai mis ça après le include de config_privee.php car si debug vaut true dans le config_privee mis avant, on ne peut pas le savoir
-if ($config['debug'] and !preg_match("/forum/",$_SERVER['REQUEST_URI']))
-{
-  ini_set('error_reporting', E_ALL ^ E_NOTICE);
-  ini_set('display_errors', '1');
-}
-
-/* tableau indiquant quel fond de carte on préfère selon le polygon dans lequel on se trouve
-utilisé pour les vignettes des pages points et le lien d'accès en dessous + lorsque l'on modifie un point
-le premier champs est le nom du polygone tel qu'il est dans la base openstreetmap
+/* tableau indiquant quel fond de carte on préfère selon le polygon dans lequel on se trouve (utilisé pour les vignettes
+des pages points et le lien d'accès en dessous + lorsque l'on modifie un point
+le premier champs est le nom du polygone tel qu'il est dans la base openstreetmap 
 car c'est ce qui a moins de chance de changer, moins que nos id en tout cas */
 
-$config['fournisseurs_fond_carte'] = Array 
+$config['fournisseurs_fond_carte'] = 
+Array 
 (
-// Nom pays chez OSM               Vignette    Français  Carte agrandie Échelle 
-  'France métropolitaine'=> Array (null,       ''      , 'IGN',         50000),
-  'Réunion'              => Array ('OSM fr',   ''      , 'IGN',         25000),
-  'Nouvelle Calédonie'   => Array ('OSM fr',   ''      , 'IGN',         25000),
-  'Andorra'              => Array (null,       ''      , 'IGN',         25000),
-  'Schweiz'              => Array (null,       ''      , 'SwissTopo',   50000),
-  'Österreich'           => Array (null,       ''      , 'Autriche',    50000),
-  'Italia'               => Array (null,       'de l\'', 'Italie',     100000),
-  'España'               => Array (null,       'de l\'', 'Espagne',     25000),
-  'Autres'               => Array ('OSM fr',   ''      , 'Outdoors',    50000),
+     // nom pays chez OSM                ?                   français  Nom layer           Échelle 
+     'France métropolitaine'=> Array ($config['carte_base'], ''      , 'IGN',               50000),
+     'Schweiz'              => Array ($config['carte_base'], ''      , 'SwissTopo',         50000),
+     'Italia'               => Array ($config['carte_base'], 'de l\'', 'Italie',           100000),
+     'España'               => Array ($config['carte_base'], 'de l\'', 'Espagne',           25000),
+     'Andorra'              => Array ($config['carte_base'], ''      , 'IGN',               25000),
+     'Autres'               => Array ($config['carte_base'], ''      , 'OpenCycleMap',      50000), // dans les autres cas
+     'Saisie-modification'  => Array ($config['carte_base'], ''      , 'Bing photo',        10000), // cas spécial pour la saisie de point
+     'Saisie-création'      => Array ($config['carte_base'], ''      , 'Bing photo',     20000000), // cas spécial pour la modification de point
 );
 
 # NON NON : On ajoute rien après cette ligne (sauf si vous savez pourquoi), ajouter par contre tout ce que vous voulez avant le require_once("config_privee.php"); 15 lignes avant

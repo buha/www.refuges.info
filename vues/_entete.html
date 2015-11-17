@@ -11,7 +11,7 @@
 <html lang="fr" xml:lang="fr">
 	<head>
 		<title><?=$vue->titre?></title>
-		<link rel="shortcut icon" href="<?=$config['sous_dossier_installation']?>images/favicon.ico" />
+		<link rel="icon" type="image/png" href="<?=$config['sous_dossier_installation']?>images/favicon.png" />
 		<meta name="robots" content="all" />
 		<meta name="robots" content="index,follow" />
 		<meta name="description" content="<?=$vue->description?>" />
@@ -26,7 +26,6 @@
 			var key = {
 				ign:  '<?=$config['ign_key']?>',
 				bing: '<?=$config['bing_key']?>',
-				os:   '<?=$config['os_key']?>',
 			};
 			// Utilisé dans les menus pour mobile
 			// Si Ajoute la classe c si elle n'est pas attribuée à l'élémént HTML e et vice versa
@@ -189,8 +188,8 @@
 							}?>
 						</li>
 					<?}?>
-					<div style="clear:both;"></div>
 				</ul>
+				<div style="clear:both;"></div>
 			</nav>
 		<?}?>
 
