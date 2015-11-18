@@ -9,13 +9,13 @@
 // 24/10/11 Dominique : Création
 // 15/02/13 jmb : model->stat-> au lieu de array
 ?> 
-<div class="contenu">
-	<h3><?=$vue->stat->nbrefuges?> refuges, <?=$vue->stat->nbcomm?> commentaires et <?=$vue->stat->nbphotos?> photos</h3>
+<section>
+	<h4><?=$vue->stat->nbrefuges?> refuges, <?=$vue->stat->nbcomm?> commentaires et <?=$vue->stat->nbphotos?> photos</h4>
 
 <!-- BLOC NEWS -->
     <?=$vue->nouvelles_generales?>
 
-    <h4>Les nouvelles</h4>
+    <h3>Les nouvelles</h3>
     <ul>
         <?php foreach ($vue->nouvelles as $nouvelle) { ?>
             <li>
@@ -42,4 +42,4 @@
 		Une fois prêt, vous pouvez vous rendre sur la <a href='/rss/choixrss.php'>page dédiée RSS</a> et séléctionner vos options.
 	</p>
 -->
-</div>	
+</section>	

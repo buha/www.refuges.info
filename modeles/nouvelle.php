@@ -147,6 +147,7 @@ function nouvelles($nombre,$type,$id_massif="",$lien_locaux=True)
                         $news_array[$i]['remarques']=$point->remark;
                         $news_array[$i]['acces']=$point->acces;
                         $news_array[$i]['date']=$point->date_creation_timestamp;
+                        $news_array[$i]['icone']=choix_icone($point);
 
                         // si le point n'appartient à aucun massif, pas de lien vers le massif
                         if (isset($point->id_massif))
@@ -190,13 +191,6 @@ function nouvelles($nombre,$type,$id_massif="",$lien_locaux=True)
         $tok = strtok(","); 
     }
     // ici je trie par ordre décroissant toutes les news confondues
-    function cmp($a, $b)
-    {
-      if ($a['date'] == $b['date']) {
-      return 0;
-    }
-    return ($a['date'] < $b['date']) ? 1 : -1;
-    }
     usort($news_array,"cmp");
     $nb=0;
     // Et je ne prends que les $nombre première ou toutes s'il y en a moins que $nombre
@@ -255,4 +249,13 @@ function texte_nouvelles($nouvelles) {
     }
     return $nouvelles;
 }
+
+function cmp($a, $b)
+{
+      if ($a['date'] == $b['date']) {
+      return 0;
+    }
+    return ($a['date'] < $b['date']) ? 1 : -1;
+}
+
 ?>

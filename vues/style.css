@@ -40,6 +40,9 @@ body {
   margin: 0px; /* il le faut pour FF */
   width: 100%; /* jmb 01/2008 , pour gmaps */
   height: 100%;
+  background-color: var(--main-color);
+  }
+section { 
   background-color: white;
   }
 
@@ -82,22 +85,24 @@ BLOCKQUOTE P:after  { /* message forum et commentaires */
 
 /*======TITRES=======*/
 /* on commence au H3 car 1,2 sont vraiment trop gros. je sais ... CSS .... mais maintenant c'est fait.*/
-H3 { /* titres de pages */
-  font-weight: bold ;
-  font-style: normal ;
-  font-size: large;
-  padding: 0em 2em ; 
-  margin: 0em; 
-  text-align: center;
-  margin-bottom:3px;
+h3 { /* titre des pages */
+  padding: 10px 5%;
+  background: var(--grey-color-lightlight);
+  font-weight: 300;
+  font-size: 25px;
+  margin: 0 0 10px 0; /* sous FF, la padding par defo est immense */
   }
-H4 { /* sous titres */
-  padding-top: 4px; /* sous FF, la padding par defo est immense */
-  padding-bottom: 2px;
-  padding-left: 10px;
-  font-size: large;
-  margin: 0px; /* sous FF, la padding par defo est immense */
-  }
+h4 { /* note en haut de page */
+  background: var(--grey-color-light);
+  border-bottom: 2px dashed var(--grey-color-dark);
+  font-weight: thin;
+  font-weight: 400;
+  font-variant: small-caps;
+  padding: 5px 5% ; 
+  font-size: 15px;
+  margin: 0;
+}
+
 H5 { /* sou-sou titre, pour l'instant que dans les fiches de refuges */
   font-size: medium; /* sinon H5 cest tout petit ... */
   margin-top:15px;
@@ -399,8 +404,6 @@ header > #logo h1 span {
     position: fixed; top: 0;
     height: 22px; /* Réserve un espace où rien n'est affiché mais qui est sensible à la souris */
     width: 100%;
-    background: transparent;
-    border: 0;
   }
   #menu-scroll:hover {
     z-index: 30000;
@@ -408,7 +411,6 @@ header > #logo h1 span {
   #menu-scroll > UL {
     background: var(--main-color);
     display: none;
-    width: 100%;
   }
   #menu-scroll:hover > UL {
     display: block;
@@ -427,12 +429,10 @@ header > #logo h1 span {
   .mobile-only {
     display: none;
   }
-  nav {
+  nav > ul {
     background: var(--main-color);
     border-top: 1px solid var(--main-color);
     border-bottom: 1px solid var(--main-color);
-  }
-  nav > ul {
     /*box-shadow: 0 0 5px black;*/
     clear: left;
     white-space: nowrap;
@@ -440,9 +440,9 @@ header > #logo h1 span {
     font-size: 1em;
     font-weight: 400;
     text-align: left;
-    margin: 0px auto;
+    margin: 0px;
     width: 90%;
-    padding: 0px;
+    padding: 0px 5%;
     min-height: 32px;
   }
   nav > ul > li {
@@ -633,6 +633,10 @@ header > #logo h1 span {
 /* LA PAGES DES MASSIFS (Accueil)                                   */
 /*==================================================================*/
 
+  #page-accueil {
+    padding: 25px 0;
+  }
+
   .titre-categorie {
     background: var(--grey-color-light);
     color: black;
@@ -640,6 +644,8 @@ header > #logo h1 span {
     margin: -8px -8px 8px -8px;
     padding: 8px;
     font-weight: 400;
+    font-size: 18px;
+    border: none;
   }
   article, #accueil {
     border-bottom: 4px solid var(--grey-color-light);
@@ -650,7 +656,7 @@ header > #logo h1 span {
   }
 
   #presentation {
-    margin: 25px 5%;
+    margin: 0 5% 25px;
     padding: 8px;
   }
 
@@ -682,7 +688,7 @@ header > #logo h1 span {
 
   #flexcontainer {
     width: 90%;
-    margin: 25px auto;
+    margin: 25px auto 0;
     display: flex;
   }
   #accueil {

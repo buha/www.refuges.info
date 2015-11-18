@@ -30,20 +30,20 @@
 			<ul>
 	                    <?php foreach ($vue->nouveaux_points as $nouveau_point) { ?>
 	                        <li>
-	                            <em><?=$nouveau_point->date_formatee?></em>
-	                            <img class="icone" alt="<?=choix_icone($nouveau_point)?>" src="<?=$config['sous_dossier_installation']?>images/icones/sources-vectoriel/<? echo choix_icone($nouveau_point) ?>.svg" />
+	                            <em><?=$nouveau_point['date_formatee']?></em>
+	                            <img class="icone" alt="<?=$nouveau_point['type_point']?>" src="<?=$config['sous_dossier_installation']?>images/icones/sources-vectoriel/<?=$nouveau_point['icone']?>.svg" />
 	                            &mdash;
-	                            <a href="<?=$nouveau_point->lien?>"><?=$nouveau_point->nom?></a>
-	                            <span class="details"><small><?php if ($nouveau_point->nom_createur!="") { 
-	                                if ($nouveau_point->id_createur==0) { ?>
-	                                    par <?=$nouveau_point->nom_createur?>
+	                            <a href="<?=$nouveau_point['lien']?>"><?=ucfirst($nouveau_point['titre'])?></a>
+	                            <span class="details"><small><?php if ($nouveau_point['auteur']!="") { 
+	                                if (!isset($nouveau_point['lien_auteur'])) { ?>
+	                                    par <?=$nouveau_point['auteur']?>
 	                                <?php } else { ?>
-	                                par <a href="<?=$config['fiche_utilisateur'].$nouveau_point->id_createur?>"><?=$nouveau_point->nom_createur?></a>
+	                                par <a href="<?=$nouveau_point['lien_auteur']?>"><?=$nouveau_point['auteur']?></a>
 	                                <?php } ?>
 	                            <?php } ?>
-	                                <?php if (isset($nouveau_point->id_massif)) { ?>
+	                                <?php if (isset($nouveau_point['massif'])) { ?>
 	                                dans le 
-	                                <a href="<?=lien_polygone($nouveau_point,True)?>">massif <?=$nouveau_point->article_partitif_massif?> <?=$nouveau_point->nom_massif?></a>
+	                                <a href="<?=$nouveau_point['lien_massif']?>">massif <?=$nouveau_point['partitif_massif']?> <?=$nouveau_point['massif']?></a>
 	                                <?php } ?></small></span>
 	                        </li>
 	                    <?php } ?>
@@ -60,7 +60,7 @@
 	                            <img class="icone" alt="Nouvelle photo" src="<?=$config['sous_dossier_installation']?>images/photo.svg" />
 	                            <? } ?>
 	                            &mdash;
-	                            <a href="<?=$nouveau_commentaire['lien']?>"><?=$nouveau_commentaire['titre']?></a>
+	                            <a href="<?=$nouveau_commentaire['lien']?>"><?=ucfirst($nouveau_commentaire['titre'])?></a>
 	                            <span class="details"><small><?php if ($nouveau_commentaire['auteur']!="") { 
 	                                if (!isset($nouveau_commentaire['lien_auteur'])) { ?>
 	                                    par <?=$nouveau_commentaire['auteur']?>
@@ -76,8 +76,7 @@
 	                    <?php } ?>
 			</ul>
 			<? 
-			if($vue->nouvelles_generales == "<br>\n")
-				echo "<br/>".$vue->nouvelles_generales;
+			echo $vue->nouvelles_generales;
 			?>
 		</article>
 	</div>

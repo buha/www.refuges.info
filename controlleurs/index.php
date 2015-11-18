@@ -58,27 +58,19 @@ $conditions_commentaires_generaux->ids_points=$config['numero_commentaires_gener
 $conditions_commentaires_generaux->limite=2;
 $vue->nouvelles_generales=infos_commentaires($conditions_commentaires_generaux);
 
-// FIXME: Préparation de la liste des nouveaux commentaires
-// ici, on pourrait vraiment se passer de la fonction nouvelles et ainsi de pas dépendre d'un truc qui génère du HTML
+// Préparation de la liste des nouveaux commentaires
 $vue->nouveaux_commentaires=nouvelles(9,"commentaires");
-$vue->nouveaux_commentaires = texte_nouvelles ($vue->nouveaux_commentaires); // On ajoute le texte
 foreach ($vue->nouveaux_commentaires as $id => $nouvelle)
 {
     $vue->nouveaux_commentaires[$id]['date_formatee']=date("d/m/y", $nouvelle['date']);
-    $vue->nouveaux_commentaires[$id]['texte']=bbcode2html($nouvelle['texte']);
 }
 // Préparation de la liste des nouveaux points rentrés
-$conditions_nouveaux_points = new stdClass;
-$conditions_nouveaux_points->limite=3;
-$conditions_nouveaux_points->avec_infos_massif=True;
-$conditions_nouveaux_points->ordre="date_creation DESC";
-$nouveaux_points=infos_points($conditions_nouveaux_points);
-foreach ($nouveaux_points as $nouveau_point)
+$vue->nouveaux_points=nouvelles(3,"points");
+foreach ($vue->nouveaux_points as $id => $point)
 {
-    $nouveau_point->lien=lien_point($nouveau_point);
-    $nouveau_point->nom=mb_ucfirst(bbcode2html($nouveau_point->nom));
-    $vue->nouveaux_points[]=$nouveau_point;
+    $vue->nouveaux_points[$id]['date_formatee']=date("d/m/y", $point['date']);
 }
+
 $vue->nouvelles_generales=wiki_page_html("nouvelles_generales");
 
 ?>
