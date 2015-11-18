@@ -170,7 +170,7 @@
 						<li class="admin">
 							<a href="<?=$config['sous_dossier_installation']?>gestion/" title="Zone de gestion pour les modérateurs">Gestion</a>
 							<? if ($vue->demande_correction) {?>
-								<a href="<?=$config['sous_dossier_installation']?>gestion/?page=commentaires_attente_correction" title="Commentaires en attente d'une correction">*</a>
+								<a href="<?=$config['sous_dossier_installation']?>gestion/?page=commentaires_attente_correction" title="Commentaires en attente d'une correction">&#9733;</a>
 							<?}?>
 							<? // Ajout d'un lien de test pour Dominique seulement....
 							if ($_SESSION['login_utilisateur'] == 'Dominique') {
