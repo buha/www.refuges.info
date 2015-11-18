@@ -253,17 +253,18 @@ function texte_nouvelles($nouvelles) {
 // Cette fonction retourne un texte en html à insérer par la suite dans les vues du site
 
 function texte_nouvelles_html($nouvelles) {
+    global $config;
     foreach($nouvelles as $key => $nouvelle) {
         switch ($nouvelle['categorie']) {
             case 'Forum':
                 $texte = "<img class='icone' alt='Nouveau message' title='Nouveau message' src='".$config['sous_dossier_installation']."images/forum.svg' />";
                 $texte .= " &mdash; ";
-                $texte = "<a href='".$nouvelle['lien']."'>".$nouvelle['titre']."</a>";
+                $texte .= "<a href='".$nouvelle['lien']."'>".$nouvelle['titre']."</a>";
                 break;
             case 'Commentaire':
                 $texte = "<img class='icone' alt='Nouveau commentaire' title='Nouveau commentaire' src='".$config['sous_dossier_installation']."images/commentaire.svg' />";
                 if ($nouvelle['photo']>0) {
-                    $texte .= " <img class='icone' alt='Nouvelle photo' src='".$config['sous_dossier_installation']."images/photo.svg' />";
+                    $texte .= " <img class='icone' alt='Nouvelle photo' title='Nouvelle photo' src='".$config['sous_dossier_installation']."images/photo.svg' />";
                 }
                 $texte .= " &mdash; ";
                 $texte .= "<a href='".$nouvelle['lien']."'>".ucfirst($nouvelle['titre'])."</a>";

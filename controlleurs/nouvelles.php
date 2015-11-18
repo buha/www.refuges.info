@@ -21,12 +21,10 @@ $types_nouvelles = $_GET ['quoi']
 			  ? $_GET ['quoi']
 			  : 'commentaires,points,forums';
 $vue->nouvelles = nouvelles ($nombre,$types_nouvelles);
-$vue->nouvelles = texte_nouvelles ($vue->nouvelles); // On ajoute le texte
+$vue->nouvelles = texte_nouvelles_html($vue->nouvelles); // On ajoute le texte
 foreach ($vue->nouvelles as $id => $nouvelle)
 {
 	$vue->nouvelles[$id]['date_formatee']=date("d/m/y", $nouvelle['date']);
-	$vue->nouvelles[$id]['titre']=bbcode2html($nouvelle['titre']);
-	$vue->nouvelles[$id]['texte']=bbcode2html($nouvelle['texte']);
 }
 
 $vue->nouvelles_generales=wiki_page_html("nouvelles_generales");

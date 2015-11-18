@@ -35,16 +35,21 @@ html {
   font-family: "Fira Sans", "Open Sans", Arial, sans-serif;
   font-size: 18px;
   height: 100%;
-  }
+}
 body { 
   margin: 0px; /* il le faut pour FF */
   width: 100%; /* jmb 01/2008 , pour gmaps */
   height: 100%;
   background-color: var(--main-color);
-  }
+}
 section { 
   background-color: white;
-  }
+}
+article {
+  width: 90%;
+  margin: 0 auto;
+  padding: 15px 0 30px 0;
+}
 
 /*=====TEXTE=======*/
 EM { /* Emphasis: gras+italic */
@@ -117,7 +122,7 @@ h6 { /* utilisé dans la "FAQ" comme question */
   font-size: medium; /* sinon H6 cest tout petit ... */
   }
 p {
-  margin-bottom: 1em;
+  margin: 0;
   }
 /*===== LISTES=====*/
 UL { /* les listes , y compris news en page de garde */
@@ -214,11 +219,6 @@ FORM .champs_null_masque > LABEL { /* permet a la case de s'intercaler au bon en
   border: thin solid black ;
   font-weight: bold;
   }
-/* Cas particulier pour OL qui a des labels non standards */
-DIV#switch_nav LABEL {
-  float: none;
-  clear: none;
-  }
 
 /*==========DIVERS=======*/
 img { /* images sans bordures */
@@ -305,6 +305,19 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
     rgba(255,0,0,0.4) 20px
   );
   box-shadow: inset 0 0 2px red;
+}
+
+.button, a.button {
+  background: var(--main-color);
+  color: white;
+  padding: 5px;
+  margin: 0 5px;
+  display: inline-block;
+  font-variant: small-caps;
+  font-size: 1.15em;
+  white-space: nowrap;
+  border-radius: 0;
+  font-weight: 400;
 }
 
 /*==================================================================*/
@@ -637,7 +650,7 @@ header > #logo h1 span {
     padding: 25px 0;
   }
 
-  .titre-categorie {
+  #page-accueil .titre-categorie {
     background: var(--grey-color-light);
     color: black;
     font-variant: small-caps;
@@ -647,20 +660,21 @@ header > #logo h1 span {
     font-size: 18px;
     border: none;
   }
-  article, #accueil {
+  #page-accueil article, #page-accueil #accueil {
     border-bottom: 4px solid var(--grey-color-light);
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     padding: 8px;
     background: var(--grey-color-lightlight);
+    width: inherit;
   }
 
-  #presentation {
+  #page-accueil #presentation {
     margin: 0 5% 25px;
     padding: 8px;
   }
 
-  #derouleur-photos {
+  #page-accueil #derouleur-photos {
     background: #303030;
     border: none;
     clear: both;
@@ -671,89 +685,71 @@ header > #logo h1 span {
     overflow: hidden;
     border-radius: 0;
   }
-  #derouleur-photos > .titre-categorie {
+  #page-accueil #derouleur-photos > .titre-categorie {
     background: none;
     color: white;
     margin: -4px -8px 8px -4px;
   }
-  #derouleur-photos > div > a:first-child {
+  #page-accueil #derouleur-photos > div > a:first-child {
     margin-left: -17px;
   }
-  #derouleur-photos img {
+  #page-accueil #derouleur-photos img {
     height: 105px;
   }
-  #derouleur-photos a:hover {
+  #page-accueil #derouleur-photos a:hover {
     background: none;
   }
 
-  #flexcontainer {
+  #page-accueil #flexcontainer {
     width: 90%;
     margin: 25px auto 0;
     display: flex;
   }
-  #accueil {
+  #page-accueil #accueil {
     flex: 1;
-    border: 1px solid (--grey-color-darkdark);
     box-shadow: 0 0 10px black;
+    border-radius: 0;
+    border: 1px solid var(--grey-color-darkdark);
     min-height: 300px;
   }
-  .titre-categorie a {
-    float: right;
+  #page-accueil .titre-categorie a {
     padding: 0 5px;
     color: var(--grey-color-darkdark);
     background: var(--grey-color-lightlight);
     font-weight: normal;
     border-radius: 5px;
+    font-weight: 500;
+    font-variant: small-caps;
+    font-size: 1em;
+    white-space: nowrap;
+    float: right;
   }
-  .titre-categorie a:hover {
+  #page-accueil .titre-categorie a:hover {
+    color: var(--main-color);
     background: white;
   }
-  #nouvelles-accueil {
+  #page-accueil #nouvelles-accueil {
     margin-left: 25px;
     flex: 2;
   }
-  #nouvelles-accueil em {
-    font-weight: 300;
+  #page-accueil #nouvelles-accueil .nouvelles em {
     position: absolute;
     left: 0px;
     bottom: 3px;
     background: white;
-    padding: 3px 10px;
     margin-bottom: -3px;
   }
-  #nouvelles-accueil li {
-    padding-bottom: 3px;
+  #page-accueil #nouvelles-accueil .nouvelles li {
     padding-left: 95px;
-    margin-top: 3px;
-    position: relative;
   }
-  #nouvelles-accueil li:after {
-    content:""; 
-    background: var(--grey-color-dark); 
-    position: absolute; 
-    bottom: 0; 
-    left: -3px; 
-    height: 1px; 
-    width: 30%;
-  }
-  #nouvelles-accueil li:last-child:after {
-    display: none;
-  }
-  #nouvelles-accueil .icone {
-    height: 22px;
-    width: 22px;
-    display: inline-block;
-    margin-bottom: -4px;
-  }
-  #nouvelles-accueil .details small {
+  #page-accueil #nouvelles-accueil .nouvelles .details small {
     font-size: 0.9em;
-    font-style: italic;
     display: none;
   }
-  #nouvelles-accueil .details:hover small {
+  #page-accueil #nouvelles-accueil .nouvelles .details:hover small {
     display: inline;
   }
-  #nouvelles-accueil .details:before {
+  #page-accueil #nouvelles-accueil .nouvelles .details:before {
     content:"i"; 
     color: white;
     font-family: serif;
@@ -769,21 +765,22 @@ header > #logo h1 span {
     height: 18px;
     text-align: center;
   }
-  #nouvelles-accueil .details:hover:before {
+  #page-accueil #nouvelles-accueil .nouvelles .details:hover:before {
     background: var(--grey-color-darkdark);
   }
 @media screen and (max-width: 700px) {
-  #flexcontainer {
+  #page-accueil #flexcontainer {
     width: 90%;
     margin: 25px auto;
     display: block;
   }
-  #nouvelles-accueil {
+  #page-accueil #nouvelles-accueil {
+    margin: 0;
     margin-top: 25px;
-    margin-left: 0;
   }
+}
 @media screen and (max-width: 450px) {
-  #page-accueil article, #flexcontainer {
+  #page-accueil article, #page-accueil #flexcontainer {
     width: inherit;
     float: none;
     margin-left: 0;
@@ -792,6 +789,44 @@ header > #logo h1 span {
     border-right: 0;
   }
 }
+
+/*==================================================================*/
+/* LES LISTES DE NOUVELLES (dont accueil)                           */
+/*==================================================================*/
+
+  .nouvelles em {
+    font-weight: 300;
+    background: var(--grey-color-lightlight);
+    padding: 3px 10px;
+  }
+  .nouvelles li {
+    padding: 3px;
+    margin-top: 3px;
+    position: relative;
+  }
+  .nouvelles li:after {
+    content:""; 
+    background: var(--grey-color-light); 
+    position: absolute; 
+    bottom: 0; 
+    left: -3px; 
+    height: 1px; 
+    width: 30%;
+  }
+  .nouvelles li:last-child:after {
+    display: none;
+  }
+  .nouvelles .icone {
+    height: 22px;
+    width: 22px;
+    display: inline-block;
+    margin-bottom: -4px;
+  }
+  .nouvelles .details small {
+    font-size: 1em;
+    font-style: italic;
+  }
+
 
 /*==================================================================*/
 /* LES PAGES POINTS                                                 */
@@ -851,9 +886,6 @@ header > #logo h1 span {
     background-image: url(../images/sablier.png);
     background-position: center center;
     background-repeat: no-repeat;
-  }
-  #accueil {
-    height: 100%;
   }
   #massifs {
     width:  800px;
