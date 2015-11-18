@@ -256,7 +256,9 @@ function texte_nouvelles_html($nouvelles) {
     foreach($nouvelles as $key => $nouvelle) {
         switch ($nouvelle['categorie']) {
             case 'Forum':
-                $texte = "Sur le forum : [url=".$nouvelle['lien']."]".$nouvelle['titre']."[/url]";
+                $texte = "<img class='icone' alt='Nouveau message' title='Nouveau message' src='".$config['sous_dossier_installation']."images/forum.svg' />";
+                $texte .= " &mdash; ";
+                $texte = "<a href='".$nouvelle['lien']."'>".$nouvelle['titre']."</a>";
                 break;
             case 'Commentaire':
                 $texte = "<img class='icone' alt='Nouveau commentaire' title='Nouveau commentaire' src='".$config['sous_dossier_installation']."images/commentaire.svg' />";
