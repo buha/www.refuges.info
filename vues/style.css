@@ -771,8 +771,11 @@ header > #logo h1 span {
 @media screen and (max-width: 700px) {
   #page-accueil #flexcontainer {
     width: 90%;
-    margin: 25px auto;
+    margin: 25px auto 0;
     display: block;
+  }
+  #page-accueil #flexcontainer > * {
+    width: auto;
   }
   #page-accueil #nouvelles-accueil {
     margin: 0;
@@ -947,11 +950,5 @@ header > #logo h1 span {
   #vignette,
   #vignette-agrandie {
     min-width: 300px;
-  }
-}
-
-@media screen and (max-width: 450px) {
-  #accueil {
-    width: 100%;
   }
 }
