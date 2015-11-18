@@ -31,20 +31,7 @@
 	                    <?php foreach ($vue->nouveaux_points as $nouveau_point) { ?>
 	                        <li>
 	                            <em><?=$nouveau_point['date_formatee']?></em>
-	                            <img class="icone" alt="<?=$nouveau_point['type_point']?>" src="<?=$config['sous_dossier_installation']?>images/icones/sources-vectoriel/<?=$nouveau_point['icone']?>.svg" />
-	                            &mdash;
-	                            <a href="<?=$nouveau_point['lien']?>"><?=ucfirst($nouveau_point['titre'])?></a>
-	                            <span class="details"><small><?php if ($nouveau_point['auteur']!="") { 
-	                                if (!isset($nouveau_point['lien_auteur'])) { ?>
-	                                    par <?=$nouveau_point['auteur']?>
-	                                <?php } else { ?>
-	                                par <a href="<?=$nouveau_point['lien_auteur']?>"><?=$nouveau_point['auteur']?></a>
-	                                <?php } ?>
-	                            <?php } ?>
-	                                <?php if (isset($nouveau_point['massif'])) { ?>
-	                                dans le 
-	                                <a href="<?=$nouveau_point['lien_massif']?>">massif <?=$nouveau_point['partitif_massif']?> <?=$nouveau_point['massif']?></a>
-	                                <?php } ?></small></span>
+	                            <?=$nouveau_point['texte_html']?>
 	                        </li>
 	                    <?php } ?>
 			</ul>
@@ -55,23 +42,7 @@
 	                    <?php foreach ($vue->nouveaux_commentaires as $nouveau_commentaire) { ?>
 	                        <li>
 	                            <em><?=$nouveau_commentaire['date_formatee']?></em>
-	                            <img class="icone" alt="Nouveau commentaire" src="<?=$config['sous_dossier_installation']?>images/commentaire.svg" />
-	                            <? if ($nouveau_commentaire['photo']>0) { ?>
-	                            <img class="icone" alt="Nouvelle photo" src="<?=$config['sous_dossier_installation']?>images/photo.svg" />
-	                            <? } ?>
-	                            &mdash;
-	                            <a href="<?=$nouveau_commentaire['lien']?>"><?=ucfirst($nouveau_commentaire['titre'])?></a>
-	                            <span class="details"><small><?php if ($nouveau_commentaire['auteur']!="") { 
-	                                if (!isset($nouveau_commentaire['lien_auteur'])) { ?>
-	                                    par <?=$nouveau_commentaire['auteur']?>
-	                                <?php } else { ?>
-	                                par <a href="<?=$nouveau_commentaire['lien_auteur']?>"><?=$nouveau_commentaire['auteur']?></a>
-	                                <?php } ?>
-	                            <?php } ?>
-	                                <?php if (isset($nouveau_commentaire['massif'])) { ?>
-	                                dans le 
-	                                <a href="<?=$nouveau_commentaire['lien_massif']?>">massif <?=$nouveau_commentaire['partitif_massif']?> <?=$nouveau_commentaire['massif']?></a>
-	                                <?php } ?></small></span>
+	                            <?=$nouveau_commentaire['texte_html']?>
 	                        </li>
 	                    <?php } ?>
 			</ul>

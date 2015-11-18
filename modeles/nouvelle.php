@@ -250,6 +250,60 @@ function texte_nouvelles($nouvelles) {
     return $nouvelles;
 }
 
+// Cette fonction retourne un texte en html à insérer par la suite dans les vues du site
+
+function texte_nouvelles_html($nouvelles) {
+    foreach($nouvelles as $key => $nouvelle) {
+        switch ($nouvelle['categorie']) {
+            case 'Forum':
+                $texte = "Sur le forum : [url=".$nouvelle['lien']."]".$nouvelle['titre']."[/url]";
+                break;
+            case 'Commentaire':
+                $texte = "<img class='icone' alt='Nouveau commentaire' title='Nouveau commentaire' src='".$config['sous_dossier_installation']."images/commentaire.svg' />";
+                if ($nouvelle['photo']>0) {
+                    $texte .= " <img class='icone' alt='Nouvelle photo' src='".$config['sous_dossier_installation']."images/photo.svg' />";
+                }
+                $texte .= " &mdash; ";
+                $texte .= "<a href='".$nouvelle['lien']."'>".ucfirst($nouvelle['titre'])."</a>";
+                $texte .= "<span class='details'><small>";
+                if (isset($nouvelle['auteur'])) { 
+                    if (!isset($nouvelle['lien_auteur'])) {
+                        $texte .= " par ".$nouvelle['auteur'];
+                    } else {
+                        $texte .= " par <a href='".$nouvelle['lien_auteur']."'>".$nouvelle['auteur']."</a>";
+                    }
+                }
+                if (isset($nouvelle['massif'])) {
+                    $texte .= " dans le ";
+                    $texte .= "<a href='".$nouvelle['lien_massif']."'>massif ".$nouvelle['partitif_massif'].$nouvelle['massif']."</a>";
+                }
+                $texte .= "</small></span>";
+                break;
+            case 'Point':
+                $texte = "<img class='icone' alt='".$nouvelle['type_point']."' title='".$nouvelle['type_point']."' src='".$config['sous_dossier_installation']."images/icones/sources-vectoriel/".$nouvelle['icone'].".svg' />";
+                $texte .= " &mdash; ";
+                $texte .= "<a href='".$nouvelle['lien']."'>".ucfirst($nouvelle['titre'])."</a>";
+                $texte .= "<span class='details'><small>";
+
+                if (isset($nouvelle['auteur'])) { 
+                    if (!isset($nouvelle['lien_auteur'])) {
+                        $texte .= " par ".$nouvelle['auteur'];
+                    } else {
+                        $texte .= " par <a href='".$nouvelle['lien_auteur']."'>".$nouvelle['auteur']."</a>";
+                    }
+                }
+                if (isset($nouvelle['massif'])) {
+                    $texte .= " dans le ";
+                    $texte .= "<a href='".$nouvelle['lien_massif']."'>massif ".$nouvelle['partitif_massif'].$nouvelle['massif']."</a>";
+                }
+                $texte .= "</small></span>";
+                break;
+        }
+        $nouvelles[$key]['texte_html'] = $texte;
+    }
+    return $nouvelles;
+}
+
 function cmp($a, $b)
 {
       if ($a['date'] == $b['date']) {

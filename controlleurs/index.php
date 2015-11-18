@@ -60,12 +60,14 @@ $vue->nouvelles_generales=infos_commentaires($conditions_commentaires_generaux);
 
 // Préparation de la liste des nouveaux commentaires
 $vue->nouveaux_commentaires=nouvelles(9,"commentaires");
+$vue->nouveaux_commentaires=texte_nouvelles_html($vue->nouveaux_commentaires);
 foreach ($vue->nouveaux_commentaires as $id => $nouvelle)
 {
     $vue->nouveaux_commentaires[$id]['date_formatee']=date("d/m/y", $nouvelle['date']);
 }
 // Préparation de la liste des nouveaux points rentrés
 $vue->nouveaux_points=nouvelles(3,"points");
+$vue->nouveaux_points=texte_nouvelles_html($vue->nouveaux_points);
 foreach ($vue->nouveaux_points as $id => $point)
 {
     $vue->nouveaux_points[$id]['date_formatee']=date("d/m/y", $point['date']);
