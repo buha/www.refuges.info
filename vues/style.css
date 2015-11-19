@@ -45,7 +45,7 @@ body {
 section { 
   background-color: white;
 }
-article > .contenu, article > .contenu{
+article > .contenu, article.contenu {
   width: 90%;
   margin: 0 auto;
   padding: 15px 0 30px 0;
