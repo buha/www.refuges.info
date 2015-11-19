@@ -472,13 +472,14 @@ header > #logo h1 span {
     width:100%;
   }
   nav {
-    background: var(--main-color-lightlight);
-    border-bottom: 4px solid var(--main-color);
+    background: var(--main-color);
     padding: 5px 0;
     font-size: 16px;
+    color: var(--main-color-lightlight);
   }
   nav > .bouton-menu {
-    background: white;
+    background: var(--main-color-lightlight);
+    color: black;
     border-radius: 4px;
     float: right;
     padding: 2px 45px 2px 15px;
@@ -501,7 +502,11 @@ header > #logo h1 span {
     margin-left: 10px;
   }
   nav a:visited, nav a {
-    color: var(--main-color-dark);
+    color: white;
+  }
+  nav a:visited:hover, nav a:hover {
+    background: white;
+    color: var(--main-color);
   }
   nav ul {
     display: none;
@@ -515,7 +520,7 @@ header > #logo h1 span {
   }
   nav > ul > li {
     text-align: left;
-    border-bottom: 1px solid #ffc7b2;
+    border-bottom: 1px dashed var(--main-color-light);
     padding: 2px 10px;
   }
   nav > ul > li:last-child {
@@ -532,7 +537,7 @@ header > #logo h1 span {
     padding-left: 10px;
   }
   nav .admin {
-    margin: -4px 0 -6px 0;
+    margin: 0 0 -6px 0;
     line-height: 24px;
   }
 }
