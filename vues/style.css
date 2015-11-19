@@ -103,6 +103,14 @@ h4 { /* note en haut de page */
   font-size: 15px;
   margin: 0;
 }
+h5 { /* note en haut de page */
+  border-bottom: 1px solid var(--grey-color-light);
+  font-weight: 400;
+  font-variant: small-caps; 
+  font-size: 22px;
+  margin: 10px 0;
+  padding: 3px 0;
+}
 p {
   margin: 0;
   }
@@ -135,6 +143,21 @@ input[type=checkbox] + label:before {
 input[type=checkbox] + label:before { content: "\00A0"; } /* unchecked icon */
 input[type=checkbox]:checked + label:before { content: "\2713"; } /* checked icon */
 input[type=checkbox] + label:hover:before { color: var(--main-color-lightlight) !important; } /* checked icon */
+input[type=radio] { display:none; } /* to hide the checkbox itself */
+input[type=radio] + label:before {
+  content: "";
+  margin-right: 5px;
+  border-radius: 100px;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border: 4px solid var(--main-color);
+  vertical-align: middle;
+}
+input[type=radio] + label:before { background: var(--main-color); } /* unchecked icon */
+input[type=radio]:checked + label:before { background: white; } /* checked icon */
+input[type=radio] + label:hover:before { background: var(--main-color-light) !important; } /* checked icon */
+input[type=radio]:checked + label:hover:before { background: var(--main-color-lightlight) !important; } /* checked icon */
 label {
   margin-bottom: 3px;
   width: 16em;
@@ -393,6 +416,11 @@ header > #logo h1 span {
     text-align: center;
     height: 32px;
     margin-bottom: 0;
+  }
+  nav > ul:after {
+    content: "";
+    clear: both;
+    display: block;
   }
   nav > ul > li:hover {
     background: white;
