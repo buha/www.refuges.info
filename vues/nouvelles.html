@@ -15,9 +15,9 @@
 <!-- BLOC NEWS -->
     <?=$vue->nouvelles_generales?>
 
-    <h3>Les nouvelles</h3>
     <article>
-        <ul class="nouvelles">
+        <h3>Les nouvelles</h3>
+        <ul class="nouvelles contenu">
             <?php foreach ($vue->nouvelles as $nouvelle) { ?>
                 <li>
                     <em><?=$nouvelle['date_formatee']?></em>
@@ -25,22 +25,22 @@
                 </li>
             <?php } ?>
         </ul>
-        <br>
-        <a class="button" href="<?=$config['sous_dossier_installation']?>nouvelles/?nombre=50&amp;quoi=<?=$_GET['quoi']?>">(Voir les plus anciennes)</a> 
-        <a class="button" href="<?=$config['sous_dossier_installation']?>nouvelles/?quoi=points">Points</a> 
-        <a class="button" href="<?=$config['sous_dossier_installation']?>nouvelles/?quoi=refuges">Refuges</a> 
-        <a class="button" href="<?=$config['sous_dossier_installation']?>nouvelles/?quoi=commentaires">Commentaires</a> 
-        <a class="button" href="<?=$config['sous_dossier_installation']?>nouvelles/?quoi=forums">Forum</a> 
-        <a class="button" href="<?=$config['sous_dossier_installation']?>nouvelles/?quoi=commentaires,points">Tout sauf forum</a> 
-        <a class="button" href="<?=$config['sous_dossier_installation']?>nouvelles/">Tout</a>
-        <br>
+        <p class="contenu">
+            <a class="button" href="<?=$config['sous_dossier_installation']?>nouvelles/?nombre=50&amp;quoi=<?=$_GET['quoi']?>">(Voir les plus anciennes)</a> 
+            <a class="button" href="<?=$config['sous_dossier_installation']?>nouvelles/?quoi=points">Points</a> 
+            <a class="button" href="<?=$config['sous_dossier_installation']?>nouvelles/?quoi=refuges">Refuges</a> 
+            <a class="button" href="<?=$config['sous_dossier_installation']?>nouvelles/?quoi=commentaires">Commentaires</a> 
+            <a class="button" href="<?=$config['sous_dossier_installation']?>nouvelles/?quoi=forums">Forum</a> 
+            <a class="button" href="<?=$config['sous_dossier_installation']?>nouvelles/?quoi=commentaires,points">Tout sauf forum</a> 
+            <a class="button" href="<?=$config['sous_dossier_installation']?>nouvelles/">Tout</a>
+        </p>
     </article>
 <!-- FIN BLOC NEWS -->
 
 
-	<h3>Flux <abbr title='Really Simple Syndication'>RSS</abbr></h3>
     <article>
-    	<p>
+        <h3>Flux <abbr title='Really Simple Syndication'>RSS</abbr></h3>
+    	<p class="contenu">
     		La technologie <abbr title='Really Simple Syndication'>RSS</abbr> permet de recevoir directement sur son ordinateur, les dernières nouvelles du site, sans devoir se connecter à <em>www.refuges.info</em>.
     		Pour en bénéficier, il est nécéssaire de télécharger un logiciel spécifique. A noter que le navigateur <a href="http://www.mozilla-europe.org/fr/firefox/">Firefox</a> intégre un support RSS basique d'origine, via les <q>Marque-pages dynamiques</q>.
     		Une fois prêt, vous pouvez vous rendre sur la <a href='<?=$config['sous_dossier_installation']?>formulaire_rss/'>page dédiée RSS</a> et séléctionner vos options.

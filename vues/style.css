@@ -45,52 +45,49 @@ body {
 section { 
   background-color: white;
 }
-article {
+article > .contenu, article > .contenu{
   width: 90%;
   margin: 0 auto;
   padding: 15px 0 30px 0;
 }
 
+.bloctitre .titre {
+  background: var(--grey-color-light);
+  color: black;
+  font-variant: small-caps;
+  margin: -8px -8px 8px -8px;
+  padding: 8px;
+  font-weight: 400;
+  font-size: 18px;
+  border: none;
+  display: block;
+  width: 100%;
+}
+.bloctitre {
+  border: 0;
+  border-bottom: 4px solid var(--grey-color-light);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  padding: 8px;
+  background: var(--grey-color-lightlight);
+  width: auto;
+}
+
 /*=====TEXTE=======*/
-EM { /* Emphasis: gras+italic */
-  font-style: italic ;
-  }
-STRONG { /* Strong Emphasis: gras+italic+rouge */
-  font-weight: bold;
-  color: #FF0000 ;
-  }
-CITE { /* Citation: gras+droit */
-  font-weight: bold ;
-  font-style: normal ;
-  }
-DFN { /*Definitions */
-  border-bottom: thin dotted blue;
-  font-style: normal;
-  }
-DFN:after { /*Definition, ajoute un ? a la fin pour inciter a passer la souris dessus*/
-  content: "?";
-  font-size: smaller;
-  vertical-align: text-top;
-  }
-BLOCKQUOTE { /* citations: utilisé sur les fiches pour les commentaires ET la citation forum */
-  font-style: italic;
-  }
-BLOCKQUOTE > DIV { /* en particulier les ciations forum */
-  border-left: double blue;
-  }
-BLOCKQUOTE P:before  { /* message forum et commentaires *//* HS sous IE */
-  content: open-quote;
-  font-size: xx-large;
-  }
-BLOCKQUOTE P:after  { /* message forum et commentaires */
-  content: close-quote;
-  font-size: xx-large;
-  vertical-align: text-top; /* pour pas que cette derniere quote decale la derniere ligne */
-  }
+
 
 /*======TITRES=======*/
 /* on commence au H3 car 1,2 sont vraiment trop gros. je sais ... CSS .... mais maintenant c'est fait.*/
-h3 { /* titre des pages */
+h2 { /* titre des pages */
+  padding: 10px 5%;
+  font-weight: 300;
+  font-size: 25px;
+  margin: 0 0 10px 0; /* sous FF, la padding par defo est immense */
+  background: var(--grey-color-light);
+  border-bottom: 2px dashed var(--grey-color-dark);
+  margin: 0;
+  }
+h3 { /* titre des sections de pages */
   padding: 10px 5%;
   background: var(--grey-color-lightlight);
   font-weight: 300;
@@ -100,125 +97,72 @@ h3 { /* titre des pages */
 h4 { /* note en haut de page */
   background: var(--grey-color-light);
   border-bottom: 2px dashed var(--grey-color-dark);
-  font-weight: thin;
   font-weight: 400;
   font-variant: small-caps;
   padding: 5px 5% ; 
   font-size: 15px;
   margin: 0;
 }
-
-H5 { /* sou-sou titre, pour l'instant que dans les fiches de refuges */
-  font-size: medium; /* sinon H5 cest tout petit ... */
-  margin-top:15px;
-  margin-bottom:3px;
-  padding-left: 10px;
-  }
-h6 { /* utilisé dans la "FAQ" comme question */
-  margin-bottom: 0px;
-  margin-top: 1em;
-  font-size: 12px;
-  font-weight: bold ;
-  font-size: medium; /* sinon H6 cest tout petit ... */
-  }
 p {
   margin: 0;
   }
 /*===== LISTES=====*/
-UL { /* les listes , y compris news en page de garde */
+ul { /* les listes , y compris news en page de garde */
   list-style-type: none;
   margin: 0px;
   padding: 0px 0px 0px 5px;
   }
-DT { /* listes, de definitions */
-  font-weight: bold;
-  margin-top:4px;
-  }
-DL > DL { /* decale les elements imbriques de 1em */
-  padding-left: 1em;
-  }
-DT > BUTTON {
-  font-size: 60%;
-  padding: 0px ;
-  }
-LI {
-  margin-bottom:3px;
-  }
 
-  /*====== FORMULAIRES======*/
-  /* Utilisé pour le formulaire de création ou modification pour les 3 champs libres proprio, accès, remarques */
+/*====== FORMULAIRES======*/
+/* Utilisé pour le formulaire de création ou modification pour les 3 champs libres proprio, accès, remarques */
 
-FORM#form_point FIELDSET {
-  border: thin solid transparent;  /* pour les allergiques aux barrieres ;) */
-  }
-FORM#form_point.lien_syntaxe { 
-  float:left;
-  width:150px;
-  }
-FORM#form_point .booleen {
-  clear: left;
-  float:left;
-  width: 700px; 
-  text-align: right;
-  padding: 1px;
-  }
-FORM#form_point .booleen LEGEND {
-  clear: left;
-  float:left;
-  }
-FORM#form_point .booleen LABEL {
-  clear: none;
-  float: none;
-  /*width: 400px;*/
-  padding-left: 10px;
-  }
-FORM#form_point TEXTAREA {
-  clear: both;
-  float: left;
-  width:650px;
-  height:170px;
-  }
-FORM#form_point LABEL.textarea  SPAN {
-  clear: both;
-  float:left;
-  }
+fieldset {
+  margin-bottom: 25px;
+}
 
-FORM#form_export LABEL {
-  clear: none;
-  float: left;
+input[type=checkbox] { display:none; } /* to hide the checkbox itself */
+input[type=checkbox] + label:before {
+  margin-right: 5px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: var(--main-color);
+  color: white;
+  font-size: 25px;
+  padding: 0 2px 5px 2px;
+  vertical-align: middle;
+}
+input[type=checkbox] + label:before { content: "\00A0"; } /* unchecked icon */
+input[type=checkbox]:checked + label:before { content: "\2713"; } /* checked icon */
+input[type=checkbox] + label:hover:before { color: var(--main-color-lightlight) !important; } /* checked icon */
+label {
+  margin-bottom: 3px;
   width: 16em;
-  }
-#form_export FIELDSET FIELDSET:hover {  /* deco sur le fieldset actif, pour bien le differencier des autres */
-  border: thin dotted black;
-  }
+  display: inline-block;
+}
 
-FORM.wri SPAN , FORM.wri LABEL { /* sans la classe WRI, ca fait foirer le forum PHPBB , et oui */
-  clear: left;
+fieldset fieldset {
   float: left;
-  }
-FORM LABEL[title]:after, FORM LEGEND[title]:after {  /* combine pour exclure OL , leurs LABEL ne sont pas dans des FORM */
-  content: url(../images/tooltip.png);
-  }
-FIELDSET FIELDSET {  /* moins de déco pour les fieldset imbriques */
-  float: left;
-  border: thin solid transparent;
-  }
-FORM .champs_null_masque>INPUT { /* couleur de la case "champ null" et masquee par defo */
-  outline : red solid 2px ;
-  float: left;
-  display: none;
-  }
-FORM .champs_null_masque > INPUT:checked  + *  INPUT { /* desactive les INPUT qui suivent */
-  visibility: hidden;
-  }
-FORM .champs_null_masque > LABEL { /* permet a la case de s'intercaler au bon endroit */
-  clear: none;
-  }
+  margin-bottom: 10px;
+  border: 0;
+  background: white;
+  padding: 5px;
+  margin: 10px;
+  width: auto;
+}
+fieldset fieldset legend {
+  background: var(--grey-color-light);
+  color: black;
+  font-variant: small-caps;
+  font-weight: 400;
+  font-size: 18px;
+  border: none;
+  display: block;
+  margin: 0 -5px;
+  width: auto;
+  padding: 3px;
+}
 
-.fauxfieldset-legend {
-  border: thin solid black ;
-  font-weight: bold;
-  }
 
 /*==========DIVERS=======*/
 img { /* images sans bordures */
@@ -227,9 +171,7 @@ img { /* images sans bordures */
   padding: 0px;
   }
 
-TEXTAREA {
-  max-width: 100%;
-}
+
 /*=========LIENS==========*/
 /* 
 J'intègre également les class des liens du forum 
@@ -252,28 +194,6 @@ a:visited {
   direction: rtl;
   cursor: pointer;
 }
-
-/*=========INFOBULLES===========*/
-A.infobulle {
-  position:relative;
-  text-decoration: none;
-  color: black;
-  }
-A.infobulle SPAN { /* au repos, on efface */
-  display: none;
-  }
-A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
-  display: block;
-  position: absolute; /* relativement au relatif du A */
-  top: 18px;
-  left: -10px;
-  padding: 5px;
-  color: #000;
-  border: 1px solid #bbb;
-  background: #ffc;
-  white-space: nowrap;
-  z-index: 100; /* ?? */
-  }
 
 /*=========LIENS==========*/
 .don {
@@ -310,14 +230,23 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 .button, a.button {
   background: var(--main-color);
   color: white;
-  padding: 5px;
-  margin: 0 5px;
+  padding: 5px 10px;
+  margin: 3px 5px;
   display: inline-block;
   font-variant: small-caps;
   font-size: 1.15em;
   white-space: nowrap;
   border-radius: 0;
   font-weight: 400;
+  border: 0;
+}
+.button.small, a.button.small {
+  padding: 0 2px;
+  background: var(--grey-color-darkdark);
+  margin: 2px 2px;
+}
+.button:hover, a.button:hover {
+  color: var(--main-color-lightlight);
 }
 
 /*==================================================================*/
@@ -650,23 +579,8 @@ header > #logo h1 span {
     padding: 25px 0;
   }
 
-  #page-accueil .titre-categorie {
-    background: var(--grey-color-light);
-    color: black;
-    font-variant: small-caps;
-    margin: -8px -8px 8px -8px;
-    padding: 8px;
-    font-weight: 400;
-    font-size: 18px;
-    border: none;
-  }
-  #page-accueil article, #page-accueil #accueil {
-    border-bottom: 4px solid var(--grey-color-light);
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    padding: 8px;
-    background: var(--grey-color-lightlight);
-    width: inherit;
+  #page-accueil > h3 {
+    display: none;
   }
 
   #page-accueil #presentation {
@@ -689,6 +603,7 @@ header > #logo h1 span {
     background: none;
     color: white;
     margin: -4px -8px 8px -4px;
+    border: 0;
   }
   #page-accueil #derouleur-photos > div > a:first-child {
     margin-left: -17px;
@@ -712,7 +627,7 @@ header > #logo h1 span {
     border: 1px solid var(--grey-color-darkdark);
     min-height: 300px;
   }
-  #page-accueil .titre-categorie a {
+  #page-accueil .titre a {
     padding: 0 5px;
     color: var(--grey-color-darkdark);
     background: var(--grey-color-lightlight);
@@ -724,7 +639,7 @@ header > #logo h1 span {
     white-space: nowrap;
     float: right;
   }
-  #page-accueil .titre-categorie a:hover {
+  #page-accueil .titre a:hover {
     color: var(--main-color);
     background: white;
   }

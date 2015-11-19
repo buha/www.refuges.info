@@ -283,7 +283,7 @@ function texte_nouvelles_html($nouvelles) {
                 $texte .= "</small></span>";
                 break;
             case 'Point':
-                $texte = "<img class='icone' alt='".$nouvelle['type_point']."' title='".$nouvelle['type_point']."' src='".$config['sous_dossier_installation']."images/icones/sources-vectoriel/".$nouvelle['icone'].".svg' />";
+                $texte = "<img class='icone' alt='".htmlspecialchars($nouvelle['type_point'], ENT_QUOTES)."' title='".htmlspecialchars($nouvelle['type_point'], ENT_QUOTES)."' src='".$config['sous_dossier_installation']."images/icones/sources-vectoriel/".$nouvelle['icone'].".svg' />";
                 $texte .= " &mdash; ";
                 $texte .= "<a href='".$nouvelle['lien']."'>".ucfirst($nouvelle['titre'])."</a>";
                 $texte .= "<span class='details'><small>";

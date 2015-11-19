@@ -1,8 +1,9 @@
 <section id="page-accueil">
+	<h3>Bienvenue sur refuges.info</h3>
 	<!-- PRESENTATION   -->
 
-	<article id="presentation">
-		<h4 class="titre-categorie">À propos...</h4>
+	<article id="presentation" class="bloctitre">
+		<h4 class="titre">À propos...</h4>
 		<?=$vue->contenu_accueil?>
 	</article>
 
@@ -24,8 +25,8 @@
 		<div class="carte" id="accueil"></div>
 		
 		<!-- NEWS -->
-		<article id="nouvelles-accueil">
-			<h4 class="titre-categorie"><?=$vue->stat->nbrefuges?> cabanes et refuges.
+		<article id="nouvelles-accueil" class="bloctitre">
+			<h4 class="titre"><?=$vue->stat->nbrefuges?> cabanes et refuges.
 			<a href="<?=$config['sous_dossier_installation']?>point_formulaire_recherche/" title="Recherche d'un points de refuges.info par le nom"><b>Recherche...</b></a></h4>
 			<ul class="nouvelles">
 	                    <?php foreach ($vue->nouveaux_points as $nouveau_point) { ?>
@@ -36,7 +37,7 @@
 	                    <?php } ?>
 			</ul>
 			<br/>
-			<h4 class="titre-categorie"><?=$vue->stat->nbcomm?> commentaires.
+			<h4 class="titre"><?=$vue->stat->nbcomm?> commentaires.
 			<a href="<?=$config['sous_dossier_installation']?>nouvelles/" title="Les dernières entrées dans refuges.info"><b>Plus...</b></a></h4>
 			<ul class="nouvelles">
 	                    <?php foreach ($vue->nouveaux_commentaires as $nouveau_commentaire) { ?>
