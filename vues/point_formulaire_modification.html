@@ -9,7 +9,8 @@
 // 27/05/12 Dominique : Création
 ?>
 
-<div class="contenu">
+<section id="page_modif_point">
+    <h2>Édition d'un point.</h2>
 	<?
 	if (!count($vue->etapes))
   { ?>
@@ -24,11 +25,10 @@
     </dl>  <?
   }
 ?>
-    <div class="carte_edit" id="carte-edit"></div>
-    <form class="wri" id="form_point" method="post" onsubmit="return validation();" action="<?=$config['sous_dossier_installation']?>point_modification.php">
-    <div><?
+    <form id="form_point" method="post" onsubmit="return validation();" action="<?=$config['sous_dossier_installation']?>point_modification.php">
+    <div class="contenu" style="display: flex;"><?
     foreach ($vue->champs->boutons as $bouton) { ?> 
-      <button type="<?=$bouton->type?>" name="<?=$bouton->nom?>" value="<?=$bouton->valeur?>" onclick="choix='<?=$bouton->valeur?>'">
+      <button class="button" style="flex: 1;" type="<?=$bouton->type?>" name="<?=$bouton->nom?>" value="<?=$bouton->valeur?>" onclick="choix='<?=$bouton->valeur?>'">
         <?=$bouton->label?>
       </button>
     <?}?>
@@ -41,87 +41,100 @@
       <input type="hidden" name="<?=$nom?>" value="<?=$params->valeur?>" />
     <?}?>
     </div>
-    <h4>Coordonnées</h4>
-        <fieldset>
-            <label>
-                <span id="curseur-titre-lng">Longitude</span> :
-                <input type="text" id="curseur-proj-lng" name="longitude" size="12" maxlength="12" value="<?=$vue->point->longitude?>" />
-                <input type="hidden" id="curseur-lng" name="longitude" value="<?=$vue->point->longitude?>" />
-            </label>
-            <label>
-                <span id="curseur-titre-lat">Latitude</span> :
-                <input type="text" id="curseur-proj-lat" name="latitude"  size="12" maxlength="12" value="<?=$vue->point->latitude?>" />
-                <input type="hidden" id="curseur-lat" name="latitude" value="<?=$vue->point->latitude?>" />
-            </label>
-            <label>
-                <select id="curseur-select-projection"></select> Déplacez le viseur pour modifier la position (n'oubliez pas de valider).
-            </label>
-            <label>
-				<strong>Attention:</strong> Ces coordonnées sont relatives à l'ellipsoïde WGS84. Il se peut qu'elles ne correspondent pas pour d'anciennes cartes. Consultez le cartouche de la carte pour vérifier son ellipsoïde de référence.
-            </label>
-            <label>
-				<span><a onclick="curseur.setLatLng(map.getCenter())" href="#">Remettre le viseur au centre actuel de la carte</a></span>
-            </label>
-            <label>
-				<span><a onclick="gps.activate()" href="#">Utiliser la position du GPS</a></span>
-            </label>
-			<br />&nbsp;
-            <label>Provenance
-                <select name="id_type_precision_gps">
-                <?php foreach ($vue->infos_base->type_precision AS $gps) { ?>
-                    <option  value="<?=$gps->id_type_precision_gps?>"<?=($gps->id_type_precision_gps==$vue->point->id_type_precision_gps)? ' selected="selected"' : '' ;?>>
-                        <?=$gps->nom_precision_gps ?>
-                    </option>
-                <?}?>
-                </select>
-            </label>
-            <label>
-                Altitude :
-                <input type="text" name="altitude" size="6" value="<?=$vue->point->altitude?>" />m
-            </label>
-        </fieldset>
+
+    <article>
+    <h3 style="margin-bottom: 0">Coordonnées</h3>
+        <div id="flexcontainer">
+            <fieldset class="section" style="flex: 1;">
+                <label for="curseur-proj-lng" style="width: 100px;">
+                    Longitude :
+                </label>
+                    <input type="text" id="curseur-proj-lng" name="longitude" size="12" maxlength="12" value="<?=$vue->point->longitude?>" />
+                    <input type="hidden" id="curseur-lng" name="longitude" value="<?=$vue->point->longitude?>" />
+                <br>
+                <label for="curseur-proj-lat" style="width: 100px;">
+                    Latitude :
+                </label>
+                    <input type="text" id="curseur-proj-lat" name="latitude"  size="12" maxlength="12" value="<?=$vue->point->latitude?>" />
+                    <input type="hidden" id="curseur-lat" name="latitude" value="<?=$vue->point->latitude?>" />
+                <br>
+                <label for="curseur-select-projection" style="width: 100px;">
+                    
+                </label>
+                    <select id="curseur-select-projection"></select>
+                <br>
+                <small>Déplacez le viseur pour modifier la position (n'oubliez pas de valider).</small>
+                <span class="details" > <i><small><strong>Attention:</strong> Ces coordonnées sont relatives à l'ellipsoïde WGS84. Il se peut qu'elles ne correspondent pas pour d'anciennes cartes. Consultez le cartouche de la carte pour vérifier son ellipsoïde de référence.</small></i></span>
+                <br>
+                <br>
+    			<a class="button" onclick="curseur.setLatLng(map.getCenter())" href="#">Remettre le viseur au centre actuel de la carte</a>
+                <br>
+                <a class="button" onclick="gps.activate()" href="#">Utiliser la position du GPS</a>
+    			<br>
+                <br>
+                <label for="id_type_precision_gps" style="min-width: 100px;">Provenance</label>
+                    <select name="id_type_precision_gps" id="id_type_precision_gps">
+                    <?php foreach ($vue->infos_base->type_precision AS $gps) { ?>
+                        <option  value="<?=$gps->id_type_precision_gps?>"<?=($gps->id_type_precision_gps==$vue->point->id_type_precision_gps)? ' selected="selected"' : '' ;?>>
+                            <?=$gps->nom_precision_gps ?>
+                        </option>
+                    <?}?>
+                    </select>
+                <br>
+                <label for="altitude" style="min-width: 100px;">Altitude :</label>
+                    <input type="text" name="altitude" id="altitude" size="6" value="<?=$vue->point->altitude?>" /> m
+            </fieldset>
+            <div class="carte_edit" id="carte-edit" style="flex: 1;"></div>
+        </div>
+    </article>
             
-    <h4>Informations de base:</h4>
+    <h3>Informations de base:</h3>
+    <article class="contenu">
         <fieldset>
-            <label>
-                Nom :
-                <input size="40" type="text" name="nom" value="<?=$vue->point->nom?>" />
-            </label>
-            <label>Type de point
-                <select name='id_point_type'>
+            <label for="nom">Nom :</label>
+                <input size="40" type="text" name="nom" id="nom" value="<?=$vue->point->nom?>" />
+            <br>
+            <label for="id_point_type">Type de point :</label>
+                <select name='id_point_type' id="id_point_type">
                 <?php foreach ($vue->infos_base->types_point AS $type_point) { ?>
                     <option  value="<?=$type_point->id_point_type?>" <?=($type_point->id_point_type==$vue->point->id_point_type)? 'selected="selected"' : '' ;?>>
                         <?=$type_point->nom_type?>
                     </option>
                 <?}?>
                 </select>
+                <span class="details"> <small>
                 <a href="<?=$vue->lien_aide_points?>">
                     Explications plus précises sur les différents types de points
-                </a>
-            </label>
+                </a></small></span>
+            </fieldset>
 
             <?php if ($_SESSION['niveau_moderation']>=1 and $vue->point->id_point) {?>
-				<label>Créateur de cette fiche: ID =
-					<input size="4" type="text" name="id_createur" value="<?=$vue->point->id_createur?>" />
-				</label>
+				<span class="admin"><label for="id_createur">&nbsp;Créateur de cette fiche: ID =</label>
+					<input size="4" type="text" name="id_createur" id="id_createur" value="<?=$vue->point->id_createur?>" /></span>
+				<br>
             <?}?>
 
             <?php // tous les points n'ont pas de raison d'avoir ce champ ( lac, sommets, etc.)
                 if ($vue->point->equivalent_places!="") {?>
-                    <label><?=$vue->point->equivalent_places?> :
-                        <input type="text" name="places" size="8" value="<?=$vue->point->places?>" />
-                    </label>
+                    <label for="places"><?=$vue->point->equivalent_places?> :</label>
+                        <input type="text" name="places" id="places" size="8" value="<?=$vue->point->places?>" />
+                    
             <?}?>
         </fieldset>
+        <br>
+        <br>
         <fieldset>
-                <span><a href="<?=$vue->lien_bbcode?>">Syntaxe possible</a> (bouton du milieu pour nouvel onglet)</span>
+                <a target="_blank" href="<?=$vue->lien_bbcode?>">Syntaxe possible</a>
+                <br>
                     <?php foreach ($vue->champs->textareas as $tx_nom => $tx_params) { ?>
-                    <label class="textarea"><span><?=$tx_params->label?></span>
-                        <textarea class="textarea" rows="5" cols="80" name="<?=$tx_nom?>"><?=$tx_params->valeur?></textarea>
-                    </label>
+                    <label class="textarea" id="<?=$tx_nom?>"><span><?=$tx_params->label?></span></label>
+                        <textarea class="textarea" rows="5" name="<?=$tx_nom?>" id="<?=$tx_nom?>"><?=$tx_params->valeur?></textarea>
+                    
 		
 <?php } ?>
         </fieldset>
+    </article>
+
     <h4>Informations complémentaires</h4>
 	
 	<?php if ($vue->champs->censure->actif) { ?>
@@ -207,12 +220,12 @@
                 </fieldset>
                 <?}?>
                 
-                <fieldset class="booleen">
-                <?php foreach ($vue->champs->boutons as $bouton) { ?>
-                  <button type="<?=$bouton->type?>" name="<?=$bouton->nom?>" value="<?=$bouton->valeur?>">
-                    <?=$bouton->label?>
-                  </button>
-                <?}?>
-                </fieldset>
+    <div class="contenu" style="display: flex;"><?
+    foreach ($vue->champs->boutons as $bouton) { ?> 
+      <button class="button" style="flex: 1;" type="<?=$bouton->type?>" name="<?=$bouton->nom?>" value="<?=$bouton->valeur?>" onclick="choix='<?=$bouton->valeur?>'">
+        <?=$bouton->label?>
+      </button>
+    <?}?>
+    </div>
 	</form>
-</div>
+</section>
