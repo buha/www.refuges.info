@@ -149,7 +149,7 @@ mb_internal_encoding("UTF-8");
 
 // Notez que pour l'instant, suite à une histoire de layers déclaré ou pas dans openlayers, ce paramètre ne sera pas pris en compte partout
 // sauf si il vaut maps.refuges.info ou OpenCycleMap
-$config['carte_base'] = 'maps.refuges.info';
+$config['carte_base'] = 'Refuges.info';
 
 // Ce fichier est privée et contient des différentes mot de passe à garder secret ou options spécifique à cette installation de refuges.info
 // que l'on ne souhaite pas du tout voir atterrir sur github, il est donc indiqué dans le .gitignore

@@ -45,7 +45,7 @@ body {
 section { 
   background-color: white;
 }
-article > .contenu, article.contenu {
+article > .contenu, article.contenu, div.contenu {
   width: 90%;
   margin: 0 auto;
   padding: 15px 0 30px 0;
@@ -139,10 +139,12 @@ input[type=checkbox] + label:before {
   font-size: 25px;
   padding: 0 2px 5px 2px;
   vertical-align: middle;
+  margin-bottom: 3px;
 }
 input[type=checkbox] + label:before { content: "\00A0"; } /* unchecked icon */
 input[type=checkbox]:checked + label:before { content: "\2713"; } /* checked icon */
-input[type=checkbox] + label:hover:before { color: var(--main-color-lightlight) !important; } /* checked icon */
+input[type=checkbox] + label:hover:before { color: var(--main-color-light) !important; content: "\2713"; }
+input[type=checkbox]:checked + label:hover:before { color: var(--main-color-lightlight) !important; }
 input[type=radio] { display:none; } /* to hide the checkbox itself */
 input[type=radio] + label:before {
   content: "";
@@ -153,11 +155,26 @@ input[type=radio] + label:before {
   height: 8px;
   border: 4px solid var(--main-color);
   vertical-align: middle;
+  margin-bottom: 3px;
 }
 input[type=radio] + label:before { background: var(--main-color); } /* unchecked icon */
 input[type=radio]:checked + label:before { background: white; } /* checked icon */
-input[type=radio] + label:hover:before { background: var(--main-color-light) !important; } /* checked icon */
-input[type=radio]:checked + label:hover:before { background: var(--main-color-lightlight) !important; } /* checked icon */
+input[type=radio] + label:hover:before { background: var(--main-color-light) !important; }
+input[type=radio]:checked + label:hover:before { background: var(--main-color-lightlight) !important; }
+input[type=text], textarea {
+  padding: 5px 10px;
+  background: var(--grey-color-light);
+  border: none;
+  border-left: 6px solid var(--grey-color-dark);
+  margin-bottom: 3px;
+}
+select {
+  padding: 5px 10px;
+  background: var(--grey-color-light);
+  border: none;
+  border-left: 6px solid var(--grey-color-dark);
+  margin-bottom: 3px;
+}
 label {
   margin-bottom: 3px;
   width: 16em;
@@ -247,7 +264,8 @@ a:visited {
     rgba(255,0,0,0.4) 10px,
     rgba(255,0,0,0.4) 20px
   );
-  box-shadow: inset 0 0 2px red;
+  box-shadow: inset 0 0 5px white;
+  text-shadow: 0 0 2px white;
 }
 
 .button, a.button {
@@ -299,6 +317,8 @@ header input[type=text] {
   height: 18px;
   padding: 2px 5px;
   vertical-align: middle;
+  background: white;
+  margin: 0;
 }
 header input[type=image] {
   background: var(--main-color);
@@ -780,6 +800,83 @@ header > #logo h1 span {
 
 
 /*==================================================================*/
+/* LA PAGE D'ÉDITION DES POINTS                                     */
+/*==================================================================*/
+
+  #page_modif_point #flexcontainer {
+    margin: 0 0 0 5%;
+    display: flex;
+  }
+
+  #page_modif_point .button:first-child {
+    margin-left: 0;
+  }
+
+  #page_modif_point label {
+    width: auto;
+  }
+  #page_modif_point fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+  #page_modif_point fieldset input, #page_modif_point select {
+    vertical-align: middle;
+  }
+
+  #page_modif_point .section {
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+  #page_modif_point .details small {
+    font-size: 0.9em;
+    display: none;
+  }
+  #page_modif_point .details:hover small {
+    display: inline;
+  }
+  #page_modif_point .details:before {
+    content:"i"; 
+    color: white;
+    font-family: serif;
+    font-weight: bold;
+    font-size: 0.9em;
+    font-style: italic;
+    background: var(--grey-color-dark);
+    border-radius: 15px;
+    padding: 2px;
+    margin-left: 5px;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+  }
+  #page_modif_point .details:hover:before {
+    background: var(--grey-color-darkdark);
+  }
+  label.textarea {
+    display: block;
+    margin-bottom: 0;
+    margin-top: 10px;
+    padding: 6px 15px;
+    background: var(--grey-color-dark);
+  }
+  label.textarea:first-letter{
+    text-transform: capitalize
+  }
+  label.textarea + textarea {
+    display: block;
+    width: calc(100% - 26px);
+    margin-top: 0;
+  }
+@media screen and (max-width: 900px) {
+  #page_modif_point #flexcontainer {
+    margin: 0 5% 25px 5%;
+    display: block;
+  }
+}
+
+/*==================================================================*/
 /* LES PAGES POINTS                                                 */
 /*==================================================================*/
 
@@ -851,10 +948,9 @@ header > #logo h1 span {
 	/* La hauteur est automatiquement ajustée mar Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
   }
   #carte_edit, .carte_edit {
-    width:  450px; 
+    min-width:  300px; 
 	/* La hauteur est automatiquement ajustée mar Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenetre */
-    float: right;
-    max-width: 100%;
+    min-height: 400px;
   }
   #nav_bloc_carte {
     width: 98.4%;
