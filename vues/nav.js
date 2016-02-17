@@ -176,6 +176,8 @@ var map,
 			}
 		}
 	),
+	// Autres points de https://overpass-turbo.eu/
+	poiOVER = layer_overpass,
 
 	// Les points d'intérêt WRI pour 1 massif
 	poiMassif = new L.GeoJSON.Ajax(
@@ -311,7 +313,7 @@ function couche_externe(e,l) {
 
 // Pour bien gérer le retour sur la page sous chrome
 window.addEventListener('load', function() {
-	var extLayersCheckbox = {poiPRC:poiPRC, poiC2C:poiC2C, poiCHEM:poiCHEM};
+	var extLayersCheckbox = {poiPRC:poiPRC, poiC2C:poiC2C, poiCHEM:poiCHEM, poiOVER:poiOVER};
 	for (var c in extLayersCheckbox) {
 		var ce = document.getElementById (c);
 		if (ce && ce.checked)

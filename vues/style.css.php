@@ -809,3 +809,10 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
   float: right;
   max-width: 100%;
 }
+
+/* carte OSM.overpass */
+.popup-copy {
+	float: right;
+	margin-right: -19px;
+	text-decoration: none;
+}

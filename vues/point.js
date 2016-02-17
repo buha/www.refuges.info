@@ -44,7 +44,8 @@ if ($vue->mini_carte) { ?>
 		// La carte est centrée autour
 		map.setView(cadre._latlng, 13, {reset: true});
 
-		new L.GeoJSON.Ajax( // Les points d'intérêt WRI
+		// Les points d'intérêt WRI
+		new L.GeoJSON.Ajax(
 			'<?=$config['sous_dossier_installation']?>api/bbox',
 			{
 				argsGeoJSON: {
@@ -72,6 +73,9 @@ if ($vue->mini_carte) { ?>
 				}
 			}
 		).addTo(map);
+
+		// La couche OSM.OVERPASS
+		layer_overpass.addTo(map);
 
 		new L.Control.Fullscreen().addTo(map);
 
