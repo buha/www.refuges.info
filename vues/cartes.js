@@ -3,22 +3,30 @@ var layer_overpass = new L.GeoJSON.Ajax(
 		// Url args calculation
 		argsGeoJSON: function(layer) {
 			var req = `
-					[out:json][timeout:25];
-					(
-						node["tourism"~"hotel|camp_site"]({{bbox}});
-						way["tourism"~"hotel|camp_site"]({{bbox}});
-						node["shop"~"supermarket|convenience"]({{bbox}});
-						way["shop"~"supermarket|convenience"]({{bbox}});
-					);
-					out 100 center;
-					>;
+[out:json][timeout:25];
+(
+	node["tourism"~"hotel|camp_site"]({{bbox}});
+	way["tourism"~"hotel|camp_site"]({{bbox}});
+	node["shop"~"supermarket|convenience"]({{bbox}});
+	way["shop"~"supermarket|convenience"]({{bbox}});
+);
+out 100 center;
+>;
 				`,
-				bb = layer.getBbox().split(',');
-			layer.options.disabled = bb[2] - bb[0] > .5; // Inhibe la bbox au dessus de 0,5° d'ouverture en longitude
+				bounds = layer._map.getBounds(),
+				elChoixOVER = document.getElementById('choixOVER');
+
+			layer.options.disabled = bounds._northEast.lng - bounds._southWest.lng > 0.5;
+			if (elChoixOVER) { //  Grisage du choix "Service" de la carte NAV
+				elChoixOVER.style.color = layer.options.disabled ? 'orange' : '';
+				elChoixOVER.title = layer.options.disabled ? 'Zoomer sur la carte pour voir les points' : '';
+			}
+
 			return {
-				data: req.replace(/{{bbox}}/g, bb[1] + ',' + bb[0] + ',' + bb[3] + ',' + bb[2])
+				data: req.replace(/{{bbox}}/g, bounds._southWest.lat + ',' + bounds._southWest.lng + ',' + bounds._northEast.lat + ',' + bounds._northEast.lng)
 			};
 		},
+		bbox: true,
 
 		// Convert received data in geoJson format
 		tradJson: function(data) {
@@ -43,12 +51,12 @@ var layer_overpass = new L.GeoJSON.Ajax(
 						t.tourism == 'hotel' ? 'H&ocirc;tel' + (t.rooms ? ' ' + t.rooms + ' chambres' : '') : '',
 						t.tourism == 'camp_site' ? 'Camping ' + (t.place ? t.place + ' places' : '') : '',
 						t.shop == 'convenience' ? 'Alimentation' : '',
-						t.shop == 'supermarket' ? 'Supermarché' : '',
+						t.shop == 'supermarket' ? 'Supermarch&egrave;' : '',
 						t['contact:phone'], t['phone'],
 						t.email ? '<a href="mailto:' + t.email + '">' + t.email + '</a>' : '',
 						t['addr:street'] ? adresses.join(' ') : '',
 						t.website ? '<a href="' + (t.website.search('http') ? 'http://' : '') + t.website + '">' + t.website + '</a>' : '',
-						'<a class="popup-copy" href="http://www.openstreetmap.org/'+(d.center ? 'way' : 'node')+'/' + d.id + '">&copy;</a>'
+						'<a class="popup-copyright" href="http://www.openstreetmap.org/'+(d.center ? 'way' : 'node')+'/' + d.id + '">&copy;</a>'
 					];
 				if (d.center) // Cas des éléments décrits par leurs contours
 					Object.assign(d, d.center);

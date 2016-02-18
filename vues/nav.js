@@ -305,6 +305,12 @@ function maj_carte () {
 }
 /*************************************************************************************************************************************/
 function couche_externe(e,l) {
+	// Spécial overpass
+	var elChoixOVER = document.getElementById('choixOVER');
+	if (l == poiOVER && elChoixOVER) {
+		elChoixOVER.style.color = '';
+		elChoixOVER.title = 'Service disponible pour les forts niveaux de zoom';
+	}
 	if(e.checked)
 		map.addLayer(l);
 	else
