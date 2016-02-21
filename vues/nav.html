@@ -75,6 +75,70 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 			</ul>
 		</fieldset>
 		<fieldset>
+			<legend><a href="https://overpass-turbo.eu/">Services</a></legend>
+			<ul>
+				<li>
+					<label>
+						<input
+							id="poiOVER"
+							title="poiOVER"
+							onclick="couche_externe(this, poiOVER)"
+							type="checkbox"
+						/>
+						<span id="choixOVER">
+							H&ocirc;tels
+							<img title="Zoomer pour voir les points" src="<?=$config['sous_dossier_installation']?>images/loupe-rouge.png" />
+						</span>
+					</label>
+				</li>
+				<li>
+					<label>
+						<input
+							id="poiOVER2"
+							title="poiOVER"
+							WWWonclick="couche_externe(this, poiOVER)"
+							type="checkbox"
+						/>
+						<span id="choixOVER">
+							Campings
+							<img title="Chargement en cours" src="<?=$config['sous_dossier_installation']?>images/wait.gif" />
+							En developpement
+						</span>
+					</label>
+				</li>
+				<li>
+					<label>
+						<input
+							id="poiOVER2"
+							title="poiOVER"
+							WWWonclick="couche_externe(this, poiOVER)"
+							type="checkbox"
+						/>
+						<span id="choixOVER">
+							Alimentation
+							<img title="Chargement en cours" src="<?=$config['sous_dossier_installation']?>images/wait.gif" />
+							En developpement
+						</span>
+					</label>
+				</li>
+				<li>
+					<label>
+						<input
+							id="poiOVER3"
+							title="poiOVER"
+							WWWonclick="couche_externe(this, poiOVER)"
+							type="checkbox"
+						/>
+						<span id="choixOVER">
+							Parkings
+							<img title="Chargement en cours" src="<?=$config['sous_dossier_installation']?>images/wait.gif" />
+							En developpement
+						</span>
+					</label>
+				</li>
+			</ul>
+		</fieldset>
+		<fieldset>
 			<legend>Autres sites</legend>
 			<ul>
 				<li>
@@ -106,17 +170,6 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 							type="checkbox"
 						/>
 						<a href="http://chemineur.fr/" title="Cocher pour voir les points / cliquer 'Chemineur' pour voir le site">Chemineur</a>
-					</label>
-				</li>
-				<li>
-					<label>
-						<input
-							id="poiOVER"
-							title="poiOVER"
-							onclick="couche_externe(this, poiOVER)"
-							type="checkbox"
-						/>
-						<a id="choixOVER" href="https://overpass-turbo.eu/" title="Service disponible pour les forts niveaux de zoom">Services</a>
 					</label>
 				</li>
 			</ul>

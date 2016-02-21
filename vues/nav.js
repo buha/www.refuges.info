@@ -214,13 +214,9 @@ var map,
 window.addEventListener('load', function() {
 	map = new L.Map('nav_bloc_carte', {
 		layers: [
-			baseLayers[L.UrlUtil.queryParse(L.UrlUtil.hash()).layer] // Donné par le permalink #layer=NOM
-				|| baseLayers['<?=$config["carte_base"]?>'] // Sinon le fond de carte par défaut
-				|| baseLayers[Object.keys(baseLayers)[0]], // Sinon la première couche définie
+				baseLayers['<?=$config["carte_base"]?>'] || // Sinon le fond de carte par défaut
+				baseLayers[Object.keys(baseLayers)[0]], // Sinon la première couche définie
 			massifLayer
-<?if ( !$vue->mode_affichage ){?>
-			,poiLayer
-<?}?>
 		]
 	});
 
@@ -248,8 +244,13 @@ window.addEventListener('load', function() {
 		}).addTo(map);
 		new L.Control.Gps().addTo(map);
 		var fl = L.Control.fileLayerLoad().addTo(map);
-	<?}
-	if ( $vue->mode_affichage == 'edit' ){?>
+	<?}?>
+
+	<?if ( !$vue->mode_affichage ){?>
+		poiLayer.addTo(map);
+	<?}?>
+
+	<?if ( $vue->mode_affichage == 'edit' ){?>
 		// Editeur et aide de l'éditeur
 		var edit = new L.Control.Draw.Plus({
 			draw: {

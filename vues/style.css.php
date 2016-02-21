@@ -802,6 +802,17 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
   }
 }
 
+/* Couche OSM OVERPASS */
+#choixOVER > span
+{
+	display: none;
+}
+.layer-zoom-out {
+	background-color: red;
+}
+.layer-zoom-out > span {
+	display: inline !important;
+}
 /* Carte formulaire de modification */
 #carte_edit, .carte_edit {
   width: 450px; 

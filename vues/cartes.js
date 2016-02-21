@@ -2,24 +2,26 @@ var layer_overpass = new L.GeoJSON.Ajax(
 	'http://overpass-api.de/api/interpreter', {
 		// Url args calculation
 		argsGeoJSON: function(layer) {
-			var req = `
-[out:json][timeout:25];
-(
-	node["tourism"~"hotel|camp_site"]({{bbox}});
-	way["tourism"~"hotel|camp_site"]({{bbox}});
-	node["shop"~"supermarket|convenience"]({{bbox}});
-	way["shop"~"supermarket|convenience"]({{bbox}});
-);
-out 100 center;
->;
-				`,
+			var req =
+'[out:json][timeout:25];'+
+'('+
+	'node["tourism"~"hotel|camp_site"]({{bbox}});'+
+	'way["tourism"~"hotel|camp_site"]({{bbox}});'+
+	'node["shop"~"supermarket|convenience"]({{bbox}});'+
+	'way["shop"~"supermarket|convenience"]({{bbox}});'+
+	'node["amenity"~"parking"]({{bbox}});'+
+	'way["amenity"~"parking"]({{bbox}});'+
+');'+
+'out 100 center;'+
+'>;',
 				bounds = layer._map.getBounds(),
 				elChoixOVER = document.getElementById('choixOVER');
 
 			layer.options.disabled = bounds._northEast.lng - bounds._southWest.lng > 0.5;
 			if (elChoixOVER) { //  Grisage du choix "Service" de la carte NAV
-				elChoixOVER.style.color = layer.options.disabled ? 'orange' : '';
-				elChoixOVER.title = layer.options.disabled ? 'Zoomer sur la carte pour voir les points' : '';
+				elChoixOVER.className = layer.options.disabled ? 'layer-zoom-out' : '';
+//				elChoixOVER.style.color = layer.options.disabled ? 'orange' : '';
+//				elChoixOVER.title = layer.options.disabled ? 'Zoomer sur la carte pour voir les points' : '';
 			}
 
 			return {
@@ -35,10 +37,10 @@ out 100 center;
 				var d = data.elements[e],
 					t = d.tags,
 					iconUrl =
-						d.tags.tourism == 'hotel' ? 'hotel' :
-						d.tags.tourism == 'camp_site' ? 'camping' :
-						d.tags.shop == 'convenience' ? 'ravitaillement' :
-						d.tags.shop == 'supermarket' ? 'ravitaillement' :
+						t.tourism == 'hotel' ? 'hotel' :
+						t.tourism == 'camp_site' ? 'camping' :
+						t.shop ? 'ravitaillement' :
+						t.amenity ? 'parking' :
 						null,
 					adresses = [
 						t['addr:housenumber'],
@@ -52,6 +54,7 @@ out 100 center;
 						t.tourism == 'camp_site' ? 'Camping ' + (t.place ? t.place + ' places' : '') : '',
 						t.shop == 'convenience' ? 'Alimentation' : '',
 						t.shop == 'supermarket' ? 'Supermarch&egrave;' : '',
+						t.amenity ? 'Parking' + (t.capacity ? t.capacity + ' places' : '')  : '',
 						t['contact:phone'], t['phone'],
 						t.email ? '<a href="mailto:' + t.email + '">' + t.email + '</a>' : '',
 						t['addr:street'] ? adresses.join(' ') : '',
@@ -67,7 +70,7 @@ out 100 center;
 						id: d.id,
 						properties: {
 							iconUrl: '/images/icones/' + iconUrl + '.png',
-							title: t.name,
+							title: t.name ? t.name : (t.amenity ? 'Parking' : ''),
 							popup: '<p>' + popup.join('</p><p>') + '</p>'											
 						},
 						geometry: {
