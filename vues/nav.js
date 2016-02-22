@@ -93,123 +93,44 @@ var map,
 	),
 <?}?>
 
-	poiWRI = new L.GeoJSON.Ajax( // Les points d'intérêt WRI
-		'<?=$config['sous_dossier_installation']?>api/bbox',
-		{
-			argsGeoJSON: {
-				type_points: type_points
-			},
-			bbox: true,
-			style: function(feature) {
-				var prop = [];
-				if (feature.properties.coord.alt)
-					prop.push (feature.properties.coord.alt+'m');
-				if (feature.properties.places.valeur)
-					prop.push (feature.properties.places.valeur+'<img src="<?=$config['sous_dossier_installation']?>images/lit.png"/>');
-				return {
-					url: feature.properties.lien,
-					iconUrl: '<?=$config['sous_dossier_installation']?>images/icones/' + feature.properties.type.icone + '.png',
-					iconAnchor: [8, 8],
-					title: feature.properties.nom +
-						(prop.length
-							? '<div style=text-align:center>'+prop.join(' ')+'</div>'
-							: ''
-						),
-					popupAnchor: [-1, -9],
-					degroup: 12 // Spread the icons when the cursor hover on a busy area.
-				};
-			}
-		}
-	),
+	// Points de refuges.info
+	poiWRI = new L.GeoJSON.Ajax.WRIpoi({
+		urlRoot: '<?=$config['sous_dossier_installation']?>',
+		urlGeoJSON: 'api/bbox',
+		argsGeoJSON: {
+			type_points: type_points
+		},
+		disabled: !type_points
+	}),
+	// Points appartenant à un massif
+	poiMassif = new L.GeoJSON.Ajax.WRIpoi({
+		urlRoot: '<?=$config['sous_dossier_installation']?>',
+		urlGeoJSON: 'api/massif',
+		argsGeoJSON: {
+			type_points: type_points,
+			massif: arg_massifs
+		},
+		disabled: !type_points
+	}),
+	poiLayer = <?if ( $vue->polygone->id_polygone ) {?>poiMassif<?}else{?>poiWRI<?}?>,
 
-	// Points de http://www.pyrenees-refuges.com dédoublés par chemineur.fr
-	poiPRC = new L.GeoJSON.Ajax(
-		'http://v2.chemineur.fr/prod/chem/json.php', {
-			argsGeoJSON: {
-				site: 'prc',
-			},
-			degroup: 12,
-			bbox: true,
-			style: function(feature) {
-				return {
-					title: feature.properties.nom,
-					popupAnchor: [-1, -9],
-					url: 'http://www.pyrenees-refuges.com/fr/affiche.php?numenr=' + feature.properties.id,
-					iconUrl: 'http://v2.chemineur.fr/prod/chemtype/' + feature.properties.type.icone + '.png',
-					iconAnchor: [8, 8]
-				}
-			}
-		}
-	),
-	// Points de http://www.camptocamp.org dédoublés par chemineur.fr
-	poiC2C = new L.GeoJSON.Ajax(
-		'http://v2.chemineur.fr/prod/chem/json.php', {
-			argsGeoJSON: {
-				site: 'c2c',
-			},
-			degroup: 12,
-			bbox: true,
-			style: function(feature) {
-				return {
-					title: feature.properties.nom,
-					popupAnchor: [-1, -9],
-					url: 'http://www.camptocamp.org/huts/' + feature.properties.id,
-					iconUrl: 'http://v2.chemineur.fr/prod/chemtype/' + feature.properties.type.icone + '.png',
-					iconAnchor: [8, 8]
-				}
-			}
-		}
-	),
-	// Autres points de http://chemineur.fr
-	poiCHEM = new L.GeoJSON.Ajax(
-		'http://v2.chemineur.fr/prod/chem/json.php', {
-			degroup: 12,
-			bbox: true,
-			style: function(feature) {
-				return {
-					title: feature.properties.nom,
-					popupAnchor: [-1, -9],
-					url: 'http://chemineur.fr/point/' + feature.properties.id,
-					iconUrl: 'http://v2.chemineur.fr/prod/chemtype/' + feature.properties.type.icone + '.png',
-					iconAnchor: [8, 8]
-				}
-			}
-		}
-	),
-	// Autres points de https://overpass-turbo.eu/
-	poiOVER = layer_overpass,
+	// Points via chemineur.fr
+	poiCHEM = new L.GeoJSON.Ajax.chem(),
+	poiPRC = new L.GeoJSON.Ajax.chem({
+		argsGeoJSON: {
+			site: 'prc'
+		},
+		urlRootRef: 'http://www.pyrenees-refuges.com/fr/affiche.php?numenr='
+	}),
+	poiC2C = new L.GeoJSON.Ajax.chem({
+		argsGeoJSON: {
+			site: 'c2c'
+		},
+		urlRootRef: 'http://www.camptocamp.org/huts/'
+	}),
 
-	// Les points d'intérêt WRI pour 1 massif
-	poiMassif = new L.GeoJSON.Ajax(
-		'<?=$config['sous_dossier_installation']?>api/massif', {
-			argsGeoJSON: {
-				type_points: type_points,
-				massif: arg_massifs
-			},
-			bbox: true,
-			style: function(feature) {
-				var prop = [];
-				if (feature.properties.coord.alt)
-					prop.push (feature.properties.coord.alt+'m');
-				if (feature.properties.places.valeur)
-					prop.push (feature.properties.places.valeur+'<img src="<?=$config['sous_dossier_installation']?>images/lit.png"/>');
-				return {
-					url: feature.properties.lien,
-					iconUrl: '<?=$config['sous_dossier_installation']?>images/icones/' + feature.properties.type.icone + '.png',
-					iconAnchor: [8, 8],
-					title: feature.properties.nom +
-						(prop.length
-							? '<div style=text-align:center>'+prop.join(' ')+'</div>'
-							: ''
-						),
-					popupAnchor: [-1, -9],
-					degroup: 12 // Spread the icons when the cursor hover on a busy area.
-				};
-			}
-		}
-	),
-
-	poiLayer = <?if ( $vue->polygone->id_polygone ) {?>poiMassif<?}else{?>poiWRI<?}?>;
+	// Points de https://overpass-turbo.eu/
+	poiOVER = new L.GeoJSON.Ajax.OSMoverpass();
 
 window.addEventListener('load', function() {
 	map = new L.Map('nav_bloc_carte', {
@@ -285,14 +206,17 @@ function switch_massif (combo) {
     }
 }
 /*************************************************************************************************************************************/
-function maj_carte () {
+function maj_poi (c) {
     // Calcule l'argument d'extration filtre de points
-    var poitypes = document.getElementsByName ('id_point_type[]');
+    var poitypes = document.getElementsByName ('id_point_type[]'),
+		check_types = document.getElementsByName ('check-types-input');
     type_points = '';
-    for (var i=0; i < poitypes.length; i++)
+    for (var i=0; i < poitypes.length; i++) {
+		if (c && check_types.length)
+			poitypes[i].checked = check_types[0].checked;
         if (poitypes[i].checked)
             type_points += (type_points ? ',' : '') + poitypes[i].value;
-
+	}
     // L'écrit dans un cookie pour se les rappeler au prochain affichage de cette page
     document.cookie = 'type_points=' + escape (type_points) + ';path=/';
 
@@ -300,6 +224,7 @@ function maj_carte () {
 	poiWRI.options.argsGeoJSON.type_points = 
 	poiMassif.options.argsGeoJSON.type_points =
 		type_points;
+	poiLayer.options.disabled = !type_points;
 
 	// Et on réaffiche la couche courante
 	poiLayer.reload();

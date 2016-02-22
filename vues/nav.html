@@ -38,7 +38,7 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 					type="checkbox"
 					<?if ( $vue->polygone->id_polygone ){?>checked="checked"<?}?>
 					value="<?=$vue->polygone->id_polygone?>"
-					onclick="switch_massif(this)"
+					onclick="switch_massif(this);maj_poi()"
 				/>
 				<?=$vue->polygone->nom_polygone?> uniquement
 			</label>
@@ -51,10 +51,10 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 					<li>
 						<label>
 							<input
-								name="id_point_type[]"
-								onclick="maj_carte()"
-								value="<?=$type_affichable->id_point_type?>"
 								type="checkbox"
+								name="id_point_type[]"
+								onclick="maj_poi()"
+								value="<?=$type_affichable->id_point_type?>"
 								<?if (!isset ($_COOKIE['type_points']) ||
 									in_array ($type_affichable->id_point_type, $ktp)) {?>
 									checked="checked"
@@ -71,19 +71,40 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 						</label>
 					</li>
 				<?}?>
+				<span id="check-types">Tout [dé]cocher
+					<input
+						type="checkbox"
+						name="check-types-input"
+						onclick="maj_poi(true)"
+					/>
+				</span>
 				<li><a href="<?=$vue->lien_legende_carte?>">légende</a></li>
 			</ul>
 		</fieldset>
-		<fieldset>
+		<fieldset class="nav-services">
 			<legend><a href="https://overpass-turbo.eu/">Services</a></legend>
 			<ul>
 				<li>
 					<label>
 						<input
+							type="checkbox"
 							id="poiOVER"
 							title="poiOVER"
 							onclick="couche_externe(this, poiOVER)"
+						/>
+						<span id="choixOVER">
+							Services
+							<img title="Zoomer pour voir les points" src="<?=$config['sous_dossier_installation']?>images/loupe-rouge.png" />
+						</span>
+					</label>
+				</li>
+<!--
+					<label>
+						<input
 							type="checkbox"
+							id="poiOVER"
+							title="poiOVER"
+							onclick="couche_externe(this, poiOVER)"
 						/>
 						<span id="choixOVER">
 							H&ocirc;tels
@@ -94,10 +115,10 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 				<li>
 					<label>
 						<input
+							type="checkbox"
 							id="poiOVER2"
 							title="poiOVER"
 							WWWonclick="couche_externe(this, poiOVER)"
-							type="checkbox"
 						/>
 						<span id="choixOVER">
 							Campings
@@ -109,10 +130,10 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 				<li>
 					<label>
 						<input
+							type="checkbox"
 							id="poiOVER2"
 							title="poiOVER"
 							WWWonclick="couche_externe(this, poiOVER)"
-							type="checkbox"
 						/>
 						<span id="choixOVER">
 							Alimentation
@@ -136,9 +157,10 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 						</span>
 					</label>
 				</li>
+-->
 			</ul>
 		</fieldset>
-		<fieldset>
+		<fieldset class="nav-sites">
 			<legend>Autres sites</legend>
 			<ul>
 				<li>

@@ -802,13 +802,46 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
   }
 }
 
+.carte-point-etiquette .leaflet-rrose-content-wrapper,
+.carte-service-etiquette .leaflet-rrose-content-wrapper,
+.carte-site-etiquette .leaflet-rrose-content-wrapper {
+	border-radius: 5px;
+}
+.carte-point-etiquette .leaflet-rrose-content,
+.carte-service-etiquette .leaflet-rrose-content p,
+.carte-service-etiquette .leaflet-rrose-content,
+.carte-site-etiquette .leaflet-rrose-content {
+	margin: 1px;
+}
+.nav-services,
+.carte-service-etiquette .leaflet-rrose-content-wrapper,
+.carte-service-etiquette .leaflet-rrose-tip {
+	background-color: #def;
+}
+.nav-sites,
+.carte-site-etiquette .leaflet-rrose-content-wrapper,
+.carte-site-etiquette .leaflet-rrose-tip {
+	background-color: #efd;
+}
+
+#check-types {
+	float: right;
+	position: relative;
+	top: 19px;
+	right: -10px;
+	height: 0;
+}
+#check-types input {
+	position: relative;
+	top: 3px;
+}
 /* Couche OSM OVERPASS */
-#choixOVER > span
+#choixOVER > img
 {
 	display: none;
 }
-.layer-zoom-out {
-	background-color: red;
+.layer-zoom-out > img {
+	display: inline !important;
 }
 .layer-zoom-out > span {
 	display: inline !important;

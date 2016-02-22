@@ -41,41 +41,17 @@ if ($vue->mini_carte) { ?>
 		})
 		.coordinates('position') // Affiche les coordonnées dans les éléments HTML id=position-*
 		.addTo(map);
-		// La carte est centrée autour
+		// La carte est centrée autour de ce cadre
 		map.setView(cadre._latlng, 13, {reset: true});
 
 		// Les points d'intérêt WRI
-		new L.GeoJSON.Ajax(
-			'<?=$config['sous_dossier_installation']?>api/bbox',
-			{
-				argsGeoJSON: {
-					type_points: 'all'
-				},
-				bbox: true,
-				style: function(feature) {
-					var prop = [];
-					if (feature.properties.coord.alt)
-						prop.push (feature.properties.coord.alt+'m');
-					if (feature.properties.places.valeur)
-						prop.push (feature.properties.places.valeur+'<img src="<?=$config['sous_dossier_installation']?>images/lit.png"/>');
-					return {
-						url: feature.properties.lien,
-						iconUrl: '<?=$config['sous_dossier_installation']?>images/icones/' + feature.properties.type.icone + '.png',
-						iconAnchor: [8, 8],
-						title: feature.properties.nom +
-							(prop.length
-								? '<div style=text-align:center>'+prop.join(' ')+'</div>'
-								: ''
-							),
-						popupAnchor: [-1, -9],
-						degroup: 12 // Spread the icons when the cursor hovers on a busy area.
-					};
-				}
-			}
-		).addTo(map);
+		new L.GeoJSON.Ajax.WRIpoi({
+			urlRoot: '<?=$config['sous_dossier_installation']?>'
+		}).addTo(map);
 
 		// La couche OSM.OVERPASS
-		layer_overpass.addTo(map);
+		new L.GeoJSON.Ajax.OSMoverpass()
+		.addTo(map);
 
 		new L.Control.Fullscreen().addTo(map);
 
