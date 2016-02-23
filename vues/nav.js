@@ -169,6 +169,7 @@ window.addEventListener('load', function() {
 
 	<?if ( !$vue->mode_affichage ){?>
 		poiLayer.addTo(map);
+		poiOVER.addTo(map);
 	<?}?>
 
 	<?if ( $vue->mode_affichage == 'edit' ){?>
@@ -190,6 +191,7 @@ window.addEventListener('load', function() {
 		
 		massifLayer.addTo(edit.snapLayers); // Permet de "coller" aux tracés des autres massifs
 	<?}?>
+	maj_poi(); // Initialise la coche [de]cocher
 });
 /*************************************************************************************************************************************/
 function switch_massif (combo) {
@@ -208,15 +210,20 @@ function switch_massif (combo) {
 /*************************************************************************************************************************************/
 function maj_poi (c) {
     // Calcule l'argument d'extration filtre de points
-    var poitypes = document.getElementsByName ('id_point_type[]'),
-		check_types = document.getElementsByName ('check-types-input');
+    var poitypes = document.getElementsByName ('point_type[]'),
+		check_types = document.getElementsByName ('check-types-input'),
+		allchecked = true;
+
     type_points = '';
     for (var i=0; i < poitypes.length; i++) {
 		if (c && check_types.length)
 			poitypes[i].checked = check_types[0].checked;
         if (poitypes[i].checked)
             type_points += (type_points ? ',' : '') + poitypes[i].value;
+		else
+			allchecked = false;
 	}
+	check_types[0].checked = allchecked;
     // L'écrit dans un cookie pour se les rappeler au prochain affichage de cette page
     document.cookie = 'type_points=' + escape (type_points) + ';path=/';
 
@@ -230,25 +237,9 @@ function maj_poi (c) {
 	poiLayer.reload();
 }
 /*************************************************************************************************************************************/
-function couche_externe(e,l) {
-	// Spécial overpass
-	var elChoixOVER = document.getElementById('choixOVER');
-	if (l == poiOVER && elChoixOVER) {
-		elChoixOVER.style.color = '';
-		elChoixOVER.title = 'Service disponible pour les forts niveaux de zoom';
-	}
+function maj_autres_site(e,l) {
 	if(e.checked)
 		map.addLayer(l);
 	else
 		map.removeLayer(l);
 }
-
-// Pour bien gérer le retour sur la page sous chrome
-window.addEventListener('load', function() {
-	var extLayersCheckbox = {poiPRC:poiPRC, poiC2C:poiC2C, poiCHEM:poiCHEM, poiOVER:poiOVER};
-	for (var c in extLayersCheckbox) {
-		var ce = document.getElementById (c);
-		if (ce && ce.checked)
-			couche_externe(ce, extLayersCheckbox[c]);
-	}
-});

@@ -52,17 +52,17 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 						<label>
 							<input
 								type="checkbox"
-								name="id_point_type[]"
+								name="point_type[]"
 								onclick="maj_poi()"
-								value="<?=$type_affichable->id_point_type?>"
+								value="<?=$type_affichable->point_type?>"
 								<?if (!isset ($_COOKIE['type_points']) ||
-									in_array ($type_affichable->id_point_type, $ktp)) {?>
+									in_array ($type_affichable->point_type, $ktp)) {?>
 									checked="checked"
 								<?}?>
 							/>
 							<span>
 								<img
-									id="icone_<?=$type_affichable->id_point_type?>"
+									id="icone_<?=$type_affichable->point_type?>"
 									src="<?=$config['url_chemin_icones'].$type_affichable->icone?>.png"
 									alt="icone de <?=$type_affichable->nom_type?>"
 								/>
@@ -71,129 +71,44 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 						</label>
 					</li>
 				<?}?>
-				<span id="check-types">Tout [dé]cocher
-					<input
-						type="checkbox"
-						name="check-types-input"
-						onclick="maj_poi(true)"
-					/>
+				<span id="check-types">
+					Tout [dé]cocher
+					<input type="checkbox" name="check-types-input" onclick="maj_poi(true)" />
 				</span>
 				<li><a href="<?=$vue->lien_legende_carte?>">légende</a></li>
 			</ul>
 		</fieldset>
 		<fieldset class="nav-services">
 			<legend><a href="https://overpass-turbo.eu/">Services</a></legend>
+			<img id="over-zoom" title="Zoomer pour voir les points" src="<?=$config['sous_dossier_installation']?>images/loupe-rouge.png" />
+			<img id="over-wait" title="Chargement en cours" src="<?=$config['sous_dossier_installation']?>images/wait.gif" />
 			<ul>
-				<li>
-					<label>
-						<input
-							type="checkbox"
-							id="poiOVER"
-							title="poiOVER"
-							onclick="couche_externe(this, poiOVER)"
-						/>
-						<span id="choixOVER">
-							Services
-							<img title="Zoomer pour voir les points" src="<?=$config['sous_dossier_installation']?>images/loupe-rouge.png" />
-						</span>
-					</label>
-				</li>
-<!--
-					<label>
-						<input
-							type="checkbox"
-							id="poiOVER"
-							title="poiOVER"
-							onclick="couche_externe(this, poiOVER)"
-						/>
-						<span id="choixOVER">
-							H&ocirc;tels
-							<img title="Zoomer pour voir les points" src="<?=$config['sous_dossier_installation']?>images/loupe-rouge.png" />
-						</span>
-					</label>
-				</li>
-				<li>
-					<label>
-						<input
-							type="checkbox"
-							id="poiOVER2"
-							title="poiOVER"
-							WWWonclick="couche_externe(this, poiOVER)"
-						/>
-						<span id="choixOVER">
-							Campings
-							<img title="Chargement en cours" src="<?=$config['sous_dossier_installation']?>images/wait.gif" />
-							En developpement
-						</span>
-					</label>
-				</li>
-				<li>
-					<label>
-						<input
-							type="checkbox"
-							id="poiOVER2"
-							title="poiOVER"
-							WWWonclick="couche_externe(this, poiOVER)"
-						/>
-						<span id="choixOVER">
-							Alimentation
-							<img title="Chargement en cours" src="<?=$config['sous_dossier_installation']?>images/wait.gif" />
-							En developpement
-						</span>
-					</label>
-				</li>
-				<li>
-					<label>
-						<input
-							id="poiOVER3"
-							title="poiOVER"
-							WWWonclick="couche_externe(this, poiOVER)"
-							type="checkbox"
-						/>
-						<span id="choixOVER">
-							Parkings
-							<img title="Chargement en cours" src="<?=$config['sous_dossier_installation']?>images/wait.gif" />
-							En developpement
-						</span>
-					</label>
-				</li>
--->
+				<? foreach (array (
+					'H&ocirc;tels' => 'tourism~hotel',
+					'Campings' => 'tourism~camp_site',
+					'Alimentation' => 'shop~supermarket|convenience',
+					'Parkings' => 'amenity~parking',
+				) AS $k => $v) {?>
+					<li><label>
+						<input type="checkbox" name="service_type[]" value="<?=$v?>" onclick="poiOVER.reload()" />
+						<?=$k?>
+					</label></li>
+				<?}?>
 			</ul>
 		</fieldset>
 		<fieldset class="nav-sites">
 			<legend>Autres sites</legend>
 			<ul>
-				<li>
-					<label>
-						<input
-							id="poiPRC"
-							onclick="couche_externe(this, poiPRC)"
-							type="checkbox"
-						/>
-						<a href="http://www.pyrenees-refuges.com/" title="Cocher pour voir les points / cliquer 'Pyrénées refuges' pour voir le site">Pyrénées refuges</a>
-					</label>
-				</li>
-				<li>
-					<label>
-						<input
-							id="poiC2C"
-							onclick="couche_externe(this, poiC2C)"
-							type="checkbox"
-						/>
-						<a href="http://www.camptocamp.org/" title="Cocher pour voir les points / cliquer 'Camp to Camp' pour voir le site">Camp to Camp</a>
-					</label>
-				</li>
-				<li>
-					<label>
-						<input
-							id="poiCHEM"
-							title="poiCHEM"
-							onclick="couche_externe(this, poiCHEM)"
-							type="checkbox"
-						/>
-						<a href="http://chemineur.fr/" title="Cocher pour voir les points / cliquer 'Chemineur' pour voir le site">Chemineur</a>
-					</label>
-				</li>
+				<? foreach (array (
+					'poiPRC' => 'pyrenees-refuges.com',
+					'poiC2C' => 'camptocamp.org',
+					'poiCHEM' => 'chemineur.fr',
+				) AS $k => $v) {?>
+					<li><label>
+						<input type="checkbox" title="Cocher pour afficher les points <?=$v?> sur la carte" onclick="maj_autres_site(this, <?=$k?>)" />
+						<a href="http://www.<?=$v?>/" title="Cliquer pour aller sur <?=$v?>"><?=$v?></a>
+					</label></li>
+				<?}?>
 			</ul>
 		</fieldset>
 	<?}?>

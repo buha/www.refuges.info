@@ -790,7 +790,7 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 /* Carte de la page des points écrans */
 @media screen and (min-width: 641px) {
   #vignette {
-    width: 280px;
+    width: 400px;
     min-width: auto;
   }
   #vignette-agrandie {
@@ -836,16 +836,10 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 	top: 3px;
 }
 /* Couche OSM OVERPASS */
-#choixOVER > img
-{
-	display: none;
+.nav-services img {
+	float: right;
 }
-.layer-zoom-out > img {
-	display: inline !important;
-}
-.layer-zoom-out > span {
-	display: inline !important;
-}
+
 /* Carte formulaire de modification */
 #carte_edit, .carte_edit {
   width: 450px; 
