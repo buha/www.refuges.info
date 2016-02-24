@@ -52,9 +52,7 @@ L.GeoJSON.Ajax = L.GeoJSON.Style.extend({
 
 	// Build the final url request to send to the server
 	getUrl: function() {
-		var argsGeoJSON = typeof this.options.argsGeoJSON == 'function'
-			? this.options.argsGeoJSON.call(this, this)
-			: this.options.argsGeoJSON;
+		var argsGeoJSON = typeof this.options.argsGeoJSON == 'function' ? this.options.argsGeoJSON.call(this, this) : this.options.argsGeoJSON;
 
 		// Add bbox param if necessary
 		if (this.options.bbox)
@@ -82,12 +80,11 @@ L.GeoJSON.Ajax = L.GeoJSON.Style.extend({
 	// Action when receiving data
 	_onreadystatechange: function(e) {
 		if (e.target.readyState < 4) // Still in progress
-		;
+			;
 		else if (e.target.status == 200)
 			e.target.context.redraw(e.target.responseText);
-		else if ((e.target.status == 429 || e.target.status == 504) && // Too many requests or time out
-			typeof e.target.context.error429 == 'function')
-			e.target.context.error429.call(e.target.context);
+		else if (typeof e.target.context['error'+e.target.status] == 'function')
+			e.target.context['error'+e.target.status].call (e.target.context);
 		else if (e.target.status)
 			alert('ajaxRequest error status = ' + e.target.status + ' calling ' + e.target.context.getUrl());
 	},
@@ -109,7 +106,7 @@ L.GeoJSON.Ajax = L.GeoJSON.Style.extend({
 			}
 			// Perform a special calculation if necessary (used for OSM overpass)
 			if (typeof this.options.tradJson == 'function')
-				js = this.options.tradJson.call(this, js);
+				js = this.options.tradJson.call(this,js);
 
 			// Add it to the layer
 			this.addData(js);

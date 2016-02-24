@@ -189,5 +189,9 @@ L.GeoJSON.Ajax.OSMoverpass = L.GeoJSON.Ajax.extend({
 	error429: function() { // Too many requests or request timed out
 		this.ow.style.display = 'none'; // On efface le sablier
 		this.oz.style.display = ''; // On affiche la loupe rouge
+	},
+
+	error504: function() { // Gateway request timed out
+		this.error429();
 	}
 });

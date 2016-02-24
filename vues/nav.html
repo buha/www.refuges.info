@@ -54,15 +54,15 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 								type="checkbox"
 								name="point_type[]"
 								onclick="maj_poi()"
-								value="<?=$type_affichable->point_type?>"
+								value="<?=$type_affichable->id_point_type?>"
 								<?if (!isset ($_COOKIE['type_points']) ||
-									in_array ($type_affichable->point_type, $ktp)) {?>
+									in_array ($type_affichable->id_point_type, $ktp)) {?>
 									checked="checked"
 								<?}?>
 							/>
 							<span>
 								<img
-									id="icone_<?=$type_affichable->point_type?>"
+									id="icone_<?=$type_affichable->id_point_type?>"
 									src="<?=$config['url_chemin_icones'].$type_affichable->icone?>.png"
 									alt="icone de <?=$type_affichable->nom_type?>"
 								/>
