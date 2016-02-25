@@ -6,107 +6,78 @@
 ?>
 
 var map,
-	type_points = '<?=$_COOKIE['type_points'] ? $_COOKIE['type_points'] : ''?>',
-	arg_massifs = '<?=$vue->polygone->id_polygone?>',
 	wriPoi,
 	wriMassif,
+	massifLayer,
 	poiOVER,
 	poiLayer;
 
 window.addEventListener('load', function() {
+	<?php include ($config['racine_projet'].'vues/includes/cartes.js') ?>
 
-	var baseLayers = {
-			'Refuges.info':new L.TileLayer.OSM.MRI(),
-			'OSM fr':      new L.TileLayer.OSM.FR(),
-			'Outdoors':    new L.TileLayer.OSM.Outdoors(),
-			'IGN':         new L.TileLayer.IGN({k: '<?=$config['ign_key']?>', l:'GEOGRAPHICALGRIDSYSTEMS.MAPS'}),
-			'IGN Express': new L.TileLayer.IGN({k: '<?=$config['ign_key']?>', l:'GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.CLASSIQUE'}),
-			'SwissTopo':   new L.TileLayer.SwissTopo({l:'ch.swisstopo.pixelkarte-farbe'}),
-			'Autriche':    new L.TileLayer.Kompass({l:'Touristik'}),
-			'Espagne':     new L.TileLayer.WMS.IDEE(),
-			'Italie':      new L.TileLayer.WMS.IGM(),
-			'Angleterre':  new L.TileLayer.OSOpenSpace('<?=$config['os_key']?>', {}),
-			'Photo Bing':  new L.BingLayer('<?=$config['bing_key']?>', {type:'Aerial'}),
-			'Photo IGN':   new L.TileLayer.IGN({k: '<?=$config['ign_key']?>', l:'ORTHOIMAGERY.ORTHOPHOTOS'})
-		},
-
-	<?if ( $vue->mode_affichage == 'edit' ){?>
-		// Dessine tous les massifs pour servir de gabari au nouveau
-		massifLayer = new L.GeoJSON.Ajax(
-			sous_dossier_installation+'api/polygones', {
-				argsGeoJSON: {
-					type_polygon: 1,
-					type_geom: 'polylines', // La surface à l'intérieur des massifs reste cliquable
-					time: <?=time()?> // Inhibe le cache
-				},
-				style: function(feature) {
-					return {
-						color: 'blue',
-						weight: 2,
-						opacity: 0.6,
-						fillOpacity: 0
-					}
-				}
-			}
-		),
-	<?}else if ( $vue->mode_affichage == 'zone' ){?>
+	// Les massifs ou contours de massifs
+	massifLayer = new L.GeoJSON.Ajax(
+		'<?=$config['sous_dossier_installation']?>api/polygones', {
+			argsGeoJSON: {
+				type_polygon: 1,
+<?if ($vue->mode_affichage == 'zone') {?>
 		// Affiche tous les massifs d'une zone (en différentes couleurs)
-		massifLayer = new L.GeoJSON.Ajax(
-			sous_dossier_installation+'api/polygones', {
-				argsGeoJSON: {
-					type_polygon: 1,
-					intersection: '<?=$vue->polygone->id_polygone?>'
-				},
-				style: function(feature) {
-					return {
-						title: feature.properties.nom,
-						popupAnchor: [-1, -4],
-						url: feature.properties.lien,
-						color: 'black',
-						fillColor: feature.properties.couleur,
-						weight: 1,
-						fillOpacity: 0.3
-					}
+				intersection: '<?=$vue->polygone->id_polygone?>',
+<?}else{?>
+				type_geom: 'polylines', // La surface à l'intérieur des massifs reste cliquable
+<?}
+if (!$vue->mode_affichage) {?>
+				massif: '<?=$vue->polygone->id_polygone?>', // Affiche le contour d'un seul massif 
+<?}?>
+				time: <?=time()?> // Inhibe le cache
+			},
+			style: function(feature) {
+				return {
+					color: 'blue',
+					weight: 2,
+					fillOpacity: 0,
+<?if ($vue->mode_affichage == 'zone') {?>
+					title: feature.properties.nom,
+					url: feature.properties.lien,
+					color: 'black',
+					weight: 1,
+					fillColor: feature.properties.couleur,
+					fillOpacity: 0.3,
+<?}?>
+					opacity: 0.6
 				}
 			}
-		),
-	<?}else{?>
-		// Affiche le contour d'un seul massif 
-		massifLayer = new L.GeoJSON.Ajax(
-			sous_dossier_installation+'api/polygones', {
-				argsGeoJSON: {
-					massif: '<?=$vue->polygone->id_polygone?>',
-					type_geom: 'polylines', // La surface à l'intérieur des massifs reste cliquable
-				},
-				style: function(feature) {
-					return {
-						color: 'blue',
-						weight: 2,
-						opacity: 1,
-						fillOpacity: 0
-					}
-				}
-			}
-		),
-	<?}?>
+		}
+	);
 
 	// Points via chemineur.fr
-	poiCHEM = new L.GeoJSON.Ajax.chem(),
-	poiPRC = new L.GeoJSON.Ajax.chem({
-		argsGeoJSON: {
-			site: 'prc'
-		},
-		urlRootRef: 'http://www.pyrenees-refuges.com/fr/affiche.php?numenr='
-	}),
-	poiC2C = new L.GeoJSON.Ajax.chem({
-		argsGeoJSON: {
-			site: 'c2c'
-		},
-		urlRootRef: 'http://www.camptocamp.org/huts/'
-	});
+	var poiCHEM = new L.GeoJSON.Ajax.chem(),
+		poiPRC = new L.GeoJSON.Ajax.chem({
+			argsGeoJSON: {
+				site: 'prc'
+			},
+			urlRootRef: 'http://www.pyrenees-refuges.com/fr/affiche.php?numenr='
+		}),
+		poiC2C = new L.GeoJSON.Ajax.chem({
+			argsGeoJSON: {
+				site: 'c2c'
+			},
+			urlRootRef: 'http://www.camptocamp.org/huts/'
+		});
 
-	wriPoi = new L.GeoJSON.Ajax.wriPoi();
-	wriMassif = new L.GeoJSON.Ajax.wriPoi.dansMassif();
+	wriPoi = new L.GeoJSON.Ajax.wriPoi({ // Les points choisis sur toute la carte
+		argsGeoJSON: {
+			type_points: '<?=$_COOKIE['type_points'] ? $_COOKIE['type_points'] : ''?>'
+		},
+	});
+	wriMassif = new L.GeoJSON.Ajax.wriPoi({ // Seulement les points dans un massif
+		urlGeoJSON: '<?=$config['sous_dossier_installation']?>api/massif',
+		argsGeoJSON: {
+			type_points: null,
+			massif: '<?=$vue->polygone->id_polygone?>'
+		},
+		disabled: !wriPoi.options.argsGeoJSON
+	});
 	poiOVER = new L.GeoJSON.Ajax.OSMoverpass();
 	poiLayer = <?if ( $vue->polygone->id_polygone ) {?>wriMassif<?}else{?>wriPoi<?}?>; // Couche active
 
@@ -153,7 +124,8 @@ window.addEventListener('load', function() {
 		// Editeur et aide de l'éditeur
 		var edit = new L.Control.Draw.Plus({
 			draw: {
-				polygon: true
+				polygon: true,
+				polyline: true
 			},
 			edit: {
 				remove: true

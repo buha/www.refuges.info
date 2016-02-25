@@ -80,8 +80,11 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 		</fieldset>
 		<fieldset class="nav-services">
 			<legend><a href="https://overpass-turbo.eu/">Services</a></legend>
-			<img id="over-zoom" title="Zoomer pour voir les points" src="<?=$config['sous_dossier_installation']?>images/loupe-rouge.png" />
-			<img id="over-wait" title="Chargement en cours" src="<?=$config['sous_dossier_installation']?>images/wait.gif" />
+			<div id="overpass-status">
+				<img id="over-zoom" title="Zoomer pour voir les points" src="<?=$config['sous_dossier_installation']?>images/loupe-rouge.png" />
+				<img id="over-wait" title="Chargement en cours" src="<?=$config['sous_dossier_installation']?>images/wait.gif" />
+				<span id="over-zero">0 point</span>
+			</div>
 			<ul>
 				<? foreach (array (
 					'H&ocirc;tels' => 'tourism~hotel',
@@ -137,10 +140,11 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 					<p>Article partitif (max 20 car)
 					<input type="text" name="article_partitif" size="9" value="<?=$vue->polygone->article_partitif?>" /></p><br/>
 
-					<p><div id="edit-changed" style="display:none"><i style="color:red">Polygone modifié</i></div></p>
+					<p id="edit-changed" style="display:none"><i style="color:red">Polygone modifié</i></p>
 
-					<input type="submit" name="enregistrer" value="Enregistrer" />&nbsp;
-					<a href="?" title="Sans sauvegarder">Quiter le mode édition sans enregistrer</a>
+					<input type="submit" name="enregistrer" value="Enregistrer" />
+					<br/>ou<br/>
+					<p><a href=".">Quiter sans enregistrer</a></p>
 				</label>
 			</fieldset>
 			<?if ($vue->polygone->id_polygone) {?>
@@ -158,8 +162,9 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 								<p style="color:red">ATTENTION: Ceci va supprimer définitivement le massif "<?=$vue->polygone->nom_polygone?>"</p>
 								<p style="color:red">Aucune restauration ne sera possible</p>
 							</b>
-							<input type="submit" name="annuler" value="Annuler" style="float:right" />
-							<input style="color:red;background-color:yellow" type="submit" name="supprimer" value="Supprimer '<?=$vue->polygone->nom_polygone?>'" />
+							<input class="bouton-supprimer" type="submit" name="supprimer" value="Supprimer '<?=$vue->polygone->nom_polygone?>'" />
+							<br/>ou<br/>
+							<input type="submit" name="annuler" value="Annuler" />
 							<br />&nbsp;
 						<?}?>
 					</label>
@@ -168,14 +173,24 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 				<fieldset>
 					<legend>Edition</legend>
 					<label>
-						<p><u>Créer un polygone:</u> Cliquer sur le contrôle "polygone"</p>
-						<p><u>Supprimer un polygone:</u> Cliquer sur le contrôle "poubelle"</p>
-						<p><u>Ajouter un sommet:</u> Déplacer un marqueur au milieu d'un segment</p>
-						<p><u>Déplacer un sommet:</u> Le déplacer</p>
-						<p><u>Supprimer un sommet:</u> Cliquer une fois dessus</p>
-						<p><u>Découper un polygone:</u> Cliquer une fois sur un marqueur au milieu d'un segment</p>
-						<p><u>Fusionner deux lignes:</u> Joindre les extrémités</p>
-						<p><u>Fermer une ligne:</u> Joindre ses deux extrémités</p>
+						<p><u>Créer un polygone:</u> Cliquer sur le contrôle "polygone" puis à l'emplacement du premier sommet...</p>
+						<p><u>Ajouter un sommet:</u> Déplacer un marqueur au milieu d'un côté.</p>
+						<p><u>Déplacer un sommet:</u> Le déplacer.
+						Les sommets déplacés "collent" aux sommets des autres massifs et prennent exactement leur position.</p>
+						<p><u>Supprimer un sommet:</u> Cliquer une fois dessus.</p>
+						<p><u>Supprimer un polygone:</u> Cliquer sur le contrôle "poubelle" puis sur un côté.</p>
+						<hr/>
+						<p>Pour une édition plus complexe, vous pouvez transformer vos polygones en lignes brisées.</p>
+						<p><u>Couper un polygone:</u> Cliquer une fois sur un marqueur au milieu d'un côté.
+						On obtient une ligne.</p>
+						<p><u>Etendre une ligne:</u> Cliquer sur le contrôle "ligne" puis sur l'extrémité à étendre...</p>
+						<p><u>Ajouter une ligne:</u> Cliquer sur le contrôle "ligne" puis à l'emplacement de la première exterémité...</p>
+						<p><u>Fusionner deux lignes:</u> Joindre une extrémité de chacune.</p>
+						<p><u>Fermer une ligne:</u> Joindre ses deux extrémités. On obtient un polygone.</p>
+						<hr/>
+						<p><u>Sauvegarder les modifications:</u> Cliquer sur le bouton "Enregistrer."</p>
+						<p><u>Note:</u> Lors de la sauvegarde les lignes seront refermées en ploygones.</p>
+						<p><u>Quiter sans enregistrer:</u> Cliquer sur "Quiter sans enregistrer".</p>
 					</label>
 				</fieldset>
 		</form>

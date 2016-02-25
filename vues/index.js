@@ -12,7 +12,7 @@ window.addEventListener('load', function() {
 		layers: [
 			new L.TileLayer.OSM.MRI(),
 			new L.GeoJSON.Ajax( // Les massifs WRI
-				sous_dossier_installation+'api/polygones',
+				'<?=$config['sous_dossier_installation']?>api/polygones',
 				{
 					argsGeoJSON: {
 						type_polygon: 1

@@ -831,8 +831,19 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 	top: 3px;
 }
 /* Couche OSM OVERPASS */
-.nav-services img {
+#overpass-status * {
+	display: none;
 	float: right;
+}
+#overpass-status div {
+	float: none;
+}
+.over-none #over-none,
+.over-wait #over-wait,
+.over-zoom #over-zoom,
+.over-some #over-some,
+.over-zero #over-zero {
+	display: initial !important;
 }
 
 /* Carte formulaire de modification */
@@ -841,4 +852,10 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 /* Ne pas définir height pour que la hauteur soit automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenêtre */
   float: right;
   max-width: 100%;
+}
+.bouton-supprimer {
+	wborder: 8px;
+	color: red;
+	background-color: yellow;
+	padding: 4px;
 }

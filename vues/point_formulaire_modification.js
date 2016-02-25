@@ -8,6 +8,8 @@
 var map, viseur, gps;
 
 window.addEventListener('load', function() {
+	<?php include ($config['racine_projet'].'vues/includes/cartes.js') ?>
+
 	var baseLayers = {
 		'Refuges.info':new L.TileLayer.OSM.MRI(),
 		'OSM fr':      new L.TileLayer.OSM.FR(),
@@ -16,7 +18,6 @@ window.addEventListener('load', function() {
 	};
 
 	map = new L.Map('carte-edit');
-
 	baseLayers['<?=$vue->fond_carte_par_defaut?>'].addTo(map); // Le fond de carte visible
 
 	// Viseur déplaçable affichant sa position éditable.
@@ -24,39 +25,32 @@ window.addEventListener('load', function() {
 		draggable: true,
 		zIndexOffset: 1000, // Passe au dessus des autres pictos
 		icon: L.icon({
-			iconUrl: sous_dossier_installation+'images/viseur.png',
+			iconUrl: '<?=$config['sous_dossier_installation']?>images/viseur.png',
 			iconAnchor: [15, 15]
 		}),
 	})
-	.coordinates('viseur') // Lien avec le formulaire HTML
-	.addTo(map);
+		.coordinates('viseur') // Lien avec le formulaire HTML
+		.addTo(map);
+
 	map.setView(viseur._latlng, 13, { // Recentre la carte sur ce viseur
 		reset: true
 	});
 
-	new L.GeoJSON.Ajax( // Les points d'intérêt WRI
-		sous_dossier_installation+'api/bbox',
-		{
-			argsGeoJSON: {
-				type_points: 'all'
-			},
-			bbox: true,
-			style: function(feature) {
-				return {
-					iconUrl: sous_dossier_installation+'images/icones/' + feature.properties.type.icone + '.png',
-					iconAnchor: [8, 8],
-					title: feature.properties.nom,
-					popupAnchor: [-1, -9]
-				};
-			}
+	new L.GeoJSON.Ajax.wriPoi ({ // Les points d'intérêt WRI, style simplifié
+		style: function(feature) {
+			return {
+				iconUrl: '<?=$config['sous_dossier_installation']?>images/icones/' + feature.properties.type.icone + '.png',
+				iconAnchor: [8, 4],
+				title: feature.properties.nom
+			};
 		}
-	).addTo(map);
+	}).addTo(map);
 
 	var layerSwitcher = new L.Control.Layers(baseLayers).addTo(map); // Le controle de changement de couche de carte avec la liste des cartes dispo
 
 	new L.Control.Permalink.Cookies({ // Garde la mémoire des position, zoom, carte
 		layers: layerSwitcher,
-		text: null // Mais le contrôle n'apparait pas sur la carte car ça n'a pas de sens pour un point
+		text: null // Mais le contrôle n'apparait pas sur la carte
 	}).addTo(map);
 
 	new L.Control.Scale().addTo(map);
