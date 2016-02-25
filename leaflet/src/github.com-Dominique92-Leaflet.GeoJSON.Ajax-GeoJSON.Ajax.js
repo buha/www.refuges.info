@@ -13,8 +13,6 @@ L.GeoJSON.Ajax = L.GeoJSON.Style.extend({
 	ajaxRequest: null,
 
 	options: {
-		proxy: '', // If needed by the GeoJSON server / This can be avoided if the GeoJSON server delivers: header("Access-Control-Allow-Origin: *");
-		urlRoot: '', // Prefix to all urls used in this layer.
 		urlGeoJSON: null, // GeoJSON server URL.
 		argsGeoJSON: {} // GeoJSON server args.
 	},
@@ -31,7 +29,7 @@ L.GeoJSON.Ajax = L.GeoJSON.Style.extend({
 		else if (window.ActiveXObject)
 			this.ajaxRequest = new ActiveXObject('Microsoft.XMLHTTP');
 		else {
-			alert("Your browser doesn't support AJAX requests.");
+			alert('Your browser doesn\'t support AJAX requests.');
 			exit;
 		}
 		this.ajaxRequest.context = this; // Reference the layer object for further usage.
@@ -52,13 +50,15 @@ L.GeoJSON.Ajax = L.GeoJSON.Style.extend({
 
 	// Build the final url request to send to the server
 	getUrl: function() {
-		var argsGeoJSON = typeof this.options.argsGeoJSON == 'function' ? this.options.argsGeoJSON.call(this, this) : this.options.argsGeoJSON;
+		var argsGeoJSON = typeof this.options.argsGeoJSON == 'function'
+			? this.options.argsGeoJSON.call(this, this)
+			: this.options.argsGeoJSON;
 
 		// Add bbox param if necessary
 		if (this.options.bbox)
 			argsGeoJSON.bbox = this._map.getBounds().toBBoxString();
 
-		return this.options.proxy + this.options.urlRoot + this.options.urlGeoJSON + L.Util.getParamString(argsGeoJSON);
+		return this.options.urlGeoJSON + L.Util.getParamString(argsGeoJSON);
 	},
 
 	reload: function() {
@@ -80,7 +80,7 @@ L.GeoJSON.Ajax = L.GeoJSON.Style.extend({
 	// Action when receiving data
 	_onreadystatechange: function(e) {
 		if (e.target.readyState < 4) // Still in progress
-			;
+		;
 		else if (e.target.status == 200)
 			e.target.context.redraw(e.target.responseText);
 		else if (typeof e.target.context['error'+e.target.status] == 'function')
@@ -106,7 +106,7 @@ L.GeoJSON.Ajax = L.GeoJSON.Style.extend({
 			}
 			// Perform a special calculation if necessary (used for OSM overpass)
 			if (typeof this.options.tradJson == 'function')
-				js = this.options.tradJson.call(this,js);
+				js = this.options.tradJson.call(this, js);
 
 			// Add it to the layer
 			this.addData(js);

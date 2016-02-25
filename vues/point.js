@@ -35,26 +35,19 @@ if ($vue->mini_carte) { ?>
 		var cadre = new L.Marker([<?=$vue->point->latitude?>,<?=$vue->point->longitude?>], {
 			clickable: false, // Evite d'activer le curseur: pointeur
 			icon: L.icon({
-				iconUrl: '<?=$config['sous_dossier_installation']?>images/cadre.png',
+				iconUrl: sous_dossier_installation+'images/cadre.png',
 				iconAnchor: [15, 21]
 			})
 		})
-		.coordinates('position') // Affiche les coordonnées dans les éléments HTML id=position-*
+		.coordinates('position') // Affiche les coordonnées du cadre dans les éléments HTML id=position-*
 		.addTo(map);
-		// La carte est centrée autour de ce cadre
+
 		map.setView(cadre._latlng, 13, {reset: true});
 
-		// Les points d'intérêt WRI
-		new L.GeoJSON.Ajax.WRIpoi({
-			urlRoot: '<?=$config['sous_dossier_installation']?>'
-		}).addTo(map);
-
-		// La couche OSM.OVERPASS
-		new L.GeoJSON.Ajax.OSMoverpass()
-		.addTo(map);
+		new L.GeoJSON.Ajax.wriPoi().addTo(map);
+		new L.GeoJSON.Ajax.OSMoverpass().addTo(map);
 
 		new L.Control.Fullscreen().addTo(map);
-
 		layerSwitcher = new L.Control.Layers(baseLayers).addTo(map); // Le controle de changement de couche de carte avec la liste des cartes dispo
 
 		new L.Control.Permalink.Cookies({ // Garde la mémoire des position, zoom, carte.
@@ -66,16 +59,6 @@ if ($vue->mini_carte) { ?>
 
 	// Actions de la page
 	function agrandir_vignette() {
-
-		// On masque le contrôle puisqu'il a déjà été activé
-		var agrandir_vignette = document.getElementById('agrandir_vignette');
-		if (agrandir_vignette)
-			agrandir_vignette.style.display = 'none';
-
-		// On redimensionne la carte
-		document.getElementById('vignette').id = 'vignette-agrandie';
-		map.autoHeight();
-
 		// On positionne la couche de second choix
 		var oldLayerId, newLayerId;
 		for (l in layerSwitcher._layers) {

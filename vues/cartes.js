@@ -5,24 +5,28 @@
  * Couches geoJSON pour www.refuges.info
  */
 
+if (typeof type_points == 'undefined')
+	var type_points = 'all';
+
 // Points d'interêt refuges.info
-L.GeoJSON.Ajax.WRIpoi = L.GeoJSON.Ajax.extend({
+L.GeoJSON.Ajax.wriPoi = L.GeoJSON.Ajax.extend({
 	options: {
-		urlGeoJSON: 'api/bbox',
+		urlGeoJSON: sous_dossier_installation+'api/bbox',
 		argsGeoJSON: {
-			type_points: 'all'
+			type_points: type_points
 		},
 		bbox: true,
+		disabled: !type_points,
 		style: function(feature) {
 			var prop = [];
 			if (feature.properties.coord.alt)
 				prop.push(feature.properties.coord.alt + 'm');
 			if (feature.properties.places.valeur)
-				prop.push(feature.properties.places.valeur + '<img src="' + this.options.urlRoot + 'images/lit.png"/>');
+				prop.push(feature.properties.places.valeur + '<img src="' + sous_dossier_installation + 'images/lit.png"/>');
 			this.options.disabled = !this.options.argsGeoJSON.type_points;
 			return {
 				url: feature.properties.lien,
-				iconUrl: this.options.urlRoot + 'images/icones/' + feature.properties.type.icone + '.png',
+				iconUrl: sous_dossier_installation + 'images/icones/' + feature.properties.type.icone + '.png',
 				iconAnchor: [8, 4],
 				title: '<a href="' + feature.properties.lien + '">' + feature.properties.nom + '</a>' +
 					(prop.length ? '<div style=text-align:center>' + prop.join(' ') + '</div>' : ''),
@@ -32,6 +36,15 @@ L.GeoJSON.Ajax.WRIpoi = L.GeoJSON.Ajax.extend({
 			};
 		}
 	}
+});
+
+L.GeoJSON.Ajax.wriPoi.dansMassif = L.GeoJSON.Ajax.wriPoi.extend({
+	urlGeoJSON: sous_dossier_installation+'api/massif',
+	argsGeoJSON: {
+		type_points: null,
+		massif: typeof arg_massifs == 'string' ? arg_massifs : ''
+	},
+	disabled: !type_points
 });
 
 // Points d'interêt via chemineur.fr
@@ -66,7 +79,7 @@ L.GeoJSON.Ajax.OSMoverpass = L.GeoJSON.Ajax.extend({
 		// Url args calculation
 		argsGeoJSON: function() {
 			this.oz = document.getElementById('over-zoom') || document.createElement('div');
-			this.ow = document.getElementById('over-wait') || this.oz;
+			this.ow = document.getElementById('over-wait') || document.createElement('div');
 			this.st = document.getElementsByName('service_type[]');
 
 			// Efface les icones d'avancement
@@ -81,23 +94,17 @@ L.GeoJSON.Ajax.OSMoverpass = L.GeoJSON.Ajax.extend({
 					if (this.st[e].checked) {
 						var val = this.st[e].value.split('~');
 						if (typeof services[val[0]] == 'undefined')
-							services[val[0]] = {};
-						services[val[0]][val[1]] = true;
+							services[val[0]] = val[1];
+						else
+							services[val[0]] += '|'+val[1];
 					}
 				if (!Object.keys(services).length) // Pas de sélection
 					return false;
 			} else
 				services = { // Quand il n'y a pas de coches (fiche point)
-					tourism: {
-						hotel: true,
-						camp_site: true
-					},
-					shop: {
-						'supermarket|convenience': true
-					},
-					amenity: {
-						parking: true
-					}
+					tourism: 'hotel|camp_site',
+					shop: 'supermarket|convenience',
+					amenity: 'parking'
 				};
 
 			// Zoom trop large
@@ -111,11 +118,11 @@ L.GeoJSON.Ajax.OSMoverpass = L.GeoJSON.Ajax.extend({
 			this.options.disabled = false;
 
 			// Calcul de la requette
-			var bbox = b._southWest.lat + ',' + b._southWest.lng + ',' + b._northEast.lat + ',' + b._northEast.lng,
-				r = '[out:json][timeout:25];(\n';
+			var r = '[out:json][timeout:25];(\n',
+				bbox = b._southWest.lat + ',' + b._southWest.lng + ',' + b._northEast.lat + ',' + b._northEast.lng;
 			for (var s in services) {
-				var tt = '["' + s + '"~"' + Object.keys(services[s]).join('|') + '"](' + bbox + ');\n';
-				r += 'node' + tt + 'way' + tt;
+				var x = '["' + s + '"~"' + services[s] + '"](' + bbox + ');\n';
+				r += 'node' + x + 'way' + x;
 			}
 			return {
 				data: r + ');out 100 center;>;'
@@ -131,11 +138,11 @@ L.GeoJSON.Ajax.OSMoverpass = L.GeoJSON.Ajax.extend({
 				var d = data.elements[e],
 					t = d.tags,
 					iconUrl =
-					t.tourism == 'hotel' ? 'hotel' :
-					t.tourism == 'camp_site' ? 'camping' :
-					t.shop == 'convenience' || t.shop == 'convenience' ? 'ravitaillement' :
-					t.amenity == 'parking' ? 'parking' :
-					null,
+						t.tourism == 'hotel' ? 'hotel' :
+						t.tourism == 'camp_site' ? 'camping' :
+						t.shop == 'convenience' || t.shop == 'convenience' ? 'ravitaillement' :
+						t.amenity == 'parking' ? 'parking' :
+						null,
 					adresses = [
 						t['addr:housenumber'],
 						t['addr:street'],

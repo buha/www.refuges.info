@@ -24,7 +24,7 @@ window.addEventListener('load', function() {
 		draggable: true,
 		zIndexOffset: 1000, // Passe au dessus des autres pictos
 		icon: L.icon({
-			iconUrl: '<?=$config['sous_dossier_installation']?>images/viseur.png',
+			iconUrl: sous_dossier_installation+'images/viseur.png',
 			iconAnchor: [15, 15]
 		}),
 	})
@@ -35,7 +35,7 @@ window.addEventListener('load', function() {
 	});
 
 	new L.GeoJSON.Ajax( // Les points d'intérêt WRI
-		'<?=$config['sous_dossier_installation']?>api/bbox',
+		sous_dossier_installation+'api/bbox',
 		{
 			argsGeoJSON: {
 				type_points: 'all'
@@ -43,7 +43,7 @@ window.addEventListener('load', function() {
 			bbox: true,
 			style: function(feature) {
 				return {
-					iconUrl: '<?=$config['sous_dossier_installation']?>images/icones/' + feature.properties.type.icone + '.png',
+					iconUrl: sous_dossier_installation+'images/icones/' + feature.properties.type.icone + '.png',
 					iconAnchor: [8, 8],
 					title: feature.properties.nom,
 					popupAnchor: [-1, -9]

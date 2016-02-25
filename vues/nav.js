@@ -5,114 +5,90 @@
 // $config les données communes à tout WRI
 ?>
 
-// Style de base des polylines édités
-L.Polyline = L.Polyline.extend({
-	options: {
-		color: 'blue',
-		weight: 4,
-		opacity: 1,
-	}
-});
-
 var map,
 	type_points = '<?=$_COOKIE['type_points'] ? $_COOKIE['type_points'] : ''?>',
 	arg_massifs = '<?=$vue->polygone->id_polygone?>',
-	layerSwitcher,
-	baseLayers = {
-		'Refuges.info':new L.TileLayer.OSM.MRI(),
-		'OSM fr':      new L.TileLayer.OSM.FR(),
-		'Outdoors':    new L.TileLayer.OSM.Outdoors(),
-		'IGN':         new L.TileLayer.IGN({k: '<?=$config['ign_key']?>', l:'GEOGRAPHICALGRIDSYSTEMS.MAPS'}),
-		'IGN Express': new L.TileLayer.IGN({k: '<?=$config['ign_key']?>', l:'GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.CLASSIQUE'}),
-		'SwissTopo':   new L.TileLayer.SwissTopo({l:'ch.swisstopo.pixelkarte-farbe'}),
-		'Autriche':    new L.TileLayer.Kompass({l:'Touristik'}),
-		'Espagne':     new L.TileLayer.WMS.IDEE(),
-		'Italie':      new L.TileLayer.WMS.IGM(),
-		'Angleterre':  new L.TileLayer.OSOpenSpace('<?=$config['os_key']?>', {}),
-		'Photo Bing':  new L.BingLayer('<?=$config['bing_key']?>', {type:'Aerial'}),
-		'Photo IGN':   new L.TileLayer.IGN({k: '<?=$config['ign_key']?>', l:'ORTHOIMAGERY.ORTHOPHOTOS'})
-	},
+	wriPoi,
+	wriMassif,
+	poiOVER,
+	poiLayer;
 
-<?if ( $vue->mode_affichage == 'edit' ){?>
-	// Dessine tous les massifs pour servir de gabari au nouveau
-	massifLayer = new L.GeoJSON.Ajax(
-		'<?=$config['sous_dossier_installation']?>api/polygones', {
-			argsGeoJSON: {
-				type_polygon: 1,
-				type_geom: 'polylines', // La surface à l'intérieur des massifs reste cliquable
-				time: <?=time()?> // Inhibe le cache
-			},
-			style: function(feature) {
-				return {
-					color: 'blue',
-					weight: 2,
-					opacity: 0.6,
-					fillOpacity: 0
-				}
-			}
-		}
-	),
-<?}else if ( $vue->mode_affichage == 'zone' ){?>
-	// Affiche tous les massifs d'une zone (en différentes couleurs)
-	massifLayer = new L.GeoJSON.Ajax(
-		'<?=$config['sous_dossier_installation']?>api/polygones', {
-			argsGeoJSON: {
-				type_polygon: 1,
-				intersection: '<?=$vue->polygone->id_polygone?>'
-			},
-			style: function(feature) {
-				return {
-					title: feature.properties.nom,
-					popupAnchor: [-1, -4],
-					url: feature.properties.lien,
-					color: 'black',
-					fillColor: feature.properties.couleur,
-					weight: 1,
-					fillOpacity: 0.3
-				}
-			}
-		}
-	),
-<?}else{?>
-	// Affiche le contour d'un seul massif 
-	massifLayer = new L.GeoJSON.Ajax(
-		'<?=$config['sous_dossier_installation']?>api/polygones', {
-			argsGeoJSON: {
-				massif: '<?=$vue->polygone->id_polygone?>',
-				type_geom: 'polylines', // La surface à l'intérieur des massifs reste cliquable
-			},
-			style: function(feature) {
-				return {
-					color: 'blue',
-					weight: 2,
-					opacity: 1,
-					fillOpacity: 0
-				}
-			}
-		}
-	),
-<?}?>
+window.addEventListener('load', function() {
 
-	// Points de refuges.info
-	poiWRI = new L.GeoJSON.Ajax.WRIpoi({
-		urlRoot: '<?=$config['sous_dossier_installation']?>',
-		urlGeoJSON: 'api/bbox',
-		argsGeoJSON: {
-			type_points: type_points
+	var baseLayers = {
+			'Refuges.info':new L.TileLayer.OSM.MRI(),
+			'OSM fr':      new L.TileLayer.OSM.FR(),
+			'Outdoors':    new L.TileLayer.OSM.Outdoors(),
+			'IGN':         new L.TileLayer.IGN({k: '<?=$config['ign_key']?>', l:'GEOGRAPHICALGRIDSYSTEMS.MAPS'}),
+			'IGN Express': new L.TileLayer.IGN({k: '<?=$config['ign_key']?>', l:'GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.CLASSIQUE'}),
+			'SwissTopo':   new L.TileLayer.SwissTopo({l:'ch.swisstopo.pixelkarte-farbe'}),
+			'Autriche':    new L.TileLayer.Kompass({l:'Touristik'}),
+			'Espagne':     new L.TileLayer.WMS.IDEE(),
+			'Italie':      new L.TileLayer.WMS.IGM(),
+			'Angleterre':  new L.TileLayer.OSOpenSpace('<?=$config['os_key']?>', {}),
+			'Photo Bing':  new L.BingLayer('<?=$config['bing_key']?>', {type:'Aerial'}),
+			'Photo IGN':   new L.TileLayer.IGN({k: '<?=$config['ign_key']?>', l:'ORTHOIMAGERY.ORTHOPHOTOS'})
 		},
-		disabled: !type_points
-	}),
-	// Points appartenant à un massif
-	poiMassif = new L.GeoJSON.Ajax.WRIpoi({
-		urlRoot: '<?=$config['sous_dossier_installation']?>',
-		urlGeoJSON: 'api/massif',
-		argsGeoJSON: {
-			type_points: type_points,
-			massif: arg_massifs
-		},
-		disabled: !type_points
-	}),
-	poiLayer = <?if ( $vue->polygone->id_polygone ) {?>poiMassif<?}else{?>poiWRI<?}?>,
+
+	<?if ( $vue->mode_affichage == 'edit' ){?>
+		// Dessine tous les massifs pour servir de gabari au nouveau
+		massifLayer = new L.GeoJSON.Ajax(
+			sous_dossier_installation+'api/polygones', {
+				argsGeoJSON: {
+					type_polygon: 1,
+					type_geom: 'polylines', // La surface à l'intérieur des massifs reste cliquable
+					time: <?=time()?> // Inhibe le cache
+				},
+				style: function(feature) {
+					return {
+						color: 'blue',
+						weight: 2,
+						opacity: 0.6,
+						fillOpacity: 0
+					}
+				}
+			}
+		),
+	<?}else if ( $vue->mode_affichage == 'zone' ){?>
+		// Affiche tous les massifs d'une zone (en différentes couleurs)
+		massifLayer = new L.GeoJSON.Ajax(
+			sous_dossier_installation+'api/polygones', {
+				argsGeoJSON: {
+					type_polygon: 1,
+					intersection: '<?=$vue->polygone->id_polygone?>'
+				},
+				style: function(feature) {
+					return {
+						title: feature.properties.nom,
+						popupAnchor: [-1, -4],
+						url: feature.properties.lien,
+						color: 'black',
+						fillColor: feature.properties.couleur,
+						weight: 1,
+						fillOpacity: 0.3
+					}
+				}
+			}
+		),
+	<?}else{?>
+		// Affiche le contour d'un seul massif 
+		massifLayer = new L.GeoJSON.Ajax(
+			sous_dossier_installation+'api/polygones', {
+				argsGeoJSON: {
+					massif: '<?=$vue->polygone->id_polygone?>',
+					type_geom: 'polylines', // La surface à l'intérieur des massifs reste cliquable
+				},
+				style: function(feature) {
+					return {
+						color: 'blue',
+						weight: 2,
+						opacity: 1,
+						fillOpacity: 0
+					}
+				}
+			}
+		),
+	<?}?>
 
 	// Points via chemineur.fr
 	poiCHEM = new L.GeoJSON.Ajax.chem(),
@@ -127,12 +103,13 @@ var map,
 			site: 'c2c'
 		},
 		urlRootRef: 'http://www.camptocamp.org/huts/'
-	}),
+	});
 
-	// Points de https://overpass-turbo.eu/
+	wriPoi = new L.GeoJSON.Ajax.wriPoi();
+	wriMassif = new L.GeoJSON.Ajax.wriPoi.dansMassif();
 	poiOVER = new L.GeoJSON.Ajax.OSMoverpass();
+	poiLayer = <?if ( $vue->polygone->id_polygone ) {?>wriMassif<?}else{?>wriPoi<?}?>; // Couche active
 
-window.addEventListener('load', function() {
 	map = new L.Map('nav_bloc_carte', {
 		layers: [
 				baseLayers['<?=$config["carte_base"]?>'] || // Sinon le fond de carte par défaut
@@ -199,16 +176,17 @@ function switch_massif (combo) {
         document.getElementById ('titrepage') .firstChild.nodeValue = "<?echo addslashes($vue->titre)?>"; 
 		map.addLayer(massifLayer);
 		map.removeLayer(poiLayer);
-		map.addLayer(poiLayer = poiMassif);
+		map.addLayer(poiLayer = wriMassif);
     } else {
         document.getElementById ('titrepage') .firstChild.nodeValue = "Navigation sur les cartes"; 
 		map.removeLayer(massifLayer);
 		map.removeLayer(poiLayer);
-		map.addLayer(poiLayer = poiWRI);
+		map.addLayer(poiLayer = wriPoi);
     }
 }
 /*************************************************************************************************************************************/
 function maj_poi (c) {
+<?php if (!$vue->mode_affichage == 'edit') {?>
     // Calcule l'argument d'extration filtre de points
     var poitypes = document.getElementsByName ('point_type[]'),
 		check_types = document.getElementsByName ('check-types-input'),
@@ -228,13 +206,14 @@ function maj_poi (c) {
     document.cookie = 'type_points=' + escape (type_points) + ';path=/';
 
 	// On reparamètre les couches POI
-	poiWRI.options.argsGeoJSON.type_points = 
-	poiMassif.options.argsGeoJSON.type_points =
+	wriPoi.options.argsGeoJSON.type_points = 
+	wriMassif.options.argsGeoJSON.type_points =
 		type_points;
 	poiLayer.options.disabled = !type_points;
 
 	// Et on réaffiche la couche courante
 	poiLayer.reload();
+<?}?>
 }
 /*************************************************************************************************************************************/
 function maj_autres_site(e,l) {

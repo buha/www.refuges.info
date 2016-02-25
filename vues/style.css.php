@@ -781,8 +781,7 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 }
 
 /* Carte de la page des points mobiles */
-#vignette,
-#vignette-agrandie {
+#vignette {
   width: 100%;
   min-width: 300px;
 /* Ne pas définir height pour que la hauteur soit automatiquement ajustée par Leaflet.MapAutoHeight.js pour faire un carré ou entrer dans la fenêtre */
@@ -790,10 +789,6 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 /* Carte de la page des points écrans */
 @media screen and (min-width: 641px) {
   #vignette {
-    width: 400px;
-    min-width: auto;
-  }
-  #vignette-agrandie {
     width: 400px;
     min-width: auto;
   }
