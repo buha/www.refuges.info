@@ -6,11 +6,8 @@
 ?>
 
 var map,
-	wriPoi,
-	wriMassif,
-	massifLayer,
-	poiOVER,
-	poiLayer;
+	wriPoi, wriMassif, poiLayer, massifLayer,
+	poiCHEM, poiOVER, poiPRC, poiC2C;
 
 window.addEventListener('load', function() {
 	<?php include ($config['racine_projet'].'vues/includes/cartes.js') ?>
@@ -51,19 +48,19 @@ if (!$vue->mode_affichage) {?>
 	);
 
 	// Points via chemineur.fr
-	var poiCHEM = new L.GeoJSON.Ajax.chem(),
-		poiPRC = new L.GeoJSON.Ajax.chem({
-			argsGeoJSON: {
-				site: 'prc'
-			},
-			urlRootRef: 'http://www.pyrenees-refuges.com/fr/affiche.php?numenr='
-		}),
-		poiC2C = new L.GeoJSON.Ajax.chem({
-			argsGeoJSON: {
-				site: 'c2c'
-			},
-			urlRootRef: 'http://www.camptocamp.org/huts/'
-		});
+	poiCHEM = new L.GeoJSON.Ajax.chem();
+	poiPRC = new L.GeoJSON.Ajax.chem({
+		argsGeoJSON: {
+			site: 'prc'
+		},
+		urlRootRef: 'http://www.pyrenees-refuges.com/fr/affiche.php?numenr='
+	});
+	poiC2C = new L.GeoJSON.Ajax.chem({
+		argsGeoJSON: {
+			site: 'c2c'
+		},
+		urlRootRef: 'http://www.camptocamp.org/huts/'
+	});
 
 	wriPoi = new L.GeoJSON.Ajax.wriPoi({ // Les points choisis sur toute la carte
 		argsGeoJSON: {
@@ -78,7 +75,7 @@ if (!$vue->mode_affichage) {?>
 		},
 		disabled: !wriPoi.options.argsGeoJSON
 	});
-	poiOVER = new L.GeoJSON.Ajax.OSMoverpass();
+	poiOVER = new L.GeoJSON.Ajax.OSM.services();
 	poiLayer = <?if ( $vue->polygone->id_polygone ) {?>wriMassif<?}else{?>wriPoi<?}?>; // Couche active
 
 	map = new L.Map('nav_bloc_carte', {
@@ -141,6 +138,14 @@ if (!$vue->mode_affichage) {?>
 		massifLayer.addTo(edit.snapLayers); // Permet de "coller" aux tracés des autres massifs
 	<?}?>
 	maj_poi(); // Initialise la coche [de]cocher
+
+	// Pour bien gérer le retour sur la page sous chrome
+	var extLayersCheckbox = {poiPRC:poiPRC, poiC2C:poiC2C, poiCHEM:poiCHEM};
+	for (var c in extLayersCheckbox) {
+		var ce = document.getElementById (c);
+		if (ce)
+			maj_autres_site(ce, extLayersCheckbox[c]);
+	}
 });
 /*************************************************************************************************************************************/
 function switch_massif (combo) {

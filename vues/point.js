@@ -32,7 +32,13 @@ if ($vue->mini_carte) { ?>
 		map.setView(cadre._latlng, 13, {reset: true});
 
 		new L.GeoJSON.Ajax.wriPoi().addTo(map);
-		new L.GeoJSON.Ajax.OSMoverpass().addTo(map);
+		new L.GeoJSON.Ajax.OSM.services({
+			services: {
+				tourism: 'hotel|camp_site',
+				shop: 'supermarket|convenience',
+				amenity: 'parking'
+			},
+		}).addTo(map);
 
 		new L.Control.Fullscreen().addTo(map);
 		layerSwitcher = new L.Control.Layers(baseLayers).addTo(map); // Le controle de changement de couche de carte avec la liste des cartes dispo
