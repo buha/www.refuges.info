@@ -831,18 +831,23 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 	top: 3px;
 }
 /* Couche OSM OVERPASS */
-#overpass-status * {
+#ajax-poi-status *,
+#ajax-osm-status * {
 	display: none;
 	float: right;
 }
-#overpass-status div {
+#ajax-poi-status div,
+#ajax-osm-status div {
 	float: none;
 }
 .over-none #over-none,
 .over-wait #over-wait,
 .over-zoom #over-zoom,
 .over-some #over-some,
-.over-zero #over-zero {
+.over-zero #over-zero,
+.over-wait #over-poi-wait,
+.over-some #over-poi-some,
+.over-zero #over-poi-zero {
 	display: initial !important;
 }
 

@@ -45,6 +45,11 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 		</fieldset>
 		<fieldset>
 			<legend>Points</legend>
+			<div id="ajax-poi-status">
+				<img id="over-poi-wait" title="Chargement en cours." src="<?=$config['sous_dossier_installation']?>images/wait.gif" />
+				<img id="over-poi-some" title="Chargement OK." src="<?=$config['sous_dossier_installation']?>images/oui.png" />
+				<img id="over-poi-zero" title="Pas de points sur la zone." src="<?=$config['sous_dossier_installation']?>images/non.png" />
+			</div>
 			<ul>
 				<? $ktp = explode (',', $_COOKIE['type_points']); // lecture cookie type_points
 				foreach ($vue->types_point_affichables AS $type_affichable) {?>
@@ -80,7 +85,7 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 		</fieldset>
 		<fieldset class="nav-services">
 			<legend><a href="https://overpass-turbo.eu/" title="Points de la base OpensStreetmap">Services</a></legend>
-			<div id="overpass-status">
+			<div id="ajax-osm-status">
 				<img id="over-zoom" title="Zoomer pour voir les points." src="<?=$config['sous_dossier_installation']?>images/loupe-rouge.png" />
 				<img id="over-wait" title="Chargement en cours." src="<?=$config['sous_dossier_installation']?>images/wait.gif" />
 				<img id="over-some" title="Chargement OK." src="<?=$config['sous_dossier_installation']?>images/oui.png" />
@@ -94,7 +99,7 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 					'Parkings' => 'amenity~parking',
 				) AS $k => $v) {?>
 					<li><label>
-						<input type="checkbox" name="service_type[]" value="<?=$v?>" onclick="poiOVER.reload()" />
+						<input type="checkbox" name="osm-categories[]" value="<?=$v?>" onclick="poiOVER.reload()" />
 						<?=$k?>
 					</label></li>
 				<?}?>

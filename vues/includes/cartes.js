@@ -28,6 +28,7 @@ L.GeoJSON.Ajax.wriPoi = L.GeoJSON.Ajax.extend({
 			type_points: 'all'
 		},
 		bbox: true,
+		idAjaxStatus: 'ajax-poi-status', // HTML id element owning the loading status display
 		style: function(feature) {
 			var prop = [];
 			if (feature.properties.coord.alt)
@@ -72,8 +73,9 @@ L.GeoJSON.Ajax.chem = L.GeoJSON.Ajax.extend({
 // Points d'interêt OSM overpass
 L.GeoJSON.Ajax.OSM.services = L.GeoJSON.Ajax.OSM.extend({
 	options: {
-		maxLatAperture: 0.5, // Largeur de la carte (en degrés latitude)en dessous de laquelle on recherche les points
-		timeout: 5, // En secondes, du serveur à patir duquel il abandonne la recherche et affiche la loupe rouge
+		maxLatAperture: 0.5, // Largeur de la carte (en degrés latitude) en dessous de laquelle on recherche les points
+		timeout: 5, // En secondes, du serveur à partir duquel il abandonne la recherche et affiche la loupe rouge
+		idAjaxStatus: 'ajax-osm-status', // HTML id element owning the loading status display
 
 		// Requette
 		services: {
