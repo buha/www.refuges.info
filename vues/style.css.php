@@ -838,14 +838,14 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 #ajax-osm-status div {
 	float: none;
 }
-.over-none #over-none,
-.over-wait #over-wait,
-.over-zoom #over-zoom,
-.over-some #over-some,
-.over-zero #over-zero,
-.over-wait #over-poi-wait,
-.over-some #over-poi-some,
-.over-zero #over-poi-zero {
+.ajax-none #ajax-none,
+.ajax-wait #ajax-wait,
+.ajax-zoom #ajax-zoom,
+.ajax-some #ajax-some,
+.ajax-zero #ajax-zero,
+.ajax-wait #ajax-poi-wait,
+.ajax-some #ajax-poi-some,
+.ajax-zero #ajax-poi-zero {
 	display: initial !important;
 }
 

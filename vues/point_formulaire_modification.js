@@ -21,7 +21,7 @@ window.addEventListener('load', function() {
 	baseLayers['<?=$vue->fond_carte_par_defaut?>'].addTo(map); // Le fond de carte visible
 
 	// Viseur déplaçable affichant sa position éditable.
-	viseur = new L.Marker([46,6], {
+	viseur = new L.Marker([], {
 		draggable: true,
 		zIndexOffset: 1000, // Passe au dessus des autres pictos
 		icon: L.icon({

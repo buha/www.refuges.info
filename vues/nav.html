@@ -48,10 +48,10 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 				Points
 				<span id="ajax-poi-status">
 					&nbsp;
-					<span id="over-wait" style="color:blue">(chargement...)</span>
-					<span id="over-some" style="color:green">(chargé)</span>
-					<span id="over-zero" style="color:blue">(zone vide)</span>
-					<span id="over-error" style="color:red">(erreur)</span>
+					<span id="ajax-wait" style="color:blue">(chargement...)</span>
+					<span id="ajax-some" style="color:green">(chargés)</span>
+					<span id="ajax-zero" style="color:blue">(zone vide)</span>
+					<span id="ajax-error" style="color:red">(erreur)</span>
 				</span>
 			</legend>
 			<ul>
@@ -84,7 +84,7 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 					Tout
 					<input type="checkbox" name="check-types-input" onclick="maj_poi(true)" />
 				</span>
-				<li><a href="<?=$vue->lien_legende_carte?>">légende</a></li>
+				<li><a href="<?=$vue->lien_legende_carte?>">Légende</a></li>
 			</ul>
 		</fieldset>
 		<fieldset class="nav-services">
@@ -92,11 +92,11 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 				<a href="https://overpass-turbo.eu/" title="Points de la base OpensStreetmap">Services</a>
 				<span id="ajax-osm-status">
 					&nbsp;
-					<span id="over-zoom" style="color:red">(zone trop large)</span>
-					<span id="over-wait" style="color:blue">(chargement...)</span>
-					<span id="over-some" style="color:green">(chargé)</span>
-					<span id="over-zero" style="color:blue">(zone vide)</span>
-					<span id="over-error" style="color:red">(erreur)</span>
+					<span id="ajax-zoom" style="color:red">(zone trop large)</span>
+					<span id="ajax-wait" style="color:blue">(chargement...)</span>
+					<span id="ajax-some" style="color:green">(chargés)</span>
+					<span id="ajax-zero" style="color:blue">(zone vide)</span>
+					<span id="ajax-error" style="color:red">(erreur)</span>
 				</span>
 			</legend>
 			<ul>
