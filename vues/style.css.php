@@ -822,9 +822,7 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 #check-types {
 	float: right;
 	position: relative;
-	top: 19px;
 	right: -10px;
-	height: 0;
 }
 #check-types input {
 	position: relative;
