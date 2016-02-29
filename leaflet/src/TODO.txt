@@ -1,0 +1,108 @@
+WRI
+===
+Livrer build sur WRI
+Blocage déplacement carte apres plusieurs appels overpass (sur mobile)
+Création de point devrait prendre par défaut le cookie.
+Sur IE + EDGE: sélecteur de coordonnées: liste aussi le nom des fonctions
+
+BEST TO DO
+==========
+Download GPX en EDGE : => null (1).txt
+Extraction GPX bbox=écran (qoi dans l'éditeur ?)
+Intégrer GoeoJSON avec GeoBB
+Click sur cadre entoure en bleu
+Renommer GetGpxFile -> FileDownload ??? / Refaire la couche
+Carte Andorre
+Swiss: getcapabilities / time de la carte
+Afficher altitude & heure sur survol point ou segment d'une courbe
+	https://github.com/mpetazzoni/leaflet-gpx
+	https://github.com/arthur-e/Wicket
+Editeur
+	Bug suppression poly dans editeur => ça rame aprés !
+	Purge des points identiques sur un segment
+	Importer (en + de geojson, gpx, kml)
+		https://github.com/mapbox/leaflet-omnivore CSV, WKT (via wellknown), TopoJSON
+	Exporter
+		"save as"
+		Exporter formats gpx, kml, geojson
+		Formats import/export: GPX,KML,KMZ,GPI,WPT,TRK,RTE,CSV,GDB,MPS,TXT : https://www.gps-data-team.com/convert.php
+	Control.Draw.Plus.js: layer.options.editing = {}; // Voir pourquoi (nouvelle version de draw)
+	TEST: Edition massif avec trou
+V1.0
+	Démo viseur/V1.0 KO
+	Draw+ V1 KO
+
+DOC TESTS & DEMOS
+=================
+Doc é demo overpass
+Quand uploadé sur le io.github, remettre les libs des démos des plugins Dom92 en chemin externe
+Faire Readme, doc, test, demo, v1.0 & github permalink.cookies & Marker.coordinates
+Chainage des demos + V1
+Faire des fichiers de TEST (edit, ...) basés sur src/ll... # fichiers index.html DÉMO
+Traduire en anglais
+Dom plugins & demos: Dom92.L.IGN, Swiss, IDEE, IGM
+Doc read.me === doc en tête de fichier === index.html
+Fork me: https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png
+
+Vérification finale avant mise en prod
+	Passer http://www.javascriptlint.com/online_lint.php
+	Passer http://jsbeautifier.org/
+	Résorber DCMM GEO DELETE
+	Mettre _ devant les methodes de classes internes
+	https://github.com/Leaflet/Leaflet/blob/master/CONTRIBUTING.md
+	https://github.com/airbnb/javascript ?????
+	Style commentaires:
+	/*
+	Switzerland Coordinate Reference System
+	 */
+
+BUILD BEST TO DO
+================
+Voir https://tortoisegit.org/
+
+IMPORT GARMIN
+=============
+Basecamp
+Ma Collection
+Fichier importer
+Glisser de Ma Collection-fichier vers Stockage interne
+
+Finalement, on ne va pas les faire
+==================================
+Optim noms internes longs ??
+Edit: Arrondir les lonlat Json à 5 décimales
+On ne peut pas cliquer sur un zap du même segment en création
+Faire des makers avec CircleMarker, ...
+Cartes transparentes -> les couches doivent passer en overlay
+cut -> laisser créer le sommet puis le détruire là et couper
+Draw : garder les controles ouverts comme par défaut. Stratégie draw
+Layer cadre avec rectangle. => Pas trouvé à faire un rectangle fixe !
+BOF / nécéssite export...: A voir: https://github.com/calvinmetcalf/leaflet-ajax
+BEST ? Implémenter automatiquement les diff: http://php.net/manual/fr/function.xdiff-file-patch.php
+
+APPLI
+=====
+Faire un html auto executable avec seulement outdoors et non interruptible (en faire une appli ?)
+Fonction de téléchargement des dalles dans un périmètre donné
+
+WRI
+===
+cartes.js: mettre des if pour ne pas tout inclure dans chaque page
+Carte par defaut fiche Angleterre (manque le contour localisation administrative)
+NAV EDIT: revoir responsive
+Style: 2 .menu UL {
+Edition / creation / suppression polygones autres que massif
+Charger fichier GPX: pas sur un mobile !!
+FIREFOX NAV: Ctrl + Click icône: affiche le point dans un nouvel onglet mais reste sur la carte." -> pas fonctionnel sur firefox, ça passe sur le nouvel onglet
+Voir archivage GITHUB de principe_fonctionnement_refuges.info.txt ??
+Déraciner le wiki
+Passage en templates gestion/index.php
+API: erreur sur geom vide dans un polynome
+DOC API: Mettre l'entête et le pied
+API: Durée cache réglable
+API: Passage template <?...?> des vues/api // vues/api => repli si pas de $polygone->geometrie !!
+
+NOTES
+=====
+MultiPolygon multiple => WRI massif 3116
+MultiPolygon avec trou => WRI massif 3127
