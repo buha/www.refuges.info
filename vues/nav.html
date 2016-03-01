@@ -47,10 +47,10 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 			<legend>
 				Points
 				<span id="ajax-poi-status">
-					<span class="ajax-wait">(chargement...)</span>
-					<span class="ajax-some">(chargé)</span>
-					<span class="ajax-zero">(zone vide)</span>
-					<span class="ajax-error">(erreur)</span>
+					<span class="ajax-nav-wait">(chargement...)</span>
+					<span class="ajax-nav-some">(chargé)</span>
+					<span class="ajax-nav-zero">(zone vide)</span>
+					<span class="ajax-nav-error">(erreur)</span>
 				</span>
 			</legend>
 			<ul>
@@ -90,11 +90,11 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 			<legend>
 				Services <a href="https://overpass-turbo.eu/" target=_blank title="Points de la base OpensStreetmap">&copy;</a>
 				<span id="ajax-osm-status">
-					<span class="ajax-zoom">(zone trop large)</span>
-					<span class="ajax-wait">(chargement...)</span>
-					<span class="ajax-some">(chargé)</span>
-					<span class="ajax-zero">(zone vide)</span>
-					<span class="ajax-error">(erreur)</span>
+					<span class="ajax-nav-zoom">(zone trop large)</span>
+					<span class="ajax-nav-wait">(chargement...)</span>
+					<span class="ajax-nav-some">(chargé)</span>
+					<span class="ajax-nav-zero">(zone vide)</span>
+					<span class="ajax-nav-error">(erreur)</span>
 				</span>
 			</legend>
 			<ul>
@@ -124,10 +124,10 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 						<?=$v?>
 						<a href="http://www.<?=$v?>/" target="_blank" title="Points de <?=$v?>">&copy;</a>
 						<span id="ajax-<?=$k?>-status">
-							<span class="ajax-wait">&bull;&nbsp;&bull;&nbsp;&bull;</span>
-							<span class="ajax-some">Chargé</span>
-							<span class="ajax-zero">Vide</span>
-							<span class="ajax-error">Erreur</span>
+							<span class="ajax-nav-wait">&bull;&nbsp;&bull;&nbsp;&bull;</span>
+							<span class="ajax-nav-some">chargé</span>
+							<span class="ajax-nav-zero">vide</span>
+							<span class="ajax-nav-error">erreur</span>
 						</span>
 					</label></li>
 				<?}?>

@@ -836,25 +836,23 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 #ajax-poiC2C-status * {
 	display: none;
 }
-.ajax-none .ajax-none,
-.ajax-wait .ajax-wait,
-.ajax-zoom .ajax-zoom,
-.ajax-some .ajax-some,
-.ajax-zero .ajax-zero,
-.ajax-wait .ajax-poi-wait,
-.ajax-some .ajax-poi-some,
-.ajax-zero .ajax-poi-zero {
+.ajax-none .ajax-nav-none,
+.ajax-wait .ajax-nav-wait,
+.ajax-zoom .ajax-nav-zoom,
+.ajax-some .ajax-nav-some,
+.ajax-zero .ajax-nav-zero,
+.ajax-some .ajax-point-some {
 	display: initial !important;
 }
-.ajax-some {
+.ajax-nav-some {
 	color:green;
 }
-.ajax-wait,
-.ajax-zero {
+.ajax-nav-wait,
+.ajax-nav-zero {
 	color:blue;
 }
-.ajax-zoom,
-.ajax-error {
+.ajax-nav-zoom,
+.ajax-nav-error {
 	color:red;
 }
 
