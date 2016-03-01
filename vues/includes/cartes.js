@@ -56,10 +56,10 @@ L.GeoJSON.Ajax.chem = L.GeoJSON.Ajax.extend({
 		urlGeoJSON: 'http://v2.chemineur.fr/prod/chem/json.php',
 		urlRootRef: 'http://chemineur.fr/point/',
 		bbox: true,
+		idAjaxStatus: 'ajax-poiCHEM-status',
 		style: function(feature) {
 			return {
-				title: feature.properties.nom + ' <a href="' + this.options.urlRootRef + feature.properties.id + '">&copy;</a>',
-				url: this.options.urlRootRef + feature.properties.id,
+				title: feature.properties.nom + ' <a href="' + this.options.urlRootRef + feature.properties.id + '" target="_blank">&copy;</a>',
 				iconUrl: 'http://v2.chemineur.fr/prod/chemtype/' + feature.properties.type.icone + '.png',
 				iconAnchor: [8, 4],
 				labelClass: 'carte-site-etiquette',

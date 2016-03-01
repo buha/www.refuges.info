@@ -53,12 +53,14 @@ if (!$vue->mode_affichage) {?>
 		argsGeoJSON: {
 			site: 'prc'
 		},
+		idAjaxStatus: 'ajax-poiPRC-status',
 		urlRootRef: 'http://www.pyrenees-refuges.com/fr/affiche.php?numenr='
 	});
 	poiC2C = new L.GeoJSON.Ajax.chem({
 		argsGeoJSON: {
 			site: 'c2c'
 		},
+		idAjaxStatus: 'ajax-poiC2C-status',
 		urlRootRef: 'http://www.camptocamp.org/huts/'
 	});
 

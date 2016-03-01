@@ -47,11 +47,10 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 			<legend>
 				Points
 				<span id="ajax-poi-status">
-					&nbsp;
-					<span id="ajax-wait" style="color:blue">(chargement...)</span>
-					<span id="ajax-some" style="color:green">(chargés)</span>
-					<span id="ajax-zero" style="color:blue">(zone vide)</span>
-					<span id="ajax-error" style="color:red">(erreur)</span>
+					<span class="ajax-wait">(chargement...)</span>
+					<span class="ajax-some">(chargé)</span>
+					<span class="ajax-zero">(zone vide)</span>
+					<span class="ajax-error">(erreur)</span>
 				</span>
 			</legend>
 			<ul>
@@ -89,14 +88,13 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 		</fieldset>
 		<fieldset class="nav-services">
 			<legend>
-				<a href="https://overpass-turbo.eu/" title="Points de la base OpensStreetmap">Services</a>
+				Services <a href="https://overpass-turbo.eu/" target=_blank title="Points de la base OpensStreetmap">&copy;</a>
 				<span id="ajax-osm-status">
-					&nbsp;
-					<span id="ajax-zoom" style="color:red">(zone trop large)</span>
-					<span id="ajax-wait" style="color:blue">(chargement...)</span>
-					<span id="ajax-some" style="color:green">(chargés)</span>
-					<span id="ajax-zero" style="color:blue">(zone vide)</span>
-					<span id="ajax-error" style="color:red">(erreur)</span>
+					<span class="ajax-zoom">(zone trop large)</span>
+					<span class="ajax-wait">(chargement...)</span>
+					<span class="ajax-some">(chargé)</span>
+					<span class="ajax-zero">(zone vide)</span>
+					<span class="ajax-error">(erreur)</span>
 				</span>
 			</legend>
 			<ul>
@@ -124,6 +122,13 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 					<li><label>
 						<input type="checkbox" id="<?=$k?>" title="Cocher pour afficher les points <?=$v?> sur la carte" onclick="maj_autres_site(this, <?=$k?>)" />
 						<?=$v?>
+						<a href="http://www.<?=$v?>/" target="_blank" title="Points de <?=$v?>">&copy;</a>
+						<span id="ajax-<?=$k?>-status">
+							<span class="ajax-wait">&bull;&nbsp;&bull;&nbsp;&bull;</span>
+							<span class="ajax-some">Chargé</span>
+							<span class="ajax-zero">Vide</span>
+							<span class="ajax-error">Erreur</span>
+						</span>
 					</label></li>
 				<?}?>
 			</ul>
@@ -209,15 +214,5 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 				</fieldset>
 		</form>
 		<div id="help-edit"></div>
-	<?}else
-		foreach (array (
-			'Click'        => '',
-			'Maj + Ctrl + Click' => ' dans un nouvel onglet',
-			'Ctrl + Click' => ' dans un nouvel onglet mais reste sur la carte (Sauf Mozilla)',
-			'Maj + Click'        => ' dans une nouvelle fenêtre',
-		) AS $k => $v)
-			echo $vue->mode_affichage
-				? "<p>$k massif: affiche le massif$v.</p>"
-				: "<p>$k icône: affiche le point$v.</p>";
-	?>
+	<?}?>
 </div>

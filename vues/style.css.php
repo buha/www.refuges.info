@@ -830,23 +830,32 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 }
 /* Couche OSM OVERPASS */
 #ajax-poi-status *,
-#ajax-osm-status * {
+#ajax-osm-status *,
+#ajax-poiCHEM-status *,
+#ajax-poiPRC-status *,
+#ajax-poiC2C-status * {
 	display: none;
-	float: right;
 }
-#ajax-poi-status div,
-#ajax-osm-status div {
-	float: none;
-}
-.ajax-none #ajax-none,
-.ajax-wait #ajax-wait,
-.ajax-zoom #ajax-zoom,
-.ajax-some #ajax-some,
-.ajax-zero #ajax-zero,
-.ajax-wait #ajax-poi-wait,
-.ajax-some #ajax-poi-some,
-.ajax-zero #ajax-poi-zero {
+.ajax-none .ajax-none,
+.ajax-wait .ajax-wait,
+.ajax-zoom .ajax-zoom,
+.ajax-some .ajax-some,
+.ajax-zero .ajax-zero,
+.ajax-wait .ajax-poi-wait,
+.ajax-some .ajax-poi-some,
+.ajax-zero .ajax-poi-zero {
 	display: initial !important;
+}
+.ajax-some {
+	color:green;
+}
+.ajax-wait,
+.ajax-zero {
+	color:blue;
+}
+.ajax-zoom,
+.ajax-error {
+	color:red;
 }
 
 /* Carte formulaire de modification */
