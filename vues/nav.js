@@ -35,6 +35,7 @@ if (!$vue->mode_affichage) {?>
 					fillOpacity: 0,
 <?if ($vue->mode_affichage == 'zone') {?>
 					title: feature.properties.nom,
+					popupAnchor: [0, -5], // Pour ne pas que la souris marche dessus !
 					url: feature.properties.lien,
 					color: 'black',
 					weight: 1,
@@ -46,6 +47,21 @@ if (!$vue->mode_affichage) {?>
 			}
 		}
 	);
+
+	// Points WRI
+	wriPoi = new L.GeoJSON.Ajax.wriPoi({ // Les points choisis sur toute la carte
+		argsGeoJSON: {
+			type_points: '<?=$_COOKIE['type_points'] ? $_COOKIE['type_points'] : ''?>'
+		},
+	});
+	wriMassif = new L.GeoJSON.Ajax.wriPoi({ // Seulement les points dans un massif
+		urlGeoJSON: '<?=$config['sous_dossier_installation']?>api/massif',
+		argsGeoJSON: {
+			type_points: null,
+			massif: '<?=$vue->polygone->id_polygone?>'
+		},
+		disabled: !wriPoi.options.argsGeoJSON
+	});
 
 	// Points via chemineur.fr
 	poiCHEM = new L.GeoJSON.Ajax.chem();
@@ -64,19 +80,7 @@ if (!$vue->mode_affichage) {?>
 		urlRootRef: 'http://www.camptocamp.org/huts/'
 	});
 
-	wriPoi = new L.GeoJSON.Ajax.wriPoi({ // Les points choisis sur toute la carte
-		argsGeoJSON: {
-			type_points: '<?=$_COOKIE['type_points'] ? $_COOKIE['type_points'] : ''?>'
-		},
-	});
-	wriMassif = new L.GeoJSON.Ajax.wriPoi({ // Seulement les points dans un massif
-		urlGeoJSON: '<?=$config['sous_dossier_installation']?>api/massif',
-		argsGeoJSON: {
-			type_points: null,
-			massif: '<?=$vue->polygone->id_polygone?>'
-		},
-		disabled: !wriPoi.options.argsGeoJSON
-	});
+	// Points OSM
 	poiOVER = new L.GeoJSON.Ajax.OSM.services();
 	poiLayer = <?if ( $vue->polygone->id_polygone ) {?>wriMassif<?}else{?>wriPoi<?}?>; // Couche active
 
@@ -87,12 +91,15 @@ if (!$vue->mode_affichage) {?>
 			massifLayer
 		]
 	});
+	map.setView([45.6, 6.7], 6); // Position par défaut
 
-	map.setView([45.6, 6.7], 6);
+	var controlLayers = new L.Control.Layers(baseLayers).addTo(map); // Le controle de changement de couche de carte avec la liste des cartes dispo
+<?if (!strstr('zone|edit',$vue->mode_affichage)) {?>
 	new L.Control.Permalink.Cookies({
 		text: 'Permalien',
-		layers: new L.Control.Layers(baseLayers).addTo(map) // Le controle de changement de couche de carte avec la liste des cartes dispo
+		layers:  controlLayers
 	}).addTo(map);
+<?}?>
 
 <?if ( $vue->polygone->bbox ){?>
 	var bboxs = [<?=$vue->polygone->bbox?>]; // BBox au format Openlayers [left, bottom, right, top] = [west, south, east, north]

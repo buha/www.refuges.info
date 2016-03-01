@@ -50,8 +50,10 @@ window.addEventListener('load', function() {
 
 	new L.Control.Permalink.Cookies({ // Garde la mémoire des position, zoom, carte
 		layers: layerSwitcher,
-		text: null // Mais le contrôle n'apparait pas sur la carte
+		text: null, // Le contrôle n'apparait pas sur la carte
+		useAnchor: true // Pour ne pas mélanger le permalien cookies avec l'argument ?id_point_type=
 	}).addTo(map);
+	viseur.setLatLng(map.getCenter()); // Centrer le viseur au centre de la carte (position du cookie)
 
 	new L.Control.Scale().addTo(map);
 	new L.Control.Fullscreen().addTo(map);

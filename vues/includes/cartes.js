@@ -1,10 +1,13 @@
+<?php
 /*
  * Copyright (c) 2016 Dominique Cavailhez
  * https://github.com/Dominique92/Leaflet.GeoJSON.Ajax
  *
  * Couches geoJson pour www.refuges.info
  */
+?>
 
+<?if (strstr('nav|point',$vue->type)) {?>
 var baseLayers = {
 	'Refuges.info':new L.TileLayer.OSM.MRI(),
 	'OSM fr':      new L.TileLayer.OSM.FR(),
@@ -19,6 +22,7 @@ var baseLayers = {
 	'Photo Bing':  new L.BingLayer('<?=$config['bing_key']?>', {type:'Aerial'}),
 	'Photo IGN':   new L.TileLayer.IGN({k: '<?=$config['ign_key']?>', l:'ORTHOIMAGERY.ORTHOPHOTOS'})
 };
+<?}?>
 
 // Points d'interêt refuges.info
 L.GeoJSON.Ajax.wriPoi = L.GeoJSON.Ajax.extend({
@@ -51,6 +55,7 @@ L.GeoJSON.Ajax.wriPoi = L.GeoJSON.Ajax.extend({
 });
 
 // Points d'interêt via chemineur.fr
+<?if (strstr('nav',$vue->type)) {?>
 L.GeoJSON.Ajax.chem = L.GeoJSON.Ajax.extend({
 	options: {
 		urlGeoJSON: 'http://v2.chemineur.fr/prod/chem/json.php',
@@ -69,8 +74,10 @@ L.GeoJSON.Ajax.chem = L.GeoJSON.Ajax.extend({
 		}
 	}
 });
+<?}?>
 
 // Points d'interêt OSM overpass
+<?if (strstr('nav|point',$vue->type)) {?>
 L.GeoJSON.Ajax.OSM.services = L.GeoJSON.Ajax.OSM.extend({
 	options: {
 		maxLatAperture: 0.5, // Largeur de la carte (en degrés latitude) en dessous de laquelle on recherche les points
@@ -112,3 +119,4 @@ L.GeoJSON.Ajax.OSM.services = L.GeoJSON.Ajax.OSM.extend({
 		}
 	}
 });
+<?}?>
