@@ -101,10 +101,36 @@ L.GeoJSON.Ajax.OSM.services = L.GeoJSON.Ajax.OSM.extend({
 		// Traduction du texte des étiquettes (en minuscule !)
 		language: {
 			hotel: 'h&ocirc;tel',
-			room: 'chambre',
 			camp_site: 'camping',
 			convenience: 'alimentation',
 			supermarket: 'supermarch&egrave;'
+		},
+
+		// Formatage de l'étiquette affichée au survol
+		label: function(data) { // Entrée: les données retournées par Overpass (corrigées pour certaines)
+			return { // Sortie: les lignes à écrire dans l'étiquette du point
+				name: '<b>' + data.tags.name + '</b>',
+				description: [
+					data.type,
+					'*'.repeat(data.tags.stars),
+					data.tags.rooms ? data.tags.rooms + ' chambres' : '',
+					data.tags.place ? data.tags.place + ' places' : '',
+					data.tags.capacity ? data.tags.capacity + ' places' : '',
+					'<a href="http://www.openstreetmap.org/' + (data.center ? 'way' : 'node') + '/' + data.id + '" target="_blank">&copy;</a>'
+				],
+				altitude: data.tags.ele + ' m',
+				phone: '<a href="tel:' + data.tags.phone.replace(/[^0-9\+]+/ig, '') + '">' + data.tags.phone + '</a>',
+				email: '<a href="mailto:' + data.tags.email + '">' + data.tags.email + '</a>',
+				address: [
+					data.tags['addr:housenumber'],
+					data.tags['addr:street'],
+					data.tags['addr:postcode'],
+					data.tags['addr:city']
+				],
+				website: '<a href="' + data.tags.website + '" target="_blank">' + data.tags.website + '</a>'
+			};
+			// Les tableaux seront concaténés
+			// Les lignes correspondantes aux données inexistantes seront ignorées
 		},
 
 		// Style d'affichage des icônes
