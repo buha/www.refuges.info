@@ -49,8 +49,8 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 				<span id="ajax-poi-status">
 					<span class="ajax-nav-wait">(chargement...)</span>
 					<span class="ajax-nav-some">(chargé)</span>
-					<span class="ajax-nav-zero">(zone vide)</span>
-					<span class="ajax-nav-error">(erreur)</span>
+					<span class="ajax-nav-zero" title="Zoomer sur une plus large échelle, déplacer la carte ou sélectionner d'autres types pour voir plus de points.">(zone vide)</span>
+					<span class="ajax-nav-error" title="Le navigateur a rencontré une erreur de réseau ou de programme.">(erreur)</span>
 				</span>
 			</legend>
 			<ul>
@@ -90,11 +90,11 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 			<legend>
 				Services <a href="https://overpass-turbo.eu/" target=_blank title="Points de la base OpensStreetmap">&copy;</a>
 				<span id="ajax-osm-status">
-					<span class="ajax-nav-zoom">(zone trop large)</span>
+					<span class="ajax-nav-zoom" title="Zoomer sur une plus petite échelle pour voir les points.">(zone trop large)</span>
 					<span class="ajax-nav-wait">(chargement...)</span>
 					<span class="ajax-nav-some">(chargé)</span>
-					<span class="ajax-nav-zero">(zone vide)</span>
-					<span class="ajax-nav-error">(erreur)</span>
+					<span class="ajax-nav-zero" title="Zoomer sur une plus large échelle, déplacer la carte ou sélectionner d'autres types pour voir plus de points.">(zone vide)</span>
+					<span class="ajax-nav-error" title="Le navigateur a rencontré une erreur de réseau ou de programme.">(erreur)</span>
 				</span>
 			</legend>
 			<ul>
@@ -126,8 +126,8 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 						<span id="ajax-<?=$k?>-status">
 							<span class="ajax-nav-wait">&bull;&nbsp;&bull;&nbsp;&bull;</span>
 							<span class="ajax-nav-some">chargé</span>
-							<span class="ajax-nav-zero">vide</span>
-							<span class="ajax-nav-error">erreur</span>
+							<span class="ajax-nav-zero" title="Zoomer sur une plus large échelle, déplacer la carte ou sélectionner d'autres types pour voir plus de points.">(zone vide)</span>
+							<span class="ajax-nav-error" title="Le navigateur a rencontré une erreur de réseau ou de programme.">(erreur)</span>
 						</span>
 					</label></li>
 				<?}?>
