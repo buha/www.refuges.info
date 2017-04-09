@@ -13,7 +13,7 @@ Massif (1): classique : un poly qui entoure tous les points, possibilité de jou
 Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cliquer pour aller sur un massif. comme l'ancienne page massifs.
 */
 ?>
-<div class="contenu">
+<div class="contenu noprint">
 	<!-- afficher le titre du massif (en mode massif) -->
 	<h3 id="titrepage">
         <?if ($vue->mode_affichage == 'edit') {?>
@@ -23,13 +23,10 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
         <?}?>
 	</h3>
 </div>
-<!-- On sort de la page de contenu car pour la carte on ne veut pas les mêmes bordures ni les mêmes options que pour le texte -->
 
-<div id="nav_wrap_carte">
-	<div id="nav_bloc_carte"></div>
-</div>
+<div id="carte-nav" class="nav_<?=$vue->mode_affichage?>"></div>
 
-<div class="nav_bloc_selecteur">
+<div id="selecteur-carte-nav" class="noprint">
 	<?if (!$vue->mode_affichage ){?>
 		<fieldset <?if (!$vue->polygone->nom_polygone ){?>style="display:none"<?}?>>
 			<legend>Limites</legend>
@@ -50,6 +47,7 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 					<span class="ajax-nav-wait">(chargement...)</span>
 					<span class="ajax-nav-some">(chargé)</span>
 					<span class="ajax-nav-zero" title="Zoomer sur une plus large échelle, déplacer la carte ou sélectionner d'autres types pour voir plus de points.">(zone vide)</span>
+					<span class="ajax-nav-too" title="Zoomer sur une plus petite échelle, déplacer la carte ou sélectionner d'autres types pour voir plus de points.">(trop de points)</span>
 					<span class="ajax-nav-error" title="Le navigateur a rencontré une erreur de réseau ou de programme.">(erreur)</span>
 				</span>
 			</legend>
@@ -94,21 +92,36 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 					<span class="ajax-nav-wait">(chargement...)</span>
 					<span class="ajax-nav-some">(chargé)</span>
 					<span class="ajax-nav-zero" title="Zoomer sur une plus large échelle, déplacer la carte ou sélectionner d'autres types pour voir plus de points.">(zone vide)</span>
+					<span class="ajax-nav-too" title="Zoomer sur une plus petite échelle, déplacer la carte ou sélectionner d'autres types pour voir plus de points.">(trop de points)</span>
 					<span class="ajax-nav-error" title="Le navigateur a rencontré une erreur de réseau ou de programme.">(erreur)</span>
 				</span>
 			</legend>
 			<ul>
-				<? foreach (array (
-					'H&ocirc;tels' => 'tourism~hotel',
-					'Campings' => 'tourism~camp_site',
-					'Alimentation' => 'shop~supermarket|convenience',
-					'Parkings' => 'amenity~parking',
-				) AS $k => $v) {?>
-					<li><label>
-						<input type="checkbox" name="osm-categories[]" value="<?=$v?>" onclick="poiOVER.reload()" />
-						<?=$k?>
-					</label></li>
-				<?}?>
+				<li><label>
+                                        <input type="checkbox" name="osm-categories[]" id="hotel" value='["tourism"~"hotel|guest_house|chalet|hostel"]' onclick="poiOVER.reload()" />
+					<img src="<?=$config['url_chemin_icones']?>hotel.png" alt="icone de hotel" />
+					Hôtels et locations
+				</label></li>
+				<li><label>
+					<input type="checkbox" name="osm-categories[]" id="camping" value='["tourism"~"camp_site"]' onclick="poiOVER.reload()" />
+					<img src="<?=$config['url_chemin_icones']?>camping.png" alt="icone de camping" />
+					Campings
+				</label></li>
+				<li><label>
+					<input type="checkbox" name="osm-categories[]" id="ravitaillement" value='["shop"~"supermarket|convenience"]' onclick="poiOVER.reload()" />
+					<img src="<?=$config['url_chemin_icones']?>ravitaillement.png" alt="icone de ravitaillement" />
+					Alimentation
+				</label></li>
+				<li><label>
+					<input type="checkbox" name="osm-categories[]" id="parking" value='["amenity"="parking"]["access"!="private"]' onclick="poiOVER.reload()" />
+					<img src="<?=$config['url_chemin_icones']?>parking.png" alt="icone de parking" />
+					Parkings
+				</label></li>
+				<li><label>
+					<input type="checkbox" name="osm-categories[]" id="bus" value='["highway"="bus_stop"]' onclick="poiOVER.reload()" />
+					<img src="<?=$config['url_chemin_icones']?>bus.png" alt="icone d'arrêt de bus" />
+					Bus
+				</label></li>
 			</ul>
 		</fieldset>
 		<fieldset class="nav-sites">
@@ -127,6 +140,7 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 							<span class="ajax-nav-wait">&bull;&nbsp;&bull;&nbsp;&bull;</span>
 							<span class="ajax-nav-some">chargé</span>
 							<span class="ajax-nav-zero" title="Zoomer sur une plus large échelle, déplacer la carte ou sélectionner d'autres types pour voir plus de points.">(zone vide)</span>
+							<span class="ajax-nav-too" title="Zoomer sur une plus petite échelle, déplacer la carte ou sélectionner d'autres types pour voir plus de points.">(trop de points)</span>
 							<span class="ajax-nav-error" title="Le navigateur a rencontré une erreur de réseau ou de programme.">(erreur)</span>
 						</span>
 					</label></li>
@@ -163,7 +177,7 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 
 					<input type="submit" name="enregistrer" value="Enregistrer" />
 					<br/>ou<br/>
-					<p><a href=".">Quiter sans enregistrer</a></p>
+					<p><a href="./<?=$vue->polygone->id_polygone?>">Quiter sans enregistrer</a></p>
 				</label>
 			</fieldset>
 			<?if ($vue->polygone->id_polygone) {?>
@@ -202,8 +216,8 @@ Zone (11): affiche tous les massifs inclus. pas de points, pas de panel. faut cl
 						<p>Pour une édition plus complexe, vous pouvez transformer vos polygones en lignes brisées.</p>
 						<p><u>Couper un polygone:</u> Cliquer une fois sur un marqueur au milieu d'un côté.
 						On obtient une ligne.</p>
-						<p><u>Etendre une ligne:</u> Cliquer sur le contrôle "ligne" puis sur l'extrémité à étendre...</p>
-						<p><u>Ajouter une ligne:</u> Cliquer sur le contrôle "ligne" puis à l'emplacement de la première exterémité...</p>
+						<p><u>Etendre une ligne:</u> Cliquer sur le contrôle "Tracer une ligne" puis sur l'extrémité à étendre...</p>
+						<p><u>Ajouter une ligne:</u> Cliquer sur le contrôle "Tracer une ligne" puis à l'emplacement de la première exterémité...</p>
 						<p><u>Fusionner deux lignes:</u> Joindre une extrémité de chacune.</p>
 						<p><u>Fermer une ligne:</u> Joindre ses deux extrémités. On obtient un polygone.</p>
 						<hr/>

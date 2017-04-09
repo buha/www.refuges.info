@@ -129,13 +129,13 @@ $config['encodage_exportation']="utf-8";
 $config['encodage_des_contenu_web']=$config['encodage_exportation'];
 
 /********** URLs d'accès aux données openstreetmap ************/
-
-$config['xapi_url_poi']="http://api.openstreetmap.fr/osm2node?";
-$config['overpass_api']="http://api.openstreetmap.fr/oapi/interpreter";
+// NOTE: ne pas mettre le "schéma" permet d'utiliser le même que celui de la page.
+$config['xapi_url_poi']="//api.openstreetmap.fr/osm2node?";
+$config['overpass_api']="//api.openstreetmap.fr/oapi/interpreter";
 //Autre serveur de backup :
-$config['overpass_api']="http://www.overpass-api.de/api/interpreter";
+$config['overpass_api']="//www.overpass-api.de/api/interpreter";
 
-$config['url_nominatim']="http://nominatim.openstreetmap.org/";
+$config['url_nominatim']="//nominatim.openstreetmap.org/";
 $config['url_appel_nominatim']=$config['url_nominatim'] . "search.php?";
 $config['email_contact_nominatim']="sylvain@refuges.info";
 
@@ -151,6 +151,25 @@ $config['carte_base_monde'] = 'OSM fr';
 // Pour avoir swisstopo je suppose ?
 $config['SwissTopo'] = true;
 
+
+/* tableau indiquant quel fond de carte on préfère selon le polygon dans lequel on se trouve
+ * utilisé pour les vignettes des pages points et le lien d'accès en dessous + lorsque l'on modifie un point
+ * le premier champs est le nom du polygone tel qu'il est dans la base openstreetmap
+ * car c'est ce qui a moins de chance de changer, moins que nos id en tout cas */
+
+$config['fournisseurs_fond_carte'] = Array 
+(
+    // Nom pays chez OSM               Vignette    Français  Carte agrandie Échelle 
+    'France métropolitaine'=> Array (null,       ''      , 'IGN',         50000),
+    'Réunion'              => Array ('OSM fr',   ''      , 'IGN',         25000),
+    'Nouvelle Calédonie'   => Array ('OSM fr',   ''      , 'IGN',         25000),
+    'Andorra'              => Array (null,       ''      , 'IGN',         25000),
+    'Schweiz'              => Array (null,       ''      , 'SwissTopo',   50000),
+    'Österreich'           => Array (null,       ''      , 'Autriche',    50000),
+    'España'               => Array (null,       'de l\'', 'Espagne',     25000),
+    'Autres'               => Array ('OSM fr',   ''      , 'Outdoors',    50000),
+    );
+    
 /******** Nom du fichier contenant les points exportés **********/
 $config['nom_fichier_export']="refuge-info";
 
@@ -161,18 +180,24 @@ $config['copyright_API']="The data included in this document is from www.refuges
 // indispensable pour avoir les affichage de date en french et en UTF-8
 setlocale(LC_TIME, "fr_FR.UTF-8");
 mb_internal_encoding("UTF-8");
+// Bidouille : les dates que nous avons dans notre base sont déjà en heure locale (de Paris) si j'indique ici Europe/Paris, lors de formatage de date en php, on se retrouve à ajouter une fois de trop 1h ou 2h
+// donc en lui disant "UTC" il ne fait pas d'ajout et nous laisse les heures comme elle devrait être
+date_default_timezone_set('UTC');
 
 // ************* anti-spam, boulets, réservateurs et autres personnes dont on doit se protéger
 // Filtrage géographique des inscriptions
 //$config['filtre_geo'] = '40 52 -5 10'; // Zone autorisée: latitude_min latitude_max longitude_min longitude_max
 
-// Censure des messages de réservation, à compléter dans config_privee.php si ça évolue trop souvent
-$config['censure']="reservat|reserver";
+// Censure des messages de réservation (On peut aussi le compléter de la config_privee type $config['censure'].="|nombreux")
+$config['censure']="reservat|reserver|fete|noel|l\'an |l\'an$|reveillon|prevenir|previen";
 
 // ************* développeurs debug & co
 
 // par défaut, pas d'information de debug, développeurs : changer cette variable dans le fichier config_privee.php si vous voulez plus de message en cas d'erreurs
 $config['debug']=false;
+
+
+
 
 // Ce fichier est privée et contient des différentes mot de passe à garder secret ou options spécifique à cette installation de refuges.info
 // que l'on ne souhaite pas du tout voir atterrir sur github, il est donc indiqué dans le .gitignore
@@ -182,34 +207,17 @@ $config['debug']=false;
 // config_privee.php, c'est donc un peu merdique comme méthode, mais j'ai pas trouvé mieux
 require_once("config_privee.php");
 
+// *** NON NON : *** N'ajoutez rien après ce require_once("config_privee.php"); sauf si vous savez pourquoi, car ajouter après empêche de "surdéfinir" certaines variables du fichier privé à chaque instance ci avant
+// mettez par contre tout ce que vous voulez avant le require_once("config_privee.php");
+
+// Ceci est après l'inclusion de config_privee.php pour que l'on puisse tenir compte du mode debug que le developpeur peut s'il le souhaite activer
 $config['chemin_leaflet'].=$config['debug']?'src/':'dist/';
 $config['url_chemin_leaflet'].=$config['debug']?'src/':'dist/';
 
-// Le forum est bourré de warning que je ne compte pas vraiment reprendre, oui, j'ai mis ça après le include de config_privee.php car si debug vaut true dans le config_privee mis avant, on ne peut pas le savoir
+// Le forum est bourré de warning que je ne compte pas vraiment reprendre, oui, j'ai mis ça après le include de config_privee.php car si debug vaut true dans le config_privee mis avant, on ne veut quand même pas 
+// les warnings du forum qui remplissent l'écran
 if ($config['debug'] and !preg_match("/forum/",$_SERVER['REQUEST_URI']))
 {
   ini_set('error_reporting', E_ALL ^ E_NOTICE);
   ini_set('display_errors', '1');
 }
-
-/* tableau indiquant quel fond de carte on préfère selon le polygon dans lequel on se trouve
-utilisé pour les vignettes des pages points et le lien d'accès en dessous + lorsque l'on modifie un point
-le premier champs est le nom du polygone tel qu'il est dans la base openstreetmap
-car c'est ce qui a moins de chance de changer, moins que nos id en tout cas */
-
-$config['fournisseurs_fond_carte'] = Array 
-(
-// Nom pays chez OSM               Vignette    Français  Carte agrandie Échelle 
-  'France métropolitaine'=> Array (null,       ''      , 'IGN',         50000),
-  'Réunion'              => Array ('OSM fr',   ''      , 'IGN',         25000),
-  'Nouvelle Calédonie'   => Array ('OSM fr',   ''      , 'IGN',         25000),
-  'Andorra'              => Array (null,       ''      , 'IGN',         25000),
-  'Schweiz'              => Array (null,       ''      , 'SwissTopo',   50000),
-  'Österreich'           => Array (null,       ''      , 'Autriche',    50000),
-  'Italia'               => Array (null,       'de l\'', 'Italie',     100000),
-  'España'               => Array (null,       'de l\'', 'Espagne',     25000),
-  'Autres'               => Array ('OSM fr',   ''      , 'Outdoors',    50000),
-);
-
-# NON NON : On ajoute rien après cette ligne (sauf si vous savez pourquoi), ajouter par contre tout ce que vous voulez avant le require_once("config_privee.php"); 15 lignes avant
-

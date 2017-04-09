@@ -4,54 +4,90 @@
 // $vue contient les données passées par le fichier PHP
 // $config les données communes à tout WRI
 
-if ($vue->mini_carte) { ?>
+if ($vue->mini_carte) {
+	include ($config['racine_projet'].'vues/includes/cartes.js');
+	?>
+
 	var map, layerSwitcher;
 
-	window.addEventListener('load', function() {
-		<?php include ($config['racine_projet'].'vues/includes/cartes.js') ?>
-
-		map = new L.Map('vignette', {
-			layers: [
-				baseLayers['<?=$vue->vignette[0]?>'] || // Le fond de carte assigné à cette région par $config['fournisseurs_fond_carte']
-				baseLayers['<?=$config["carte_base"]?>'] || // Sinon le fond de carte par défaut
-				baseLayers[Object.keys(baseLayers)[0]] // Sinon la première couche définie
-			]
-		});
-
-		// Cadre fixe marquant une position;
-		var cadre = new L.Marker([<?=$vue->point->latitude?>,<?=$vue->point->longitude?>], {
-			clickable: false, // Evite d'activer le curseur: pointeur
-			icon: L.icon({
-				iconUrl: '<?=$config['sous_dossier_installation']?>images/cadre.png',
-				iconAnchor: [15, 21]
-			})
-		})
-		.coordinates('position') // Affiche les coordonnées du cadre dans les éléments HTML id=position-*
-		.addTo(map);
-
-		map.setView(cadre._latlng, 13, {reset: true});
-
-		new L.GeoJSON.Ajax.wriPoi().addTo(map);
-		new L.GeoJSON.Ajax.OSM.services({
-			services: {
-				tourism: 'hotel|camp_site',
-				shop: 'supermarket|convenience',
-				amenity: 'parking'
-			},
-		}).addTo(map);
-
-		new L.Control.Fullscreen().addTo(map);
-		layerSwitcher = new L.Control.Layers(baseLayers).addTo(map); // Le controle de changement de couche de carte avec la liste des cartes dispo
-
-		new L.Control.Permalink.Cookies({ // Garde la mémoire des position, zoom, carte.
-			layers: layerSwitcher,
-			text: null, // Le contrôle n'apparait pas sur la carte car ça n'a pas de sens pour un point qui positionne lui même la carte
-			move: false // On n'itialise pas la carte avec le permalink: il est uniquement là pour enregistrer
-		}).addTo(map);
+	map = new L.Map('carte-point', {
+		layers: [
+			baseLayers['<?=$vue->vignette[0]?>'] || // Le fond de carte assigné à cette région par $config['fournisseurs_fond_carte']
+			baseLayers['<?=$config["carte_base"]?>'] || // Sinon le fond de carte par défaut
+			baseLayers[Object.keys(baseLayers)[0]] // Sinon la première couche définie
+		]
 	});
 
+	// Cadre fixe marquant une position;
+	var cadre = new L.Marker([<?=$vue->point->latitude?>,<?=$vue->point->longitude?>], {
+		icon: L.icon({
+			iconUrl: '<?=$config['sous_dossier_installation']?>images/cadre.png',
+			className: 'leaflet-grab',
+			iconAnchor: [15, 21]
+		})
+	})
+	.coordinates('position') // Affiche les coordonnées du cadre dans les éléments HTML id=position-*
+	.addTo(map);
+
+	map.setView(cadre._latlng, 13, {reset: true});
+
+	var wriPoi = new L.GeoJSON.Ajax.wriPoi().addTo(map);
+	new L.GeoJSON.Ajax.OSM.services({
+		maxPoints: 30,
+		services: {
+			// <NOM ICONE> = '<REQUETTE OVERPASS>'
+			hotel: '["tourism"~"hotel|camp_site|hostel|chalet"]',
+			camping: '["tourism"~"camp_site"]',
+			ravitaillement: '["shop"~"supermarket|convenience"]',
+			parking: '["amenity"="parking"]["access"!="private"]',
+			bus: '["highway"="bus_stop"]'
+		},
+	}).addTo(map);
+
+	new L.Control.Scale().addTo(map);
+	new L.Control.Coordinates().addTo(map);
+	new L.Control.Fullscreen().addTo(map);
+	new L.Control.Click(
+		function () {
+			return wriPoi._getUrl() + '&format=gpx&nb_points=all';
+		}, {
+			title: "Obtenir les points de refuges.info visibles sur la carte\n"+
+					"Pour charger le fichier sur un GARMIN, utlisez Basecamp",
+			label: '&#8659;'
+		}
+	).addTo(map);
+	new L.Control.EasyPrint({title: 'Imprimer la carte'}).addTo(map);
+	layerSwitcher = new L.Control.Layers(baseLayers).addTo(map); // Le controle de changement de couche de carte avec la liste des cartes dispo
+
+	new L.Control.Permalink.Cookies({ // Garde la mémoire des position, zoom, carte.
+		layers: layerSwitcher,
+		text: null, // Le contrôle n'apparait pas sur la carte car ça n'a pas de sens pour un point qui positionne lui même la carte
+		move: false // On n'initialise pas la carte avec le permalink: il est uniquement là pour enregistrer
+	}).addTo(map);
+
 	// Actions de la page
-	function agrandir_vignette() {
+	function agrandir_carte_point() {
+		// On masque le contrôle puisqu'il a déjà été activé
+		var agrandir_vignette = document.getElementById('agrandir-carte-point');
+		if (agrandir_vignette)
+			agrandir_vignette.style.display = 'none';
+
+		// On redimensionne la carte
+		var mc = map._container,
+			l1 = mc.clientWidth,
+			h1 = mc.clientHeight;
+		mc.style.width = '40vw';
+		mc.style.height = '40vw';
+		mc.style.minWidth = l1+'px';
+		mc.style.minHeight = h1+'px';
+		mc.style.maxHeight = 2*h1+'px';
+		var h2 = mc.clientHeight;
+		map.panBy(
+			[(h1-h2)/2, (h1-h2)/2], // Recentre la nouvelle carte, plus grande, sur le cadre
+			{animate: false}
+		);
+        map.invalidateSize(); // Reload missing tiles
+
 		// On positionne la couche de second choix
 		var oldLayerId, newLayerId;
 		for (l in layerSwitcher._layers) {

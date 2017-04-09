@@ -43,12 +43,6 @@ foreach ($commentaires_avec_photos_recentes as $commentaire_avec_photo_recente)
 }
 $vue->contenu_accueil=wiki_page_html("contenu_accueil");
 
-// Préparation de la liste des nouvelles générales
-$conditions_commentaires_generaux = new stdClass;
-$conditions_commentaires_generaux->ids_points=$config['numero_commentaires_generaux'];
-$conditions_commentaires_generaux->limite=2;
-$vue->nouvelles_generales=infos_commentaires($conditions_commentaires_generaux);
-
 // FIXME: Préparation de la liste des nouveaux commentaires
 // ici, on pourrait vraiment se passer de la fonction nouvelles et ainsi de pas dépendre d'un truc qui génère du HTML
 $vue->nouveaux_commentaires=nouvelles(9,"commentaires");
@@ -69,8 +63,10 @@ foreach ($nouveaux_points as $nouveau_point)
 {
     $nouveau_point->lien=lien_point($nouveau_point,true);
     $nouveau_point->nom=mb_ucfirst(bbcode2html($nouveau_point->nom));
+    $nouveau_point->nom_createur=bbcode2html($nouveau_point->nom_createur);
     $vue->nouveaux_points[]=$nouveau_point;
 }
+//d( $vue->nouveaux_points);
 $vue->nouvelles_generales=wiki_page_html("nouvelles_generales");
 
 ?>

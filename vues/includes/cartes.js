@@ -1,30 +1,30 @@
-<?php
-/*
- * Copyright (c) 2016 Dominique Cavailhez
- * https://github.com/Dominique92/Leaflet.GeoJSON.Ajax
- *
- * Couches geoJson pour www.refuges.info
- */
-?>
+// Contient les d√©clarations communes aux cartes
 
+/* Super zoom pour les photos a√©riennes */
+L.BingLayer.prototype.options.maxNativeZoom = 18;
+L.BingLayer.prototype.options.maxZoom = 21;
+
+// Couches de base
 <?if (strstr('nav|point',$vue->type)) {?>
+if (typeof L.OSOpenSpace.TileLayer != 'undefined')
+	L.OSOpenSpace.TileLayer.prototype.options.crs = L.OSOpenSpace.CRS; // Assign CRS to OS-UK layer options
+
 var baseLayers = {
 	'Refuges.info':new L.TileLayer.OSM.MRI(),
 	'OSM fr':      new L.TileLayer.OSM.FR(),
-	'Outdoors':    new L.TileLayer.OSM.Outdoors(),
+	'Outdoors':    new L.TileLayer.OSM.Outdoors({k: '<?=$config['thunderforest_key']?>'}),
 	'IGN':         new L.TileLayer.IGN({k: '<?=$config['ign_key']?>', l:'GEOGRAPHICALGRIDSYSTEMS.MAPS'}),
 	'IGN Express': new L.TileLayer.IGN({k: '<?=$config['ign_key']?>', l:'GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.CLASSIQUE'}),
 	'SwissTopo':   new L.TileLayer.SwissTopo({l:'ch.swisstopo.pixelkarte-farbe'}),
 	'Autriche':    new L.TileLayer.Kompass({l:'Touristik'}),
 	'Espagne':     new L.TileLayer.WMS.IDEE(),
-	'Italie':      new L.TileLayer.WMS.IGM(),
-	'Angleterre':  new L.TileLayer.OSOpenSpace('<?=$config['os_key']?>', {}),
+	'Angleterre':  new L.OSOpenSpace.TileLayer('<?=$config['os_key']?>'),
 	'Photo Bing':  new L.BingLayer('<?=$config['bing_key']?>', {type:'Aerial'}),
 	'Photo IGN':   new L.TileLayer.IGN({k: '<?=$config['ign_key']?>', l:'ORTHOIMAGERY.ORTHOPHOTOS'})
 };
 <?}?>
 
-// Points d'interÍt refuges.info
+// Points d'inter√™t refuges.info
 L.GeoJSON.Ajax.wriPoi = L.GeoJSON.Ajax.extend({
 	options: {
 		urlGeoJSON: '<?=$config['sous_dossier_installation']?>api/bbox',
@@ -34,41 +34,46 @@ L.GeoJSON.Ajax.wriPoi = L.GeoJSON.Ajax.extend({
 		bbox: true,
 		idAjaxStatus: 'ajax-poi-status', // HTML id element owning the loading status display
 		style: function(feature) {
-			var prop = [];
+			var url_point = feature.properties.lien,
+				prop = [];
 			if (feature.properties.coord.alt)
 				prop.push(feature.properties.coord.alt + 'm');
 			if (feature.properties.places.valeur)
 				prop.push(feature.properties.places.valeur + '<img src="' + '<?=$config['sous_dossier_installation']?>images/lit.png"/>');
 			this.options.disabled = !this.options.argsGeoJSON.type_points;
 			return {
-				url: feature.properties.lien,
+				url: url_point,
 				iconUrl: '<?=$config['sous_dossier_installation']?>images/icones/' + feature.properties.type.icone + '.png',
-				iconAnchor: [8, 4],
-				title: '<a href="' + feature.properties.lien + '">' + feature.properties.nom + '</a>' +
+				iconAnchor: [8, 8],
+				popup: feature.properties.nom +
 					(prop.length ? '<div style=text-align:center>' + prop.join(' ') + '</div>' : ''),
-				labelClass: 'carte-point-etiquette',
-				remanent: true,
+				popupClass: 'carte-point-etiquette',
 				degroup: 12 // Spread the icons when the cursor hovers on a busy area.
 			};
 		}
 	}
 });
 
-// Points d'interÍt via chemineur.fr
+// Points d'inter√™t via chemineur.fr
 <?if (strstr('nav',$vue->type)) {?>
 L.GeoJSON.Ajax.chem = L.GeoJSON.Ajax.extend({
 	options: {
-		urlGeoJSON: 'http://v2.chemineur.fr/prod/chem/json.php',
-		urlRootRef: 'http://chemineur.fr/point/',
+		urlGeoJSON: 'http://chemineur.fr/ext/Dominique92/GeoBB/gis.php',
+		argsGeoJSON: {
+			site: 'this',
+			poi: '3,8,16,20,23,28,30,40,44,64,58,62'
+		},
 		bbox: true,
 		idAjaxStatus: 'ajax-poiCHEM-status',
 		style: function(feature) {
+			var url = feature.properties.url;
+			delete feature.properties.url; // Avoid double action
 			return {
-				title: feature.properties.nom + ' <a href="' + this.options.urlRootRef + feature.properties.id + '" target="_blank">&copy;</a>',
-				iconUrl: 'http://v2.chemineur.fr/prod/chemtype/' + feature.properties.type.icone + '.png',
-				iconAnchor: [8, 4],
-				labelClass: 'carte-site-etiquette',
-				remanent: true,
+				title: feature.properties.nom,
+				popup: feature.properties.nom + ' <a href="' + url + '" target="_blank">&copy;</a>',
+				iconUrl: feature.properties.icone,
+				iconAnchor: [8, 8],
+				popupClass: 'carte-site-etiquette',
 				degroup: 12
 			};
 		}
@@ -76,59 +81,53 @@ L.GeoJSON.Ajax.chem = L.GeoJSON.Ajax.extend({
 });
 <?}?>
 
-// Points d'interÍt OSM overpass
+// Points d'inter√™t OSM overpass
 <?if (strstr('nav|point',$vue->type)) {?>
 L.GeoJSON.Ajax.OSM.services = L.GeoJSON.Ajax.OSM.extend({
 	options: {
-		maxLatAperture: 0.5, // Largeur de la carte (en degrÈs latitude) en dessous de laquelle on recherche les points
-		timeout: 5, // En secondes, du serveur ‡ partir duquel il abandonne la recherche et affiche la loupe rouge
+		urlGeoJSON: '<?=$config['overpass_api']?>',
+		maxLatAperture: 0.5, // Largeur de la carte (en degr√©s latitude) en dessous de laquelle on recherche les points
+		timeout: 5, // En secondes, du serveur √† partir duquel il abandonne la recherche et affiche la loupe rouge
 		idAjaxStatus: 'ajax-osm-status', // HTML id element owning the loading status display
 
-		/* Requette :
-		La dÈfinition des types de points ‡ afficher se trouve:
-		- Dans /vues/points.js pour la page point:
-			new L.GeoJSON.Ajax.OSM.services({
-				services: {
-					tourism: 'hotel|camp_site',
-					shop: 'supermarket|convenience',
-					amenity: 'parking'
-				},
-		- Dans /vues/nav.js pour la page nav: 
-			<ul>
-				<? foreach (array (
-					'H&ocirc;tels' => 'tourism~hotel',
-					'Campings' => 'tourism~camp_site',
-					'Alimentation' => 'shop~supermarket|convenience',
-					'Parkings' => 'amenity~parking',
-				...
-		*/
-
-		// Traduction du nom des icÙnes (hotel & parking sont implicites)
+		// Traduction du nom des ic√¥nes (en minuscule !)
+		// Les cl√©s du tableau ci dessous sont les <VALEUR> retourn√©es par overpass dans la structure .tags = {"xxx": <VALEUR>}
+		// Les valeurs du tableau ci dessous sont les <NOM> des icones dans //WRI/images/icones/<NOM>.png
+		// hotel & parking sont implicites (traduits par eux m√™me par d√©faut parcequepas dans le tableau)
 		icons: {
 			camp_site: 'camping',
+			guest_house: 'hotel',
+			chalet: 'hotel',
+			hostel: 'hotel',
 			supermarket: 'ravitaillement',
 			convenience: 'ravitaillement'
 		},
 
-		// Traduction du texte des Ètiquettes (en minuscule !)
+		// Traduction du texte des √©tiquettes (en minuscule !)
+		// Cette traduction est effectu√©e √† la fin de la constitution du texte de l'√©tiquette et traduit aussi bien les infos overpass que les noms d'ic√¥nes que les textes ajout√©s
 		language: {
-			hotel: 'h&ocirc;tel',
+			hotel: 'h√¥tel',
+			guest_house: 'chambre d\'h√¥te',
+			chalet: 'g√Æte rural',
+			hostel: 'auberge de jeunesse',
 			camp_site: 'camping',
 			convenience: 'alimentation',
-			supermarket: 'supermarch&egrave;'
+			supermarket: 'supermarch√©',
+			bus_stop: 'arr√™t de bus'
 		},
 
-		// Formatage de l'Ètiquette affichÈe au survol
-		label: function(data) { // EntrÈe: les donnÈes retournÈes par Overpass (corrigÈes pour certaines)
-			return { // Sortie: les lignes ‡ Ècrire dans l'Ètiquette du point
+		// Formatage de l'√©tiquette affich√©e au survol
+		label: function(data) { // Entr√©e: les donn√©es retourn√©es par Overpass (corrig√©es pour certaines)
+			return { // Sortie: les lignes √† √©crire dans l'√©tiquette du point
 				name: '<b>' + data.tags.name + '</b>',
 				description: [
-					data.type,
+					data.tag,
 					'*'.repeat(data.tags.stars),
 					data.tags.rooms ? data.tags.rooms + ' chambres' : '',
 					data.tags.place ? data.tags.place + ' places' : '',
 					data.tags.capacity ? data.tags.capacity + ' places' : '',
-					'<a href="http://www.openstreetmap.org/' + (data.center ? 'way' : 'node') + '/' + data.id + '" target="_blank">&copy;</a>'
+					'<a href="http://www.openstreetmap.org/' + (data.center ? 'way' : 'node') + '/' + data.id + '" target="_blank">&copy;</a>',
+                                        data.tags.description ? '<br>' + data.tags.description : ''
 				],
 				altitude: data.tags.ele + ' m',
 				phone: '<a href="tel:' + data.tags.phone.replace(/[^0-9\+]+/ig, '') + '">' + data.tags.phone + '</a>',
@@ -141,17 +140,16 @@ L.GeoJSON.Ajax.OSM.services = L.GeoJSON.Ajax.OSM.extend({
 				],
 				website: '<a href="' + data.tags.website + '" target="_blank">' + data.tags.website + '</a>'
 			};
-			// Les tableaux seront concatÈnÈs
-			// Les lignes correspondantes aux donnÈes inexistantes seront ignorÈes
+			// Les tableaux seront concat√©n√©s
+			// Les lignes correspondantes aux donn√©es inexistantes seront ignor√©es
 		},
 
-		// Style d'affichage des icÙnes
+		// Style d'affichage des ic√¥nes
 		style: function(feature) {
 			return {
-				iconUrl: '<?=$config['sous_dossier_installation']?>images/icones/' + feature.properties.icon + '.png',
-				iconAnchor: [8, 4],
-				labelClass: 'carte-service-etiquette',
-				remanent: true,
+				iconUrl: '<?=$config['sous_dossier_installation']?>images/icones/' + feature.properties.icon_name + '.png',
+				iconAnchor: [8, 8],
+				popupClass: 'carte-service-etiquette',
 				degroup: 12
 			};
 		}

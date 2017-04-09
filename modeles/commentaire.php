@@ -165,7 +165,12 @@ function infos_commentaires ($conditions)
         $commentaire->lien_photo['originale']=$commentaire->lien_photo['reduite'];
       }
     }
+    //FIXME sly 12/2016: question rangement propre, il ne devrait pas appartenir au modèle de faire de la mise en forme
     $commentaire->date_formatee=date("d/m/y", $commentaire->ts_unix_commentaire);
+    
+    // phpBB intègre un nom d'utilisateur dans sa base après avoir passé un htmlentities, pour les users connectés
+    if (isset($commentaire->id_createur_commentaire))
+        $commentaire->auteur_commentaire=html_entity_decode($commentaire->auteur_commentaire);
     $commentaires [] = $commentaire;
   }
 
@@ -220,12 +225,9 @@ function modification_ajout_commentaire($commentaire)
     $retour = new stdClass;
     $photo_valide=False;
 
-    if ($commentaire->id_point!=$config['numero_commentaires_generaux'])
-    {
-            $point=infos_point($commentaire->id_point,True);
-            if ($point->erreur)
-                    return erreur("Le commentaire ne peut être ajouté car : $point->message","Id du point: \"$commentaire->id_point\"");
-    }
+    $point=infos_point($commentaire->id_point,True);
+    if ($point->erreur)
+            return erreur("Le commentaire ne peut être ajouté car : $point->message","Id du point: \"$commentaire->id_point\"");
     // Test de validité, un commentaire ne peut être modifié ou ajouté que si son texte existe ou a une photo
     // On dirait que le commentaire dispose bien d'une photo
     if (isset($commentaire->photo['originale']))
@@ -254,10 +256,7 @@ function modification_ajout_commentaire($commentaire)
             $old_commentaire=infos_commentaires($commentaire->id_commentaire,True);
             if ($old_commentaire->erreur)
                     return erreur("Une modification d'un commentaire inexistant a été demandée");
-            if ($commentaire->photo['originale']!=$old_commentaire->photo['originale'])
-                    $ajout_photo=True;
-            else
-                    $ajout_photo=False;
+            $ajout_photo=!$commentaire->photo['originale'];
             $mode="modification";
     }
     else
@@ -277,6 +276,14 @@ function modification_ajout_commentaire($commentaire)
             if (preg_match('/^([0-9]{4}):([0-9]{2}):([0-9]{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})$/', $date_photo, $m) == 1 && checkdate($m[2], $m[3], $m[1]))
                     $commentaire->date_photo = "$m[1]-$m[2]-$m[3] $m[4]:$m[5]:$m[6]";
     }
+
+	// Rotation manuelle des photos
+	if ($_REQUEST['rotation']) {
+		$nom_fichier = $config['rep_photos_points'].$_REQUEST['id_commentaire'].".jpeg";
+		$image=imagecreatefromjpeg($nom_fichier);//on chope le jpeg
+		$image = imagerotate ($image, $_REQUEST['rotation'], 0); // On le fait tourner
+		imagejpeg($image,$nom_fichier);// On l'écrit sur le disque
+	}
 
     // reparation crado:
     // FIXME, tout correspond, y'a pas moyen de faire un foreach sur $commentaire et remplir les champs SQL ?
@@ -300,14 +307,14 @@ function modification_ajout_commentaire($commentaire)
             $query_finale=requete_modification_ou_ajout_generique('commentaires',$champs_sql,'insert');
 
     if (!$pdo->exec($query_finale))
-            return erreur("problème qui n'aurait pas dû arriver, le traitement du commentaire a foiré","La requête était : $query_finale");
+            return erreur("Problème qui n'aurait pas dû arriver, le traitement du commentaire a foiré","La requête était : $query_finale");
     elseif ($mode!="modification")
             $commentaire->id_commentaire = $pdo->lastInsertId();
 
     if ($mode=="ajout")
-            $retour->message="commentaire ajouté";
+            $retour->message="Commentaire ajouté";
     else
-            $retour->message="commentaire modifié";
+            $retour->message="Commentaire modifié";
 
     $retour->erreur=False;
 
@@ -364,6 +371,18 @@ function redimensionnement_photo($chemin_photo, $type = 'photo')
 {
   global $config;
     $image=imagecreatefromjpeg($chemin_photo);//on chope le jpeg
+
+    // Detect orientation
+    $codes_angles = [
+        3 => 180,
+        6 => -90,
+        8 =>  90,
+    ];
+    $exif_data = exif_read_data ($chemin_photo);
+    $angle = @$codes_angles [$exif_data ['Orientation']];
+    if ($angle)
+        $image = imagerotate ($image, $angle, 0);
+
     $x_image= ImageSX($image); // coord en X
     $y_image= ImageSY($image); //coord en Y
 

@@ -3,6 +3,12 @@
  * Traduction des textes en français
  */
 
+L.myLeafletVersion = '1.0';
+
+L.Control.Scale.prototype.options.imperial = false;
+
+L.Edit.PolyVerticesEdit.prototype.options.touchIcon.options.iconSize = new L.Point(8, 8);
+
 if (navigator.language || navigator.userLanguage == 'fr') {
 
 	// Textes des contrôles
@@ -34,15 +40,8 @@ if (navigator.language || navigator.userLanguage == 'fr') {
 	if (L.Control.FileLayerLoad)
 		L.Control.FileLayerLoad = L.Control.FileLayerLoad.extend({
 			statics: {
-				TITLE: 'Charger un fichier GPX, KML, GeoJSON',
+				TITLE: 'Importer un fichier GPX, KML, GeoJSON',
 				LABEL: '&#8657;'
-			}
-		});
-
-	if (L.Control.GetGpxFile)
-		L.Control.GetGpxFile = L.Control.GetGpxFile.extend({
-			statics: {
-				TITLE: 'Obtenir un fichier GPX, KML, GeoJSON'
 			}
 		});
 
@@ -60,6 +59,10 @@ if (navigator.language || navigator.userLanguage == 'fr') {
 				actions: {
 					title: 'Annuler le dessin',
 					text: 'Annuler'
+				},
+				finish: {
+					title: 'Finir le dessin',
+					text: 'Finir'
 				},
 				undo: {
 					title: 'Supprimer le dernier point',

@@ -110,9 +110,9 @@ function infos_points($conditions)
         else
             $conditions_sql.="\n AND points.id_point IN ($conditions->ids_points)";
 
-    // conditions sur le nom du point
+    // conditions sur le nom du point, on tente d'être tolérant en supportant les caractères non accentués, et les - , ou espaces de la même façon
     if( !empty($conditions->nom) )
-        $conditions_sql .= " AND unaccent(points.nom) ILIKE unaccent(".$pdo->quote('%'.$conditions->nom.'%').")";
+        $conditions_sql .= " AND unaccent(points.nom) ILIKE unaccent(".$pdo->quote('%'.str_replace(array('-',' '),'%',$conditions->nom).'%').")";
 
     // condition sur l'appartenance à un polygone
     if( !empty($conditions->ids_polygones) )
@@ -287,7 +287,7 @@ function infos_points($conditions)
       // l'avantage d'un join ici, c'est qu'on récupère tout ça en une seule requête !
       // définitivement non, le SQL n'est pas orienté objet !
       // pas le boulot non plus de infos_points de donner les liens
-      // FIXME sly : d'accord avec ça, charge à l'appelant de faire l'appel à lien_point($point);
+      // sly : d'accord avec ça, charge à l'appelant de faire l'appel à lien_point($point);
       if ($conditions->avec_infos_massif)
       {
           $point->nom_massif = $point->nom_polygone;
@@ -295,7 +295,10 @@ function infos_points($conditions)
           $point->article_partitif_massif = $point->article_partitif;
       }
       $point->date_formatee=date("d/m/y", $point->date_creation_timestamp);
-
+      // phpBB intègre un nom d'utilisateur dans sa base après avoir passé un htmlentities, pour les users connectés
+      if (isset($point->id_createur))
+          $point->nom_createur=html_entity_decode($point->nom_createur);
+      
       // Ici, petite particularité sur les points censurés, par défaut, on ne veut pas les renvoyer, mais on veut quand
       // même, si un seul a été demandé, pouvoir dire qu'il est censuré, donc on va le chercher en base mais on renvoi une erreur
       // s'il est censuré
@@ -386,10 +389,15 @@ $point->polygones[$x]->nom_polygone
 function lien_point($point,$lien_local=false)
 {
   global $config;
+  if (isset($_SERVER['HTTPS']))
+      $schema="https";
+  else
+      $schema="http";
+  
   if ($lien_local)
       $url_complete=$config['sous_dossier_installation'];
   else
-      $url_complete="http://".$config['nom_hote'].$config['sous_dossier_installation'];
+      $url_complete="$schema://".$config['nom_hote'].$config['sous_dossier_installation'];
 
   if (isset($point->nom_massif)) // Des fois, on ne l'a pas (trop d'info à aller chercher, donc il n'apparaît pas dans l'url)
     $info_massif=replace_url($point->nom_massif)."/";
@@ -517,7 +525,7 @@ function modification_ajout_point($point)
         if ($point->site_officiel=="")
             $champs_sql['site_officiel'] = $pdo->quote("");
         //cas du site un peu particuliers ou l'internaute n'aura pas forcément pensé à mettre http://
-        elseif ( strpos($point->site_officiel, "http://") === FALSE)
+        elseif ( !preg_match("/https?:\/\//",$point->site_officiel))
             $champs_sql['site_officiel'] = $pdo->quote('http://'.$point->site_officiel);
         else
             $champs_sql['site_officiel'] = $pdo->quote($point->site_officiel);
@@ -773,14 +781,22 @@ function choix_icone($point)
           ($point->id_point_type==$config['id_cabane_non_gardee'] or $point->id_point_type==$config['id_gite_etape'] or $point->id_point_type==$config['id_refuge_garde'])
        )
         $nom_icone="inutilisable";
-        
+    if ( ($point->conditions_utilisation=="fermeture" or $point->conditions_utilisation=="detruit")
+        AND
+        ($point->id_point_type==$config['point_d_eau'])
+       )
+        $nom_icone="ancien-point-d-eau";
     return $nom_icone;
 }
 function chemin_icone($nom_icone,$absolu=true)
 {
     global $config;
+    if (isset($_SERVER['HTTPS']))
+        $schema="https";
+    else
+        $schema="http";
     if ($absolu)
-        $url_et_host='http://'.$config['nom_hote'];
+        $url_et_host="$schema://".$config['nom_hote'];
     else
         $url_et_host='';
     return $url_et_host.$config['url_chemin_icones'].$nom_icone.'.png';

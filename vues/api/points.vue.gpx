@@ -1,22 +1,22 @@
-<?php
+<?php 
 
 $secondes_de_cache = 60;
 $ts = gmdate("D, d M Y H:i:s", time() + $secondes_de_cache) . " GMT";
 header("Content-disposition: filename=points.$req->format");
-header("Content-Type: application/gpx+xml; UTF-8"); // rajout du charset
+if ($req->format == "gpx") header("Content-Type: application/gpx+xml; UTF-8"); // rajout du charset
+else if ($req->format == "gpi") header("Content-Type: application/binary; UTF-8"); // rajout du charset
 header("Content-Transfer-Encoding: binary");
 header("Pragma: cache");
 header("Expires: $ts");
 if($config['autoriser_CORS']===TRUE) header("Access-Control-Allow-Origin: *");
 header("Cache-Control: max-age=$secondes_de_cache");
 
-
-echo "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
+$gpx = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
 <gpx xmlns=\"http://www.topografix.com/GPX/1/1\" creator=\"refuges.info\" version=\"1.1\" 
     xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" 
     xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd\">
 <metadata>
-	<name>points.$req->format</name>
+	<name>points.gpx</name>
 	<desc>$config[copyright_API]</desc>
 	<author>
 		<name>Contributeurs refuges.info</name>
@@ -25,38 +25,59 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
 		<year>2014</year>
 		<license>http://creativecommons.org/licenses/by-sa/2.0/deed.fr</license>
 	</copyright>
-	<link href=\"http://$config[nom_hote]/\">
-		<text>http://$config[nom_hote]/</text>
+	<link href=\"https://$config[nom_hote]/\">
+		<text>https://$config[nom_hote]/</text>
 		<type>text/html</type>
 	</link>
 </metadata>\r\n";
 
 
 foreach ($points AS $point) {
-	echo "<wpt lat=\"".$point->coord['lat']."\" lon=\"".$point->coord['long']."\">\r\n";
-	echo "	<ele>".$point->coord['alt']."</ele>\r\n";
-	echo "	<name>".$point->nom."</name>\r\n";
-	echo "	<type>".$point->type['valeur']."</type>\r\n";
+	$gpx .= "<wpt lat=\"".$point->coord['lat']."\" lon=\"".$point->coord['long']."\">\r\n";
+	$gpx .= "	<ele>".$point->coord['alt']."</ele>\r\n";
+	$gpx .= "	<name>".$point->nom."</name>\r\n";
+	$gpx .= "	<type>".$point->type['valeur']."</type>\r\n";
 		
 	if ($req->detail == "complet") {
-		echo "	<cmt>".$point->acces['nom']." : ".$point->acces['valeur']."</cmt>\r\n";
-		echo "	<desc>".$point->remarque['nom']." : ".$point->remarque['valeur']."</desc>\r\n";
-		echo "	<src>".$point->coord['precision']['nom']."</src>\r\n";
-		echo "	<link href=\"$point->lien\">\r\n";
-		echo "		<text>$point->nom sur $config[nom_hote]</text>\r\n";
-		echo "		<type>text/html</type>\r\n";
-		echo "	</link>\r\n";
-		echo "	<extensions>\r\n";
-		echo "		<id_point>$point->id</id_point>\r\n";
-		echo "		<id_qualite_gps>".$point->coord['precision']['type']."</id_qualite_gps>\r\n";
-		echo "		<nombre_place>".$point->places['nom']." : ".$point->places['valeur']."</nombre_place>\r\n";
-		echo "		<renseignements>".$point->proprio['nom']." : ".$point->proprio['valeur']."</renseignements>\r\n";
-		echo "		<id_type_point>".$point->type['id']."</id_type_point>\r\n";
-		echo "	</extensions>\r\n";
+		$gpx .= "	<cmt>".$point->acces['nom']." : ".htmlspecialchars($point->acces['valeur'])."</cmt>\r\n";
+		$gpx .= "	<desc>".$point->remarque['nom']." : ".htmlspecialchars($point->remarque['valeur'])."</desc>\r\n";
+		$gpx .= "	<src>".$point->coord['precision']['nom']."</src>\r\n";
+		$gpx .= "	<link href=\"$point->lien\">\r\n";
+		$gpx .= "		<text>$point->nom sur $config[nom_hote]</text>\r\n";
+		$gpx .= "		<type>text/html</type>\r\n";
+		$gpx .= "	</link>\r\n";
+		$gpx .= "	<extensions>\r\n";
+		$gpx .= "		<id_point>$point->id</id_point>\r\n";
+		$gpx .= "		<id_qualite_gps>".$point->coord['precision']['type']."</id_qualite_gps>\r\n";
+		$gpx .= "		<nombre_place>".$point->places['nom']." : ".$point->places['valeur']."</nombre_place>\r\n";
+		$gpx .= "		<renseignements>".$point->proprio['nom']." : ".htmlspecialchars($point->proprio['valeur'])."</renseignements>\r\n";
+		$gpx .= "		<id_type_point>".$point->type['id']."</id_type_point>\r\n";
+		$gpx .= "	</extensions>\r\n";
 	}
-	echo "</wpt>\r\n";
+	$gpx .= "</wpt>\r\n";
 }
 
-echo "</gpx>";
+$gpx .= "</gpx>";
+
+
+if ($req->format=="gpi")
+{
+	// On va éviter de passer par un fichier local car c'est une plaie pour plusieurs raisons
+	$descriptorspec = array(
+		0 => array("pipe", "r"), // stdin is a pipe that the child will read from
+		1 => array("pipe", "w"), // stdout is a pipe that the child will write to
+	);
+	$process = proc_open("gpsbabel -w -r -t -i gpx -f - -o garmin_gpi -F -", $descriptorspec, $pipes);
+	// On lui passe en entré notre gpx
+	fwrite($pipes[0], $gpx);
+	fclose($pipes[0]);
+	$gpi=stream_get_contents($pipes[1]);
+	fclose($pipes[1]);
+
+	echo $gpi;
+}
+else {
+	echo $gpx;
+}
 
 ?>
