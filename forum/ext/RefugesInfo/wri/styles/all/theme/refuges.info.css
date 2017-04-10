@@ -1,0 +1,12 @@
+/* Bandeau */
+.wrap {
+	max-width: 100%;
+}
+
+/* Titre des forums de refuges */
+.section-viewtopic .topic-title a:first-child {
+	color: black !important;
+}
+.wri-link {
+	font-size: 70%;
+}
