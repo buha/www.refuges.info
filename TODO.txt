@@ -1,0 +1,106 @@
+BUG
+Non affichage dans la fiche de l'image du dernier commentaire transfére dans le forum.
+
+TODO
+Messages d'erreur sur modif nom point / transfert forum / suppression point
+mettre le prefixe session et le n° du forum refuge en config ou le récupérer
+enlever les balises du texte du dernier message du forum affiché sur le point
+voir nom createur post (post fixé _) tranféré de fiche
+
+*************************
+INSTALL
+git clone https://github.com/DC92/www.refuges.info.git
+cp www.refuges.info/htaccess.modele.txt www.refuges.info/.htaccess
+cp config_privee.php www.refuges.info/includes/config_privee.php
+mkdir www.refuges.info/photos_points
+chmod 777 www.refuges.info/photos_points
+cp -r init/* www.refuges.info
+
+SQL delete Tables phpbb3_ + CASCADE
+SQL delete Séquences phpbb3_ + CASCADE
+SQL delete Domaines varchar_ci + CASCADE
+
+chmod 777 www.refuges.info/forum/cache
+chmod 777 www.refuges.info/forum/store
+chmod 777 www.refuges.info/forum/files
+chmod 777 www.refuges.info/forum/config.php
+chmod 777 www.refuges.info/forum/images/avatars/upload
+chmod 777 www.refuges.info/forum/images/avatars/gallery
+chmod 777 www.refuges.info/forum/images/ranks
+chmod 777 www.refuges.info/forum/images/smilies
+
+Effacer /forum/config.php
+renommer /forum/install---
+lancer /forum
+français -> change
+phpbb3_
+git pull (récupère config.php)
+
+lancer /forum/install
+français -> change
+convert
+phpbb_
+../forum2
+
+delete renommer /forum/install
+purger les cookies
+se connecter /forum
+Désactiver affichage liste moderateurs
+
+Admin:
+créer l’index de recherche pour « phpBB Native Fulltext » depuis la page Index de recherche.
+Régler paramètres d'enregistrement
+Paramètres de cookie / Nom du cookie = phpbb3_wri
+Paramètres de sécurité / Validation de session IP = Aucune
+
+SQL : Ajouter points/topic_id dans la structure SQL (doc WRI)
+lancer : ext/RefugesInfo/wri/api.php?init
+
+*************************
+Bloquer .htaccess sauf IP
+Renommer /forum -> /phpbb2
+Dezipper et uploader phpBB-3.2.0_FR / renommer phpBB3 -> forum
+Delete /forum/ext/phpbb
+	http://dom.refuges.info/forum/images/smiles/icon_eek.gif ne peut pas être copié
+		Commenter convert->p_master->error(sprintf($user->lang['COULD_NOT_COPY'] dans phpBB3\includes\functions_convert.php
+Renommer /phpbb2/photos-points -> /forum/photos-points
+Install /forum (Français / tables phpbb3_*)
+Procédure migration phpbb2 -> 3.2 (/forum/install)
+Delete /phpbb2
+Delete /forum/install
+Débloquer .htaccess sauf IP
+
+N'a pas copié le contenu du 1er post des forums refuges
+
+Config:
+général => Fonctionnalités du forum => Activer l’affichage des modérateurs => non
+- La racine du nom des cookies PhpBB assurant notamment la connexion est fixée à phpbb3_wri (à modifier dans l'admin du forum). Petite simplification qui ne me semble pas affaiblir la sécurité.
+
+*************************
+Je vous propose une évolution du logiciel du forum vers PhpBB 3.2
+Le logiciel est ici : https://github.com/RefugesInfo/www.refuges.info/tree/dev-dom
+Vous pouvez le tester ici : http://dom.refuges.info/
+
+Avantages (je concède, assez maigres):
+Format forum responsive (pour l'affichage sur petits mobiles)
+Possibilité de fusionner 2 sujets
+Code indépendant du logiciel du forum qui peut être mis à jour
+Compatible avec PHP 7
+
+L'idée est de remplacer /forum/... par la dernière livraison complète 3.2 avec pack français http://phpbb-fr.com/telechargements
+Comme on ne touchera pas à ces fichiers, on pourra reprendre régulièrement les futures livraisons (ce que je fais sur chemineur)
+On y ajoute /forum/photos-points qui est indépendant
+PhpBB 3.2 est conçu pour pouvoir développer des plugins dont les fichiers sont complètement indépendants du logiciel forum.
+L'arbo de ses fichiers est un peu ésotérique et définie ici https://area51.phpbb.com/docs/dev/31x/extensions/tutorial_basics.html mais ce que nous avons à faire est simple : https://github.com/RefugesInfo/www.refuges.info/commit/e17ae2e7f12d8ede903d8afbff9aa545e888dadb
+
+Migration de la base:
+Phpbb 3.2 est livré avec un convertisseur capable de base phpbb 2.* qui marche parfaitement.
+J'ai préfixé les nouvelles tables phpbb3_ mais on pourra, à terme, supprimer les tables phpbb_*
+Petite différence: le lien fiche <-> forum phpbb_topics/topic_id_point est reportée dans points/topic_id
+
+Interfaces wri -> forum
+- Les fonctions appelées souvent et ne faisant que lire des infos dans le SQL forum (autoconnexion, texte premier post, ...) sont conservées dans les modeles/*.php et accèdent aux données du forum via PDO. les modifs sont ici : https://github.com/RefugesInfo/www.refuges.info/commit/8f1a23bd70577ec25f43a5116e75e3382b585429
+- Les fonctions appelées rarement et modifiant le contenu du forum (création d'un topic point, modification du nom du topic, transfert de commentaire, suppression du forum) simulent un appel URL du forum au moyen de https://github.com/RefugesInfo/www.refuges.info/blob/dev-dom/includes/autoconnexion.php#L135-L179.
+Ceci permet d'utiliser les fonctions internes à PhpBB pour assurer ces tâches et garanti l'intégrité de la base qui est beaucoup plus complexe qu'on ne le pense.
+
+Note : L'autoload des classes PHP du modèle MVC/WRI est incompatible avec celui de PhpBB basé sur Symphony, une URL utilise soit le modéle WRI/MVC (et accéder à la base via PDO) soit celui de PhpBB (et accéder à la base via $db). Pas de mélange de code possible.
