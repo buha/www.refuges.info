@@ -128,9 +128,9 @@ function infos_commentaires ($conditions)
   $query="SELECT
              extract('epoch' from commentaires.date) as ts_unix_commentaire,
              extract('epoch' from commentaires.date_photo) as ts_unix_photo,
-             commentaires.*,COALESCE(phpbb_users.username,auteur_commentaire) as auteur_commentaire
+             commentaires.*,COALESCE(phpbb3_users.username,auteur_commentaire) as auteur_commentaire
              $champ_en_plus
-             FROM commentaires LEFT join phpbb_users on commentaires.id_createur_commentaire = phpbb_users.user_id$table_en_plus
+             FROM commentaires LEFT join phpbb3_users on commentaires.id_createur_commentaire = phpbb3_users.user_id$table_en_plus
            WHERE 1=1
              $conditions_sql$condition_en_plus
            ORDER BY commentaires.date DESC
@@ -472,7 +472,7 @@ function transfert_forum($commentaire)
 {
   global $config,$pdo;
 
-  $querycom="SELECT * FROM phpbb_topics WHERE topic_id_point=$commentaire->id_point";
+  $querycom="SELECT * FROM phpbb3_topics WHERE topic_id=$commentaire->topic_id";
 
   $res = $pdo->query($querycom);
   $forum = $res->fetch() ;
@@ -484,23 +484,11 @@ function transfert_forum($commentaire)
         // note sly 17/08/2013 : j'ajoute un "_" à la suite du nom de l'auteur, c'est un peu curieux, mais ça permet de réduire
         // les chances qu'on le confondent avec un utilisateur du forum portant le même nom exactement
         // de plus, toute action de modération sort un message d'erreur indiquant "utilisateur existe déjà, merci d'en choisir un autre"
-  $query_insert_post="
-    INSERT INTO phpbb_posts
-      (topic_id,forum_id,poster_id,post_time,post_username)
-    VALUES
-      ($forum->topic_id ,$forum->forum_id ,$commentaire->id_createur_commentaire,$commentaire->ts_unix_commentaire , ".$pdo->quote(substr($commentaire->auteur_commentaire,0,22)."_").")";
-
-  if (!$pdo->exec($query_insert_post))
-    return erreur("Transfert vers le forum échoué",$query_insert_post);
-  $postid = $pdo->lastInsertId();
-
-  // ensuite entrer le texte du post
-  // la folie bbcode: generer un rand sur 10 chiffres, et l'utiliser dans les balises...
-  $bbcodeuid = mt_rand( 1000000000, 9999999999 );
+  
   if ($commentaire->photo_existe)
   {
     // insere la balise bbcode pour la photo
-    $commentaire->texte.="\n[img:$bbcodeuid]".$config['rep_web_forum_photos'].$commentaire->id_commentaire.".jpeg[/img:$bbcodeuid]\n";
+    $commentaire->texte.="\n[img]".$config['rep_web_forum_photos'].$commentaire->id_commentaire.".jpeg[/img]\n";
     // et deplace la photo, question historique, on peut avoir la réduite et/ou l'originale
     if (isset($commentaire->photo['reduite']))
       $photo_a_conserver=$commentaire->photo['reduite'];
@@ -510,23 +498,20 @@ function transfert_forum($commentaire)
                 // On pourrait se dire que déplacer c'est plus simple. Oui, en effet, mais je préfère profiter de la fonction "suppression_commentaire" toute faite. Et donc faire une copie à cet endroit.
     copy($photo_a_conserver,$config['rep_forum_photos'].$commentaire->id_commentaire.".jpeg");
   }
-  $query_post_text="
-    INSERT INTO phpbb_posts_text
-      (post_id,bbcode_uid,post_text)
-    VALUES
-    ($postid,$bbcodeuid,".$pdo->quote(protege($commentaire->texte)).")";
 
-  $res=$pdo->exec($query_post_text);
-  if (!$res)
-    return erreur("Ajout du commentaire dans le forum échouée",$query_post_text);
-
-    /*** remise à jour du topic ( alors ici c'est le bouquet, un champ qui stoque le premier et le dernier post ?? )***/
-  $query_update_topic="UPDATE phpbb_topics
-      SET
-        topic_last_post_id=$postid
-      WHERE topic_id=$forum->topic_id";
-
-  $pdo->exec($query_update_topic);
+  // Crée un nouveau post dans le forum lié au point
+  $get = [
+    'mode' => 'reply',
+    'f' => '4', // Le n° du forum des refuges (TODO : à récupérer dans la base ou dans un config !)
+    't' => $commentaire->topic_id, // Le numéro du topic à modifier
+  ];
+  $post = [
+    'subject' => 'Transféré de la fiche',
+    'message' => $commentaire->texte,
+  ];
+  $rep = submit_forum( 'posting', $get, $post );
+  if (is_string($rep))
+    return erreur( "Erreur création post du forum<br/>$rep" );
 
   $retour=suppression_commentaire($commentaire);
 
@@ -549,9 +534,9 @@ function messages_du_forum($conditions)
   global $pdo; $messages_du_forum= array();
   $quels_ids="";
   if (isset($conditions->ids_forum))
-    $quels_ids.="AND phpbb_topics.forum_id in ($conditions->ids_forum)";
+    $quels_ids.="AND phpbb3_topics.forum_id in ($conditions->ids_forum)";
   if (isset($conditions->sauf_ids_forum))
-    $quels_ids.="AND phpbb_topics.forum_id not in ($conditions->sauf_ids_forum)";
+    $quels_ids.="AND phpbb3_topics.forum_id not in ($conditions->sauf_ids_forum)";
   if ( !isset($conditions->ordre))
     $conditions->ordre="ORDER BY date DESC";
 
@@ -560,17 +545,16 @@ function messages_du_forum($conditions)
     // réponse :  pour qu'il y ait > 1 post. cad forum non vide. sinon last=first.
     $query_messages_du_forum=
     "SELECT
-      max(phpbb_posts.post_time) AS date,
-      phpbb_posts.topic_id,
-      phpbb_topics.topic_title,
-      max(phpbb_posts_text.post_id) AS post_id
-    FROM phpbb_posts_text, phpbb_topics, phpbb_posts
+      max(phpbb3_posts.post_time) AS date,
+      phpbb3_posts.topic_id,
+      phpbb3_topics.topic_title,
+      max(phpbb3_posts.post_id) AS post_id
+    FROM phpbb3_topics, phpbb3_posts
         WHERE
-        phpbb_posts_text.post_text!=''
-    AND phpbb_topics.topic_id = phpbb_posts.topic_id
-    AND phpbb_posts_text.post_id = phpbb_posts.post_id
+        phpbb3_posts.post_text!=''
+    AND phpbb3_topics.topic_id = phpbb3_posts.topic_id
     $quels_ids
-    GROUP BY phpbb_posts.topic_id,phpbb_topics.topic_title
+    GROUP BY phpbb3_posts.topic_id,phpbb3_topics.topic_title
     $conditions->ordre
     LIMIT $conditions->limite";
 
