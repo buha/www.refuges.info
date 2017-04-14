@@ -77,26 +77,11 @@ général => Fonctionnalités du forum => Activer l’affichage des modérateurs
 - La racine du nom des cookies PhpBB assurant notamment la connexion est fixée à phpbb3_wri (à modifier dans l'admin du forum). Petite simplification qui ne me semble pas affaiblir la sécurité.
 
 *************************
-Je vous propose une évolution du logiciel du forum vers PhpBB 3.2
-Le logiciel est ici : https://github.com/RefugesInfo/www.refuges.info/tree/dev-dom
-Vous pouvez le tester ici : http://dom.refuges.info/
-
-Avantages (je concède, assez maigres):
-Format forum responsive (pour l'affichage sur petits mobiles)
-Possibilité de fusionner 2 sujets
-Code indépendant du logiciel du forum qui peut être mis à jour
-Compatible avec PHP 7
-
 L'idée est de remplacer /forum/... par la dernière livraison complète 3.2 avec pack français http://phpbb-fr.com/telechargements
 Comme on ne touchera pas à ces fichiers, on pourra reprendre régulièrement les futures livraisons (ce que je fais sur chemineur)
 On y ajoute /forum/photos-points qui est indépendant
 PhpBB 3.2 est conçu pour pouvoir développer des plugins dont les fichiers sont complètement indépendants du logiciel forum.
 L'arbo de ses fichiers est un peu ésotérique et définie ici https://area51.phpbb.com/docs/dev/31x/extensions/tutorial_basics.html mais ce que nous avons à faire est simple : https://github.com/RefugesInfo/www.refuges.info/commit/e17ae2e7f12d8ede903d8afbff9aa545e888dadb
-
-Migration de la base:
-Phpbb 3.2 est livré avec un convertisseur capable de base phpbb 2.* qui marche parfaitement.
-J'ai préfixé les nouvelles tables phpbb3_ mais on pourra, à terme, supprimer les tables phpbb_*
-Petite différence: le lien fiche <-> forum phpbb_topics/topic_id_point est reportée dans points/topic_id
 
 Interfaces wri -> forum
 - Les fonctions appelées souvent et ne faisant que lire des infos dans le SQL forum (autoconnexion, texte premier post, ...) sont conservées dans les modeles/*.php et accèdent aux données du forum via PDO. les modifs sont ici : https://github.com/RefugesInfo/www.refuges.info/commit/8f1a23bd70577ec25f43a5116e75e3382b585429

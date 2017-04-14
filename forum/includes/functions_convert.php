@@ -2354,7 +2354,7 @@ function copy_file($src, $trg, $overwrite = false, $die_on_failure = true, $sour
 
 	if (!@copy($src_path, $phpbb_root_path . $trg_path))
 	{
-		$convert->p_master->error(sprintf($user->lang['COULD_NOT_COPY'], $src_path, $phpbb_root_path . $trg_path), __LINE__, __FILE__, !$die_on_failure);
+//		$convert->p_master->error(sprintf($user->lang['COULD_NOT_COPY'], $src_path, $phpbb_root_path . $trg_path), __LINE__, __FILE__, !$die_on_failure);
 		return;
 	}
 
