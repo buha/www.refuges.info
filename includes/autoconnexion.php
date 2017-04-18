@@ -144,7 +144,7 @@ function submit_forum( $cmd, $get, $post )
 {
 	global $user_data, $config;
 
-	$time = time() - 10; // Pour ne pas se faire passer pour un robot, on simule une attente de 1à secondes
+	$time = time() - 10; // Pour ne pas se faire passer pour un robot, on simule une attente de 10 secondes
 	$url =
 		$_SERVER['REQUEST_SCHEME'].'://'.
 		$_SERVER['SERVER_NAME'].

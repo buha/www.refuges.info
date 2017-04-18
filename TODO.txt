@@ -1,6 +1,8 @@
 BUG
+Autorisations repertoires forum (faire un tar linux ?)
 Non affichage dans la fiche de l'image du dernier commentaire transfére dans le forum.
 Afficher sur la ligne du forum de la fiche les images attachées au dernier POST
+Ajout commentaire avec photo :: Warning: copy(/home/users/dom/www.refuges.info/photos_points/17312-originale.jpeg): failed to open stream: Permission denied in /home/users/dom/www.refuges.info/modeles/commentaire.php on line 333
 
 SLY
 - l'histoire du bandeau pour avoir un truc navigable ? 
@@ -16,11 +18,14 @@ http://dom.refuges.info/point/4706/cabane-non-gardee/Belledonne/ajout-cabane/
 
 TODO
 Messages d'erreur sur modif nom point / transfert forum / suppression point
-mettre le prefixe session et le n° du forum refuge en config ou le récupérer
-enlever les balises du texte du dernier message du forum affiché sur le point
+Mettre le prefixe session et le n° du forum refuge en config ou le récupérer
+Enlever les balises du texte du dernier message du forum affiché sur le point
 voir nom createur post (post fixé _) tranféré de fiche
+Mettre les bonnes auth dans phpbb3 reps & files -> SUR UNIX ?
 
 *************************
+Fork dev-dom : Commits on Mar 28, 2017
+
 INTEGRATION PHPBB3
 ------------------
 Download http://www.phpbb-fr.com/telechargements/ pack complet
@@ -28,17 +33,8 @@ Copy * sauf config.php docs install
 
 INSTALL
 -------
-git clone https://github.com/DC92/www.refuges.info.git
-cp www.refuges.info/htaccess.modele.txt www.refuges.info/.htaccess
-cp config_privee.php www.refuges.info/includes/config_privee.php
-mkdir www.refuges.info/photos_points
-chmod 777 www.refuges.info/photos_points
-cp -r init/* www.refuges.info
-
-SQL delete Tables phpbb3_ + CASCADE
-SQL delete Séquences phpbb3_ + CASCADE
-SQL delete Domaines varchar_ci + CASCADE
-
+//git clone https://github.com/DC92/www.refuges.info.git
+git clone -b dev-dom https://github.com/RefugesInfo/www.refuges.info.git
 chmod 777 www.refuges.info/forum/cache
 chmod 777 www.refuges.info/forum/store
 chmod 777 www.refuges.info/forum/files
@@ -47,69 +43,58 @@ chmod 777 www.refuges.info/forum/images/avatars/upload
 chmod 777 www.refuges.info/forum/images/avatars/gallery
 chmod 777 www.refuges.info/forum/images/ranks
 chmod 777 www.refuges.info/forum/images/smilies
+cp www.refuges.info/htaccess.modele.txt www.refuges.info/.htaccess
+cp config_privee.php www.refuges.info/includes/config_privee.php
+mkdir www.refuges.info/photos_points
+chmod 777 www.refuges.info/photos_points
+cp -r init/* www.refuges.info
+
+manuellement
+SQL delete points > max(phpbb_topics.topic_id_point
+SQL delete Tables phpbb3_ + CASCADE
+SQL delete Séquences phpbb3_ + CASCADE
+SQL delete Domaines varchar_ci + CASCADE
 
 MIGRATION
 ---------
+Renommer /forum -> /forum2
 Download http://www.phpbb-fr.com/telechargements/ pack complet
 Copy * dans /forum (y compris config.php & install mais pas docs)
---- includes/functions_convert.php
+--- /forum/includes/functions_convert.php
 //		$convert->p_master->error(sprintf($user->lang['COULD_NOT_COPY'], $src_path, $phpbb_root_path . $trg_path), __LINE__, __FILE__, !$die_on_failure);
 lancer /forum
-français -> change
+français ==> CHANGE
 phpbb3_
-git pull (récupère config.php & functions_convert.php)
 
+Ne pas récupèrer config.php de github wri avant la migration
 lancer /forum/install
-français -> change
-convert
+CONVERTIR
+OPTIONS -> convertir
 phpbb_
 ../forum2
+delete forum2
 
-delete/renommer /forum/install
-Purger les cookies
+git pull (récupère config.php & functions_convert.php)
+delete|renommer /forum/install
+Purger les cookies & sessions
 Se connecter /forum
-Désactiver affichage liste moderateurs
 
 Admin:
 créer l’index de recherche pour « phpBB Native Fulltext » depuis la page Index de recherche.
+Paramètres des fichiers joints / Quota total de fichiers joints : 0
+Paramètres des fichiers joints / Taille maximale du fichier : 10 Mo
 Régler paramètres d'enregistrement
 Paramètres de cookie / Nom du cookie = phpbb3_wri
 Paramètres de sécurité / Validation de session IP = Aucune
-Paramètres des fichiers joints / Taille maximale du fichier : 0
+Paramètres de charge : NON anniversaires / liste moderateurs
+PERSONNALISER : activer ext/wri
 
 SQL : Ajouter points/topic_id dans la structure SQL (doc WRI)
 lancer : ext/RefugesInfo/wri/api.php?init
 
 *************************
-Bloquer .htaccess sauf IP
-Renommer /forum -> /phpbb2
-Dezipper et uploader phpBB-3.2.0_FR / renommer phpBB3 -> forum
-Delete /forum/ext/phpbb
 	http://dom.refuges.info/forum/images/smiles/icon_eek.gif ne peut pas être copié
 		Commenter convert->p_master->error(sprintf($user->lang['COULD_NOT_COPY'] dans phpBB3\includes\functions_convert.php
-Renommer /phpbb2/photos-points -> /forum/photos-points
-Install /forum (Français / tables phpbb3_*)
 Procédure migration phpbb2 -> 3.2 (/forum/install)
-Delete /phpbb2
-Delete /forum/install
-Débloquer .htaccess sauf IP
 
 N'a pas copié le contenu du 1er post des forums refuges
-
-Config:
-général => Fonctionnalités du forum => Activer l’affichage des modérateurs => non
-- La racine du nom des cookies PhpBB assurant notamment la connexion est fixée à phpbb3_wri (à modifier dans l'admin du forum). Petite simplification qui ne me semble pas affaiblir la sécurité.
-
-*************************
-L'idée est de remplacer /forum/... par la dernière livraison complète 3.2 avec pack français http://phpbb-fr.com/telechargements
-Comme on ne touchera pas à ces fichiers, on pourra reprendre régulièrement les futures livraisons (ce que je fais sur chemineur)
-On y ajoute /forum/photos-points qui est indépendant
-PhpBB 3.2 est conçu pour pouvoir développer des plugins dont les fichiers sont complètement indépendants du logiciel forum.
-L'arbo de ses fichiers est un peu ésotérique et définie ici https://area51.phpbb.com/docs/dev/31x/extensions/tutorial_basics.html mais ce que nous avons à faire est simple : https://github.com/RefugesInfo/www.refuges.info/commit/e17ae2e7f12d8ede903d8afbff9aa545e888dadb
-
-Interfaces wri -> forum
-- Les fonctions appelées souvent et ne faisant que lire des infos dans le SQL forum (autoconnexion, texte premier post, ...) sont conservées dans les modeles/*.php et accèdent aux données du forum via PDO. les modifs sont ici : https://github.com/RefugesInfo/www.refuges.info/commit/8f1a23bd70577ec25f43a5116e75e3382b585429
-- Les fonctions appelées rarement et modifiant le contenu du forum (création d'un topic point, modification du nom du topic, transfert de commentaire, suppression du forum) simulent un appel URL du forum au moyen de https://github.com/RefugesInfo/www.refuges.info/blob/dev-dom/includes/autoconnexion.php#L135-L179.
-Ceci permet d'utiliser les fonctions internes à PhpBB pour assurer ces tâches et garanti l'intégrité de la base qui est beaucoup plus complexe qu'on ne le pense.
-
-Note : L'autoload des classes PHP du modèle MVC/WRI est incompatible avec celui de PhpBB basé sur Symphony, une URL utilise soit le modéle WRI/MVC (et accéder à la base via PDO) soit celui de PhpBB (et accéder à la base via $db). Pas de mélange de code possible.
