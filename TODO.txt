@@ -1,5 +1,18 @@
 BUG
 Non affichage dans la fiche de l'image du dernier commentaire transfére dans le forum.
+Afficher sur la ligne du forum de la fiche les images attachées au dernier POST
+
+SLY
+- l'histoire du bandeau pour avoir un truc navigable ? 
+- On tente de dégager les spammeurs qui n'ont même pas attendu une mise en prod pour nous remplir le bousin ? 
+http://dom.refuges.info/nouvelles/ 
+- rendu bbcode du "dernier message" : 
+http://dom.refuges.info/point/4696/gite-d-etape/Belledonne/Nom-du-Gite 
+- http://dom.refuges.info/point/4699/cabane-non-gardee/Belledonne/NOUVELLE-CABANE-2/ 
+"Le forum du point "NOUVELLE CABANE 2" (id=4699) ne semble pas exister" 
+J'ignore si c'est lié à la migration de forum 
+- si je créé une nouvelle cabane, j'ai max erreurs php, je ne sais pas si c'est lié au forum (ça ne le fait pas sur http://sly.refuges.info) 
+http://dom.refuges.info/point/4706/cabane-non-gardee/Belledonne/ajout-cabane/
 
 TODO
 Messages d'erreur sur modif nom point / transfert forum / suppression point
@@ -8,7 +21,13 @@ enlever les balises du texte du dernier message du forum affiché sur le point
 voir nom createur post (post fixé _) tranféré de fiche
 
 *************************
+INTEGRATION PHPBB3
+------------------
+Download http://www.phpbb-fr.com/telechargements/ pack complet
+Copy * sauf config.php docs install
+
 INSTALL
+-------
 git clone https://github.com/DC92/www.refuges.info.git
 cp www.refuges.info/htaccess.modele.txt www.refuges.info/.htaccess
 cp config_privee.php www.refuges.info/includes/config_privee.php
@@ -29,12 +48,16 @@ chmod 777 www.refuges.info/forum/images/avatars/gallery
 chmod 777 www.refuges.info/forum/images/ranks
 chmod 777 www.refuges.info/forum/images/smilies
 
-Effacer /forum/config.php
-renommer /forum/install---
+MIGRATION
+---------
+Download http://www.phpbb-fr.com/telechargements/ pack complet
+Copy * dans /forum (y compris config.php & install mais pas docs)
+--- includes/functions_convert.php
+//		$convert->p_master->error(sprintf($user->lang['COULD_NOT_COPY'], $src_path, $phpbb_root_path . $trg_path), __LINE__, __FILE__, !$die_on_failure);
 lancer /forum
 français -> change
 phpbb3_
-git pull (récupère config.php)
+git pull (récupère config.php & functions_convert.php)
 
 lancer /forum/install
 français -> change
@@ -42,9 +65,9 @@ convert
 phpbb_
 ../forum2
 
-delete renommer /forum/install
-purger les cookies
-se connecter /forum
+delete/renommer /forum/install
+Purger les cookies
+Se connecter /forum
 Désactiver affichage liste moderateurs
 
 Admin:
@@ -52,6 +75,7 @@ créer l’index de recherche pour « phpBB Native Fulltext » depuis la page In
 Régler paramètres d'enregistrement
 Paramètres de cookie / Nom du cookie = phpbb3_wri
 Paramètres de sécurité / Validation de session IP = Aucune
+Paramètres des fichiers joints / Taille maximale du fichier : 0
 
 SQL : Ajouter points/topic_id dans la structure SQL (doc WRI)
 lancer : ext/RefugesInfo/wri/api.php?init

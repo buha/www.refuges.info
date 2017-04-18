@@ -13539,7 +13539,8 @@ CREATE TABLE points (
     nom_createur character varying(255),
     date_derniere_modification date,
     id_createur integer DEFAULT 0 NOT NULL,
-    modele integer DEFAULT 0 NOT NULL
+    modele integer DEFAULT 0 NOT NULL,
+    topic_id integer DEFAULT 0
 );
 
 
