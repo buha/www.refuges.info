@@ -39,7 +39,7 @@ class listener implements EventSubscriberInterface
 		global $user;
 		$error = $vars['error'];
 
-		foreach ($error AS $k=>$v)	
+		foreach ($error AS $k=>$v)
 			if ($v == $user->lang['TOO_FEW_CHARS'])
 				unset ($error[$k]);
 
@@ -62,7 +62,17 @@ class listener implements EventSubscriberInterface
 	}
 
 	function page_footer ($vars) {
+		global $template, $request;
+
 		if (isset ($_GET['nd']))
 			$vars['page_footer_override'] = true; // Termine sans afficher
+
+		// Inclusion du bandeau
+		$request->enable_super_globals();
+		ob_start();
+		//DCMM mettre le chemin complet ici !!
+		include '../includes/config.php';
+		include '../vues/_bandeau.html';
+		$template->assign_var('BANDEAU', ob_get_clean());
 	}
 }

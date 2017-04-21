@@ -1,17 +1,15 @@
-BUG
-
 SLY
-- l'histoire du bandeau pour avoir un truc navigable ? 
-http://dom.refuges.info/nouvelles/ 
 - rendu bbcode du "dernier message" : 
-http://dom.refuges.info/point/4696/gite-d-etape/Belledonne/Nom-du-Gite 
 	Enlever les balises du texte du dernier message du forum affiché sur le point
 
 TODO
+Ajuster les couleurs du forum avec celles du bandeau
+	mettre le chemin entier dans listener -> bandeau
 voir nom createur post (post fixé _) tranféré de fiche
 Autorisations repertoires : trier celles pour install de celles pour travail
 	Mettre les bonnes auth dans phpbb3 reps & files -> SUR UNIX ?
 Mettre le prefixe cookies et le n° du forum refuge en config ou le récupérer
+Tous les DCMM
 
 *************************
 Fork dev-dom : Commits on Mar 28, 2017
