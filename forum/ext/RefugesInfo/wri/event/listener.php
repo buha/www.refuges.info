@@ -1,4 +1,10 @@
 <?php
+/*********************************************
+Ce fichier centralise tous les "hooks"
+qui viennent modifier le comportement de PhpBB
+pour s'interfacer avec refuges.info
+*********************************************/
+
 namespace RefugesInfo\wri\event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

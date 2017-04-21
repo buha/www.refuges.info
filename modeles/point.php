@@ -575,7 +575,7 @@ function modification_ajout_point($point)
         ];
         $rep = submit_forum( 'posting', $get, $post );
         if (is_string($rep))
-          echo "Erreur renommage forum point<br/>$rep";
+          return erreur( "Erreur renommage forum point<br/>$rep" );
   }
   else  // INSERT
   {
@@ -588,17 +588,18 @@ function modification_ajout_point($point)
       'subject' => $point->nom, // Le nom du topic
     ];
     $rep = submit_forum( 'posting', $get, $post ); // On appelle l'URL du forum
-    if (is_string($rep))
+    if (@!$rep->topic_id)
       return erreur( "Erreur création forum point<br/>$rep" );
-    $champs_sql['topic_id'] = $rep->topic_id; // On note le topic_id dans la table point pour faire le lien
 
+    $champs_sql['topic_id'] = $rep->topic_id; // On note le topic_id dans la table point pour faire le lien
     $query_finale=requete_modification_ou_ajout_generique('points',$champs_sql,'insert');
     if (!$pdo->exec($query_finale))
       return erreur("Requête en erreur, impossible à executer",$query_finale);
+
     $point->id_point = $pdo->lastInsertId();
   }
 
-  // on retoure l'id du point (surtout utile si création)
+  // on retourne l'id du point (surtout utile si création)
   return $point->id_point;
 }
 /*******************************************************
@@ -642,7 +643,7 @@ function suppression_point($point)
     'confirm' => 'Oui',
   ];
   $rep = submit_forum( 'mcp', $get, $post );
-  if (is_string($rep))
+  if ($rep)
     return erreur( "Erreur suppresion sujet du forum<br/>$rep" );
 
   // suite à la modification dans la base sur les coordonnées GPS, on va supprimer aussi de la table :

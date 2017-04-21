@@ -1,27 +1,17 @@
 BUG
-Autorisations repertoires forum (faire un tar linux ?)
-Non affichage dans la fiche de l'image du dernier commentaire transfére dans le forum.
-Afficher sur la ligne du forum de la fiche les images attachées au dernier POST
-Ajout commentaire avec photo :: Warning: copy(/home/users/dom/www.refuges.info/photos_points/17312-originale.jpeg): failed to open stream: Permission denied in /home/users/dom/www.refuges.info/modeles/commentaire.php on line 333
 
 SLY
 - l'histoire du bandeau pour avoir un truc navigable ? 
-- On tente de dégager les spammeurs qui n'ont même pas attendu une mise en prod pour nous remplir le bousin ? 
 http://dom.refuges.info/nouvelles/ 
 - rendu bbcode du "dernier message" : 
 http://dom.refuges.info/point/4696/gite-d-etape/Belledonne/Nom-du-Gite 
-- http://dom.refuges.info/point/4699/cabane-non-gardee/Belledonne/NOUVELLE-CABANE-2/ 
-"Le forum du point "NOUVELLE CABANE 2" (id=4699) ne semble pas exister" 
-J'ignore si c'est lié à la migration de forum 
-- si je créé une nouvelle cabane, j'ai max erreurs php, je ne sais pas si c'est lié au forum (ça ne le fait pas sur http://sly.refuges.info) 
-http://dom.refuges.info/point/4706/cabane-non-gardee/Belledonne/ajout-cabane/
+	Enlever les balises du texte du dernier message du forum affiché sur le point
 
 TODO
-Messages d'erreur sur modif nom point / transfert forum / suppression point
-Mettre le prefixe session et le n° du forum refuge en config ou le récupérer
-Enlever les balises du texte du dernier message du forum affiché sur le point
 voir nom createur post (post fixé _) tranféré de fiche
-Mettre les bonnes auth dans phpbb3 reps & files -> SUR UNIX ?
+Autorisations repertoires : trier celles pour install de celles pour travail
+	Mettre les bonnes auth dans phpbb3 reps & files -> SUR UNIX ?
+Mettre le prefixe cookies et le n° du forum refuge en config ou le récupérer
 
 *************************
 Fork dev-dom : Commits on Mar 28, 2017
@@ -84,8 +74,10 @@ créer l’index de recherche pour « phpBB Native Fulltext » depuis la page In
 Paramètres des fichiers joints / Quota total de fichiers joints : 0
 Paramètres des fichiers joints / Taille maximale du fichier : 10 Mo
 Régler paramètres d'enregistrement
+Mettre une question de confirmation
 Paramètres de cookie / Nom du cookie = phpbb3_wri
 Paramètres de sécurité / Validation de session IP = Aucune
+Paramètres de sécurité / Valider le navigateur : Non
 Paramètres de charge : NON anniversaires / liste moderateurs
 PERSONNALISER : activer ext/wri
 

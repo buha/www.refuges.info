@@ -144,7 +144,7 @@ function submit_forum( $cmd, $get, $post )
 {
 	global $user_data, $config;
 
-	$time = time() - 10; // Pour ne pas se faire passer pour un robot, on simule une attente de 10 secondes
+	$time = time() - 10; // Pour ne pas se faire passer pour un robot, on simule une attente de 1à secondes
 	$url =
 		$_SERVER['REQUEST_SCHEME'].'://'.
 		$_SERVER['SERVER_NAME'].
@@ -162,7 +162,7 @@ function submit_forum( $cmd, $get, $post )
 	];
 
 	// On soumet l'url via file_get_contents
-	$result = file_get_contents(
+	$rep = file_get_contents(
 		$url.'?'.http_build_query( $get ),
 		false,
 		stream_context_create( ['http' => [
@@ -174,7 +174,20 @@ function submit_forum( $cmd, $get, $post )
 			'content' => http_build_query( $post ), // Arguments POST
 		]])
 	);
+
+	// On trace tout ça en cas de bug
+	file_put_contents ($config['racine_projet'].'forum/SUBMIT_FORUM.LOG', implode (PHP_EOL, [
+		date('r'),
+		$url,
+		'GET = '.var_export($get,true),
+		'POST = '.var_export($post,true),
+		'COOKIE = '.var_export($_COOKIE,true),
+		'Reponse = '.var_export($rep,true),
+		PHP_EOL
+	]), FILE_APPEND);
+
 	// L'url étant sensée retourner du code JSON, on le décode en PHP avant de le retourner
-	return json_decode( $result );
+	$json = json_decode( $rep );
+	return is_object ($json) ? $json : $rep;
 }
 ?>
