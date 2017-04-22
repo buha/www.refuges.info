@@ -20,6 +20,17 @@
 	<a href="<?=$config['sous_dossier_installation']?>"><img alt="Photo d'ambiance" src="<?=$config['sous_dossier_installation']?>images/bandeau-haut/titrehorizontal_<?=date('m')?>.png" /></a>
 </div>
 
+<script type="text/javascript">
+	// Utilisé dans les menus pour mobile
+	// Si Ajoute la classe c si elle n'est pas attribuée à l'élémént HTML e et vice versa
+	function flip(e, c) {
+		var cs = e.className.split(' '),
+			f = cs.indexOf(c);
+		cs.splice(f, f >= 0, f < 0 ? c : '');
+		e.className = cs.join(' ').trim();
+	}
+</script>
+
 <? // Barres de menus
 $menus = array ('menu-normal'); // On commence par la barre normale, dans tous les cas
 

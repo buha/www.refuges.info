@@ -1,10 +1,9 @@
-SLY
+TODO
 - rendu bbcode du "dernier message" : 
 	Enlever les balises du texte du dernier message du forum affiché sur le point
-
-TODO
 Ajuster les couleurs du forum avec celles du bandeau
 	mettre le chemin entier dans listener -> bandeau
+	bandeau.html on line 3: Undefined variable: _SESSION
 voir nom createur post (post fixé _) tranféré de fiche
 Autorisations repertoires : trier celles pour install de celles pour travail
 	Mettre les bonnes auth dans phpbb3 reps & files -> SUR UNIX ?

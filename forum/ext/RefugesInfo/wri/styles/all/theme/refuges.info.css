@@ -1,4 +1,7 @@
-/* Bandeau */
+/* Style du bandeau */
+@import url("../../../../../../../vues/style.css.php");
+
+/* Forum de la largeur de la page */
 .wrap {
 	max-width: 100%;
 }
