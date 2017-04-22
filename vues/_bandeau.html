@@ -71,16 +71,18 @@ foreach ($menus AS $id) {?>
 					<li><a href="<?=$config['sous_dossier_installation']?>formulaire_exportations/" title="Exportation de la base refuges.info aux formats kmz (googlearth compressé), kml (googlearth), gml (Geography Markup Language), GPS (gpx), GPS (gpx simplifié), Garmin points d'intérêts, csv (tableurs)">Exportations</a></li>
 				</ul>
 			</li>
-			<li>Zones couvertes
-				<span onclick="flip(this.parentNode,'deroule')" title="Plus de fonctions">&nbsp;&nbsp;&raquo;&nbsp;&nbsp;</span>
-				<ul>
-					<?php if (isset($vue->zones_pour_bandeau)) foreach ($vue->zones_pour_bandeau AS $nom_zone => $lien) {?>
-						<li>
-							<a href="<?=$lien?>"><?=$nom_zone?></a>
-						</li>
-					<?}?>
-				</ul>
-			</li>
+			<?php if (isset($vue)) {?>
+				<li>Zones couvertes
+					<span onclick="flip(this.parentNode,'deroule')" title="Plus de fonctions">&nbsp;&nbsp;&raquo;&nbsp;&nbsp;</span>
+					<ul>
+						<?php if (isset($vue->zones_pour_bandeau)) foreach ($vue->zones_pour_bandeau AS $nom_zone => $lien) {?>
+							<li>
+								<a href="<?=$lien?>"><?=$nom_zone?></a>
+							</li>
+						<?}?>
+					</ul>
+				</li>
+			<?}?>
 			<li><a href="<?=$config['sous_dossier_installation']?>nav">Cartes</a>
 				<span onclick="flip(this.parentNode,'deroule')" title="Plus de fonctions">&nbsp;&nbsp;&raquo;&nbsp;&nbsp;</span>
 				<ul>
@@ -103,18 +105,20 @@ foreach ($menus AS $id) {?>
 					<li><a href="<?=$config['sous_dossier_installation']?>forum/privmsg.php?folder=inbox" title="Votre boite aux lettres personelle">Messages</a></li>
 				</ul>
 			</li>
-			<li><a href="<?=$vue->lien_wiki["index"]?>">A propos du site</a>
-				<span onclick="flip(this.parentNode,'deroule')" title="Plus de fonctions">&nbsp;&nbsp;&raquo;&nbsp;&nbsp;</span>
-				<ul>
-					<li><a href="<?=$vue->lien_wiki["index"]?>">A propos</a></li>
-					<li><a href="<?=$vue->lien_wiki["licence"]?>" title="Quelle est la licence du contenu de refuges.info ?">Licence des contenus</a></li>
-					<li><a href="<?=$vue->lien_wiki["prudence"]?>" title="Règles de prudence à observer vis à vis de l'information présente sur refuges.info">Règles de prudence</a></li>
-					<li><a href="<?=$vue->lien_wiki["qui_est_refuges.info"]?>" title="Qui est derrière www.refuges.info ?">Qui sommes nous ?</a></li>
-					<li><a href="<?=$vue->lien_wiki["liens"]?>">Liens</a></li>
-					<li><a href="<?=$vue->lien_wiki["don"]?>">Faire un don</a></li>
-					<li><a href="<?=$vue->lien_wiki["mentions-legales"]?>">Mentions Légales</a></li>
-				</ul>
-			</li>
+			<?php if (isset($vue)) {?>
+				<li><a href="<?=$vue->lien_wiki["index"]?>">A propos du site</a>
+					<span onclick="flip(this.parentNode,'deroule')" title="Plus de fonctions">&nbsp;&nbsp;&raquo;&nbsp;&nbsp;</span>
+					<ul>
+						<li><a href="<?=$vue->lien_wiki["index"]?>">A propos</a></li>
+						<li><a href="<?=$vue->lien_wiki["licence"]?>" title="Quelle est la licence du contenu de refuges.info ?">Licence des contenus</a></li>
+						<li><a href="<?=$vue->lien_wiki["prudence"]?>" title="Règles de prudence à observer vis à vis de l'information présente sur refuges.info">Règles de prudence</a></li>
+						<li><a href="<?=$vue->lien_wiki["qui_est_refuges.info"]?>" title="Qui est derrière www.refuges.info ?">Qui sommes nous ?</a></li>
+						<li><a href="<?=$vue->lien_wiki["liens"]?>">Liens</a></li>
+						<li><a href="<?=$vue->lien_wiki["don"]?>">Faire un don</a></li>
+						<li><a href="<?=$vue->lien_wiki["mentions-legales"]?>">Mentions Légales</a></li>
+					</ul>
+				</li>
+			<?}?>
 			
 			<? if ($_SESSION['niveau_moderation']>=1) {?>
 				<li>
@@ -122,20 +126,6 @@ foreach ($menus AS $id) {?>
 					<?if ($vue->demande_correction) {?>
 						<a href="<?=$config['sous_dossier_installation']?>gestion/?page=commentaires_attente_correction" title="Commentaires en attente d'une correction">*</a>
 					<?}?>
-					<? // Ajout d'un lien de test pour Dominique seulement....
-					if ($_SESSION['login_utilisateur'] == 'Dominique') {
-$request=[];//DCMM						$request = explode ('/', $_SERVER['REQUEST_URI']);
-							$url = explode ('?', $request [1]);
-							if (!$url [0]) $url [0] = 'index.php';
-								$urls = explode ('.', $url [0]);
-									$urls [0] .= '-TEST';
-								$url [0] = implode ('.', $urls);
-							$request [1] = implode ('?', $url);
-						$uri = implode ('/', $request);
-						if (file_exists ($urls [0] .'.php')) {?>
-							<a href="<?=$uri?>">.</a>
-						<?}
-					}?>
 				</li>
 			<?}?>
 		</ul>

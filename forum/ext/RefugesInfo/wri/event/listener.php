@@ -62,17 +62,19 @@ class listener implements EventSubscriberInterface
 	}
 
 	function page_footer ($vars) {
-		global $template, $request;
+		global $template, $request, $user;
 
 		if (isset ($_GET['nd']))
 			$vars['page_footer_override'] = true; // Termine sans afficher
 
 		// Inclusion du bandeau
 		$request->enable_super_globals();
+		$_SESSION['id_utilisateur'] = $user->data['user_id'];
+		$_SESSION['login_utilisateur'] = $user->data['username'];
+		$_SESSION['niveau_moderation'] = 0; //TODO remettre "GESTION" et "*" en fonction des autorisations
 		ob_start();
-		//DCMM mettre le chemin complet ici !!
-		include '../includes/config.php';
-		include '../vues/_bandeau.html';
+		include dirname (__FILE__).'/../../../../../includes/config.php';
+		include dirname (__FILE__).'/../../../../../vues/_bandeau.html';
 		$template->assign_var('BANDEAU', ob_get_clean());
 	}
 }

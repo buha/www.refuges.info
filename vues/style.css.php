@@ -55,6 +55,55 @@ switch ($periode)
 }
 
 ?>
+
+/*==================================================================*/
+/* Modification du style du nouveau forum PhpBB3-prosilver          */
+/*==================================================================*/
+/* Forum de la largeur de la page */
+#phpbb .wrap {
+	max-width: 100%;
+}
+
+#entete,
+.menu {
+	font-family: Times New Roman;
+}
+
+/* Titre des forums de refuges */
+#phpbb .section-viewtopic .topic-title a:first-child {
+	color: black !important;
+}
+#phpbb .wri-link {
+	font-size: 70%;
+}
+/* Zones masquées */
+#phpbb .headerbar,
+#phpbb .navbar .avatar {
+	display: none;
+}
+/* Personnalisation des couleurs */
+#phpbb .navbar {
+  background-color: #<?=$couleur_fond?>;
+}
+#phpbb .headerbar, .forumbg,
+#phpbb .headerbar, .forabg,
+#phpbb h3 {
+	background-color: #<?=$couleur_lien?>;
+	background-image: none;
+}
+#phpbb .stat-block a,
+#phpbb .stat-block h3 {
+	color: white;
+}
+#phpbb .bg1,
+#phpbb .bg2,
+#phpbb .bg3,
+#phpbb .forabg .forums,
+#phpbb .forumbg .topics > li {
+	background-color: #<?=$couleur_fond?>;
+	background-image: none;
+}
+
 /*==================================================================*/
 /* MISE EN PAGE GENERALE DES TYPES                                  */
 /*==================================================================*/
