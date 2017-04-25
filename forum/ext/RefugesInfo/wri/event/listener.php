@@ -68,10 +68,14 @@ class listener implements EventSubscriberInterface
 			$vars['page_footer_override'] = true; // Termine sans afficher
 
 		// Inclusion du bandeau
+		// Restitution des variables
 		$request->enable_super_globals();
-		$_SESSION['id_utilisateur'] = $user->data['user_id'];
-		$_SESSION['login_utilisateur'] = $user->data['username'];
-		$_SESSION['niveau_moderation'] = 0; //TODO remettre "GESTION" et "*" en fonction des autorisations
+		if ($user->data['user_id'] > 1) {
+			$_SESSION['id_utilisateur'] = $user->data['user_id'];
+			$_SESSION['login_utilisateur'] = $user->data['username'];
+			$_SESSION['niveau_moderation'] = 0; //TODO remettre "GESTION" et "*" en fonction des autorisations
+		}
+		// Expansion des fichiers
 		ob_start();
 		include dirname (__FILE__).'/../../../../../includes/config.php';
 		include dirname (__FILE__).'/../../../../../vues/_bandeau.html';

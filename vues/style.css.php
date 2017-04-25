@@ -59,6 +59,10 @@ switch ($periode)
 /*==================================================================*/
 /* Modification du style du nouveau forum PhpBB3-prosilver          */
 /*==================================================================*/
+/* Pas de ligne vide en haut */
+#phpbb {
+	padding: 0;
+}
 /* Forum de la largeur de la page */
 #phpbb .wrap {
 	max-width: 100%;

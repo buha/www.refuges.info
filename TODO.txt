@@ -1,7 +1,5 @@
 BUG
 http://dom.refuges.info/point_formulaire_recherche/ => Mauvaise base !
-http://dom.refuges.info/forum/login.php?logout=true
-http://dom.refuges.info/forum/profile.php?mode=editprofile
 
 TODO
 Rendu bbcode du "dernier message" : 
