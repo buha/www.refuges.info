@@ -1,13 +1,22 @@
+BUG
+http://dom.refuges.info/point_formulaire_recherche/ => Mauvaise base !
+http://dom.refuges.info/forum/login.php?logout=true
+http://dom.refuges.info/forum/profile.php?mode=editprofile
+
 TODO
-bandeau forum : remettre recherche dans le forum
 Rendu bbcode du "dernier message" : 
 	Enlever les balises du texte du dernier message du forum affiché sur le point
 voir nom createur post (post fixé _) tranféré de fiche
-Autorisations repertoires : trier celles pour install de celles pour travail
+Tous les DCMM
+
+BEST TODO
+Autorisations repertoires : trier celles pour install de celles pour prod
 	Mettre les bonnes auth dans phpbb3 reps & files -> SUR UNIX ?
+bandeau forum : remettre recherche dans le forum
 Mettre le prefixe cookies et le n° du forum refuge en config ou le récupérer
 Bandeau forum remettre "GESTION" et "*" en fonction des autorisations + liste Wiki
-Tous les DCMM
+Ext compare ip ref et serveur au lieu de ne pas comparer l'IP en ident param phpbb
+Ext Récupérer et ajouter la ref browser au lieu de ne pas vérifier.  Ou inhiber comp .
 
 *************************
 Fork dev-dom : Commits on Mar 28, 2017
