@@ -1,6 +1,3 @@
-BUG
-http://dom.refuges.info/point_formulaire_recherche/ => Mauvaise base !
-
 TODO
 Rendu bbcode du "dernier message" : 
 	Enlever les balises du texte du dernier message du forum affiché sur le point
