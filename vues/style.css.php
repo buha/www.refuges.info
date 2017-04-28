@@ -69,8 +69,12 @@ switch ($periode)
 }
 
 #entete,
-.menu {
+.menu,
+#basdepage {
 	font-family: Times New Roman;
+}
+#basdepage {
+	font-size: 16px;
 }
 
 /* Titre des forums de refuges */
@@ -86,7 +90,8 @@ switch ($periode)
 	display: none;
 }
 /* Personnalisation des couleurs */
-#phpbb .navbar {
+#phpbb .navbar,
+#phpbb #basdepage {
   background-color: #<?=$couleur_fond?>;
 }
 #phpbb .headerbar, .forumbg,

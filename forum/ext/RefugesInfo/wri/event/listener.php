@@ -70,15 +70,19 @@ class listener implements EventSubscriberInterface
 		// Inclusion du bandeau
 		// Restitution des variables
 		$request->enable_super_globals();
+		include dirname (__FILE__).'/../../../../../includes/config.php';
 		if ($user->data['user_id'] > 1) {
 			$_SESSION['id_utilisateur'] = $user->data['user_id'];
 			$_SESSION['login_utilisateur'] = $user->data['username'];
 			$_SESSION['niveau_moderation'] = 0; //TODO remettre "GESTION" et "*" en fonction des autorisations
 		}
-		// Expansion des fichiers
+		// Expansion du contenu des fichiers pour inclusion dans les event templates 
 		ob_start();
-		include dirname (__FILE__).'/../../../../../includes/config.php';
 		include dirname (__FILE__).'/../../../../../vues/_bandeau.html';
 		$template->assign_var('BANDEAU', ob_get_clean());
+
+		ob_start();
+		include dirname (__FILE__).'/../../../../../vues/_pied.html';
+		$template->assign_var('PIED', str_replace (['</body>','</html>'], '', ob_get_clean()));
 	}
 }
