@@ -1,16 +1,25 @@
 TODO
-Rendu bbcode du "dernier message" : 
-	Enlever les balises du texte du dernier message du forum affiché sur le point
+BBCODE
+	OK - Post entré dans un forum PhpBB3
+	OK - Post d'un forum PhpBB2 translaté en PhpBB3
+	- Commentaire d'un point transféré en PhpBB2 translaté en PhpBB3
+	- Commentaire d'un point transféré en PhpBB3
+	- Post entré dans un forum PhpBB3, vu comme dernier post dans la fiche d'un point
+		http://dom.refuges.info/point/4713
+	- Post d'un forum PhpBB2 translaté en PhpBB3, vu comme dernier post dans la fiche d'un point
+		http://dom.refuges.info/point/4058
+	- Commentaire d'un point transféré en PhpBB2 translaté en PhpBB3, vu comme dernier post dans la fiche d'un point
+	- Commentaire d'un point transféré en PhpBB3, vu comme dernier post dans la fiche d'un point
 voir nom createur post (post fixé _) tranféré de fiche
 Tous les DCMM
 
 BEST TODO
 Autorisations repertoires : trier celles pour install de celles pour prod
-	Mettre les bonnes auth dans phpbb3 reps & files -> SUR UNIX ?
+	Mettre les bonnes auth dans PhpBB3 reps & files -> SUR UNIX ?
 bandeau forum : remettre recherche dans le forum
 Mettre le prefixe cookies et le n° du forum refuge en config ou le récupérer
 Bandeau forum remettre "GESTION" et "*" en fonction des autorisations + liste Wiki
-Ext compare ip ref et serveur au lieu de ne pas comparer l'IP en ident param phpbb
+Ext compare ip ref et serveur au lieu de ne pas comparer l'IP en ident param PhpBB
 Ext Récupérer et ajouter la ref browser au lieu de ne pas vérifier.  Ou inhiber comp .
 Mettre à jour structure.sql avec les tables phpbb3_
 

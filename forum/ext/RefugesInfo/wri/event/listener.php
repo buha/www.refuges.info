@@ -1,11 +1,10 @@
 <?php
 /*********************************************
-Ce fichier centralise tous les "hooks"
-qui viennent modifier le comportement de PhpBB
-pour s'interfacer avec refuges.info
+Ce fichier centralise tous les "hooks" qui viennent modifier le comportement de PhpBB pour s'interfacer avec refuges.info
+Son architecture est spécifiée ici : https://area51.phpbb.com/docs/dev/31x/extensions/tutorial_basics.html
 *********************************************/
 
-namespace RefugesInfo\wri\event;
+namespace RefugesInfo\wri\event; // Attention: Le code suivant s'exécute dans un "namespace" bien défini
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 if (!defined('IN_PHPBB')) exit;
@@ -68,6 +67,9 @@ class listener implements EventSubscriberInterface
 			$vars['page_footer_override'] = true; // Termine sans afficher
 
 		// Inclusion du bandeau
+		// Les fichiers template du bandeau et du pied de page étant au format "MVC+template type refuges.info",
+		// il s'agit de les évaluer dans leur contexte PHP et d'introduire le code HTML résultat dans une variable des templates de PhpBB V3.2
+
 		// Restitution des variables
 		$request->enable_super_globals();
 		include dirname (__FILE__).'/../../../../../includes/config.php';

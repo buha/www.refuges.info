@@ -38,5 +38,5 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, array(
-	'DCMM' => 'xxxx',
+	// Rien à traduire pour l'instant mais ce fichier est obligatoire !
 ));

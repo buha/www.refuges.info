@@ -31,15 +31,8 @@
 	}
 </script>
 
-<? // Barres de menus
-$menus = array ('menu-normal'); // On commence par la barre normale, dans tous les cas
-
-// Si ce n'est pas un mobile, on ajoute un menu surgissant quand la page est scrollée
-$agents_mobiles = "phone|iphone|itouch|ipod|ipad|symbian|android|htc_|htc-|palmos|blackberry|opera m|iemobile|windows ce|nokia|fennec|hiptop|kindle|mot |mot-|webos\/|samsung|sonyericsson|^sie-|nintendo|pda;|avantgo|eudoraweb|minimo|netfront|brew|teleca|lg;|lge |wap;| wap ";
-//DCMMif (!preg_match( "/$agents_mobiles/i", $_SERVER['HTTP_USER_AGENT']))
-	$menus [] = 'menu-scroll';
-
-foreach ($menus AS $id) {?>
+<? // Barres de menus (menu visible en haut de page & menu surgissant en haut de fenêtre quand la page est scrollée)
+foreach (['menu-normal', 'menu-scroll'] AS $id) {?>
 	<div id="<?=$id?>" class="menu">
 		<a href="<?=$config['sous_dossier_installation']?>" title="Retour à l'accueil">Refuges.info</a>
 		<span onclick="flip(this.parentNode,'deroule')">Menu</span>
