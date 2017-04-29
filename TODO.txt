@@ -12,6 +12,7 @@ Mettre le prefixe cookies et le n° du forum refuge en config ou le récupérer
 Bandeau forum remettre "GESTION" et "*" en fonction des autorisations + liste Wiki
 Ext compare ip ref et serveur au lieu de ne pas comparer l'IP en ident param phpbb
 Ext Récupérer et ajouter la ref browser au lieu de ne pas vérifier.  Ou inhiber comp .
+Mettre à jour structure.sql avec les tables phpbb3_
 
 *************************
 Fork dev-dom : Commits on Mar 28, 2017
