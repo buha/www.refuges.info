@@ -529,7 +529,7 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
     height: 20px;
   }
   .menu UL LI UL {
-    position: relative; top: -500px; /* On le cache loin mais on ne fait pas display:none pour avoir la largeur max une fois montré */
+    position: relative; top: -5000px; /* On le cache loin mais on ne fait pas display:none pour avoir la largeur max une fois montré */
     left: 0;
       height: 0;
     padding: 0;

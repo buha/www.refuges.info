@@ -1,22 +1,7 @@
-TODO
-BBCODE
-	OK - Post entré dans un forum PhpBB3
-	OK - Post d'un forum PhpBB2 translaté en PhpBB3
-	- Commentaire d'un point transféré en PhpBB2 translaté en PhpBB3
-	- Commentaire d'un point transféré en PhpBB3
-	- Post entré dans un forum PhpBB3, vu comme dernier post dans la fiche d'un point
-		http://dom.refuges.info/point/4713
-	- Post d'un forum PhpBB2 translaté en PhpBB3, vu comme dernier post dans la fiche d'un point
-		http://dom.refuges.info/point/4058
-	- Commentaire d'un point transféré en PhpBB2 translaté en PhpBB3, vu comme dernier post dans la fiche d'un point
-	- Commentaire d'un point transféré en PhpBB3, vu comme dernier post dans la fiche d'un point
-voir nom createur post (post fixé _) tranféré de fiche
-Tous les DCMM
-
 BEST TODO
+Bandeau forum : remettre recherche dans le forum
 Autorisations repertoires : trier celles pour install de celles pour prod
 	Mettre les bonnes auth dans PhpBB3 reps & files -> SUR UNIX ?
-bandeau forum : remettre recherche dans le forum
 Mettre le prefixe cookies et le n° du forum refuge en config ou le récupérer
 Bandeau forum remettre "GESTION" et "*" en fonction des autorisations + liste Wiki
 Ext compare ip ref et serveur au lieu de ne pas comparer l'IP en ident param PhpBB

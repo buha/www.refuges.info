@@ -55,9 +55,8 @@ else // le point est valide
         }
     if ($point->modele!=1)
     $vue->forum_point = infos_point_forum ($point);
-//DCMM    $vue->forum_point->post_text_propre=bbcode2html($vue->forum_point->post_text);
-    $vue->forum_point->post_text_propre = $vue->forum_point->post_text;
-    
+    $vue->forum_point->post_text_propre = bbcode2html (preg_replace ('/<[^>]*>/i', '', $vue->forum_point->post_text));
+
     $vue->forum_point->date_humaine=strftime ('%A %e %B %Y à %H:%M',$vue->forum_point->post_time);
     $conditions_commentaires = new stdClass();
     $conditions_commentaires->ids_points = $id_point;
