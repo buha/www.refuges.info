@@ -69,7 +69,7 @@ if (isset($_SESSION['id_utilisateur']) )
                     <h4>Pour tout le monde</h4>
                     <ul>
                       <li>
-                        <a href='".$config['lien_forum']."ucp.php?mode=logout&sid=".$_COOKIE['phpbb3_wri_sid']."'>Se déconnecter</a>
+                        <a href='".$config['lien_forum']."ucp.php?mode=logout&sid=".$_COOKIE[$config['cookie_prefix'].'_sid']."'>Se déconnecter</a>
                       </li>
                     </ul>"); // pas de risque la page est mutante
         }

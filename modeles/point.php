@@ -18,6 +18,7 @@ require_once ("commentaire.php");
 require_once ("point_gps.php");
 require_once ("polygone.php");
 require_once ("mise_en_forme_texte.php");
+require_once ($config['racine_projet']."forum/ext/RefugesInfo/couplage/api.php");
 
 /*****************************************************
 Cette fonction récupère sous la forme de plusieurs objets des points de la base qui satisfont des conditions.
@@ -563,31 +564,33 @@ function modification_ajout_point($point)
         $res = $pdo->query($sql);
         $topic_data = $res->fetch();
 
-        // On appelle l'URL du forum
-        $get = [
-          'mode' => 'edit',
-          'f' => '4', // Le n° du forum des refuges (TODO : à récupérer dans la base ou dans un config !)
-          't' => $point->topic_id, // Le numéro du topic à modifier
-          'p' => $topic_data->topic_first_post_id, // Le numéro du premier post du topic à modifier
-        ];
-        $post = [
-          'subject' => $point->nom, // Le nom du topic
-        ];
-        $rep = submit_forum( 'posting', $get, $post );
+        // On appelle l'URL du forum qui modifie un topic (en fait son premier post)
+        $rep = submit_forum(
+          'posting', // URL de phpbb3.2+ à appeler
+          [ // Paramètres GET
+            'mode' => 'edit',
+            't' => $point->topic_id, // Le numéro du topic à modifier
+            'p' => $topic_data->topic_first_post_id, // Le numéro du premier post du topic à modifier
+          ],
+          [ // Paramètres POST
+            'subject' => $point->nom, // Le nom du topic
+          ]
+        );
         if (is_string($rep))
           return erreur( "Erreur renommage forum point<br/>$rep" );
   }
   else  // INSERT
   {
-    /********* Création du topic point dans le forum refuges *************/
-    $get = [
-      'mode' => 'post',
-      'f' => '4', // Le n° du forum des refuges (TODO : à récupérer dans la base ou dans un config !)
-    ];
-    $post = [
-      'subject' => $point->nom, // Le nom du topic
-    ];
-    $rep = submit_forum( 'posting', $get, $post ); // On appelle l'URL du forum
+    // On appelle l'URL du forum qui crée un topic dans le forum refuges
+    $rep = submit_forum(
+      'posting', // URL de phpbb3.2+ à appeler
+      [ // Paramètres GET
+        'mode' => 'post',
+      ],
+      [ // Paramètres POST
+        'subject' => $point->nom, // Le nom du topic
+      ]
+    );
     if (@!$rep->topic_id)
       return erreur( "Erreur création forum point<br/>$rep" );
 
@@ -622,27 +625,17 @@ function suppression_point($point)
     foreach ($commentaires_a_supprimer as  $commentaire_a_supprimer)
       suppression_commentaire($commentaire_a_supprimer);
 
-  // suppression du topic dans le forum
-  // On commence par générere et enregistrer une clé de validation
-  $confirm_key = substr( strtoupper( $_COOKIE['phpbb3_wri_sid'] ), 0, 10);
-  $sql = "UPDATE phpbb3_users
-    SET user_last_confirm_key = '$confirm_key'
-    WHERE user_id = ".$_COOKIE['phpbb3_wri_u'];
-  $pdo->query($sql);
-
-  // On appelle l'URL du forum qui supprime un forum
-  $get = [
-    'confirm_key' => $confirm_key,
-    'confirm_uid' => $_COOKIE['phpbb3_wri_u'],
-    'sess' => $_COOKIE['phpbb3_wri_sid'],
-  ];
-  $post = [
-    'action' => 'delete_topic',
-    'topic_id_list' => [$point->topic_id],
-    'delete_permanent' => 1,
-    'confirm' => 'Oui',
-  ];
-  $rep = submit_forum( 'mcp', $get, $post );
+  // On appelle l'URL du forum qui supprime un topic
+  $rep = submit_forum(
+    'posting', // URL de phpbb3.2+ à appeler
+    [], // Paramètres GET
+    [ // Paramètres POST
+      'action' => 'delete_topic',
+      'topic_id_list' => [$point->topic_id],
+      'delete_permanent' => 1,
+      'confirm' => 'Oui',
+    ]
+  );
   if ($rep)
     return erreur( "Erreur suppresion sujet du forum<br/>$rep" );
 

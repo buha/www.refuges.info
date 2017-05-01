@@ -39,8 +39,14 @@ $config['rep_web_forum_photos']=$config['sous_dossier_installation']."forum/phot
 // Lien direct vers le mode d'emploi
 $config['base_wiki']=$config['sous_dossier_installation']."wiki/";
 
-// des fois qu'on décide de re-bouger le forum, on ne le changera qu'ici
+// On centralise ici tous les paramètres PhpBB qui sont figés
+// Des fois qu'on décide de re-bouger le forum, on ne le changera qu'ici
 $config['lien_forum']=$config['sous_dossier_installation']."forum/";
+// Il faut forcer le préfixe des noms de cookies du forum à 'phpbb3_wri'
+// TODO : On pourrait aussi aller le chercher dans phpbb3_config.cookie_name mais, bof, ça va plus vite de le fixer ici !
+$config['cookie_prefix']="phpbb3_wri";
+// On paramètre le numéro du forum qui contient les topics de discussion sur les fiches des points
+$config['forum_refuges']=4;
 
 // Paramètrage des cartes vignettes des fiches de points
 $config['chemin_leaflet']=$config['racine_projet'].'leaflet/';

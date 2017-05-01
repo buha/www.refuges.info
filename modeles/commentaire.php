@@ -10,7 +10,7 @@ require_once ('bdd.php');
 require_once ('gestion_erreur.php');
 require_once ('point.php');
 require_once ("mise_en_forme_texte.php");
-
+require_once ($config['racine_projet']."forum/ext/RefugesInfo/couplage/api.php");
 
 /**********************************************************************************************
 Récupère un ensemble de commentaires en fonction des paramètres passer comme conditions
@@ -470,8 +470,8 @@ function suppression_commentaire($commentaire)
 /*******************************************************/
 function transfert_forum($commentaire)
 {
-  global $config,$pdo;
-
+  global $config;
+/*DCMM DELETE
   $querycom="SELECT * FROM phpbb3_topics WHERE topic_id=$commentaire->topic_id";
 
   $res = $pdo->query($querycom);
@@ -479,9 +479,8 @@ function transfert_forum($commentaire)
 
         if ($commentaire->id_createur_commentaire<=0)
             $commentaire->id_createur_commentaire=-1;
-
+*/
         // d'abord declarer le post
-        // note sly 17/08/2013 : j'ajoute un "_" à la suite du nom de l'auteur, c'est un peu curieux, mais ça permet de réduire
         // les chances qu'on le confondent avec un utilisateur du forum portant le même nom exactement
         // de plus, toute action de modération sort un message d'erreur indiquant "utilisateur existe déjà, merci d'en choisir un autre"
   
@@ -495,21 +494,26 @@ function transfert_forum($commentaire)
     elseif (isset($commentaire->photo['originale']))
       $photo_a_conserver=$commentaire->photo['originale'];
 
-                // On pourrait se dire que déplacer c'est plus simple. Oui, en effet, mais je préfère profiter de la fonction "suppression_commentaire" toute faite. Et donc faire une copie à cet endroit.
+    // On pourrait se dire que déplacer c'est plus simple. Oui, en effet, mais je préfère profiter de la fonction "suppression_commentaire" toute faite. Et donc faire une copie à cet endroit.
     copy($photo_a_conserver,$config['rep_forum_photos'].$commentaire->id_commentaire.".jpeg");
   }
 
-  // Crée un nouveau post dans le forum lié au point
-  $get = [
-    'mode' => 'reply',
-    'f' => '4', // Le n° du forum des refuges (TODO : à récupérer dans la base ou dans un config !)
-    't' => $commentaire->topic_id, // Le numéro du topic à modifier
-  ];
-  $post = [
-    'subject' => 'Transféré de la fiche',
-    'message' => $commentaire->texte,
-  ];
-  $rep = submit_forum( 'posting', $get, $post );
+  // On appelle l'URL du forum qui ajoute un post dans le topic correspondant à la fiche
+  $rep = submit_forum(
+    'posting', // URL de phpbb3.2+ à appeler
+    [ // Paramètres GET
+      'mode' => 'reply',
+      't' => $commentaire->topic_id, // Le numéro du topic à modifier
+	],
+    [ // Paramètres POST
+      'subject' => 'Transféré de la fiche',
+      'message' => $commentaire->texte,
+      // note sly 17/08/2013 : j'ajoute un "_" à la suite du nom de l'auteur, c'est un peu curieux, mais ça permet de réduire
+      // les chances qu'on le confondent avec un utilisateur du forum portant le même nom exactement
+      // de plus, toute action de modération sort un message d'erreur indiquant "utilisateur existe déjà, merci d'en choisir un autre"
+//DCMM TODO      'username' => substr($commentaire->auteur_commentaire,0,22).'_',
+    ]
+  );
   if (is_string($rep))
     return erreur( "Erreur création post du forum<br/>$rep" );
 

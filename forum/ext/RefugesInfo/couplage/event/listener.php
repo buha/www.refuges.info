@@ -1,10 +1,9 @@
 <?php
-/*********************************************
-Ce fichier centralise tous les "hooks" qui viennent modifier le comportement de PhpBB pour s'interfacer avec refuges.info
-Son architecture est spécifiée ici : https://area51.phpbb.com/docs/dev/31x/extensions/tutorial_basics.html
-*********************************************/
+// Ce fichier centralise tous les "hooks" qui viennent modifier le comportement de PhpBB pour s'interfacer avec refuges.info
+// Il s'exécute dans le contexte de PhpBB 3.1+ (plateforme Synphony) qui est incompatible avec le modèle MVC et autoload des classes PHP de refuges.info
+// Attention: Le code suivant s'exécute dans un "namespace" bien défini
 
-namespace RefugesInfo\wri\event; // Attention: Le code suivant s'exécute dans un "namespace" bien défini
+namespace RefugesInfo\couplage\event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 if (!defined('IN_PHPBB')) exit;
@@ -61,7 +60,7 @@ class listener implements EventSubscriberInterface
 	}
 
 	function page_footer ($vars) {
-		global $template, $request, $user;
+		global $template, $request, $user, $auth;
 
 		if (isset ($_GET['nd']))
 			$vars['page_footer_override'] = true; // Termine sans afficher
@@ -76,7 +75,7 @@ class listener implements EventSubscriberInterface
 		if ($user->data['user_id'] > 1) {
 			$_SESSION['id_utilisateur'] = $user->data['user_id'];
 			$_SESSION['login_utilisateur'] = $user->data['username'];
-			$_SESSION['niveau_moderation'] = 0; //TODO remettre "GESTION" et "*" en fonction des autorisations
+			$_SESSION['niveau_moderation'] = $auth->acl_gets('m_edit');
 		}
 		// Expansion du contenu des fichiers pour inclusion dans les event templates 
 		ob_start();

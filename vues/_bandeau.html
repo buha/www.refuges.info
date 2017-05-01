@@ -2,7 +2,7 @@
 	<div>
 		<?if (@$_SESSION['id_utilisateur']>=1) {?>
 			<a href="<?=$config['lien_forum']?>ucp.php" title="Modifier votre profil"><?=$_SESSION['login_utilisateur']?></a>
-			<a href="<?=$config['lien_forum']?>ucp.php?mode=logout&sid=<?=$_COOKIE['phpbb3_wri_sid']?>">Se déconnecter</a>
+			<a href="<?=$config['lien_forum']?>ucp.php?mode=logout&sid=<?=$_COOKIE[$config['cookie_prefix'].'_sid']?>">Se déconnecter</a>
 		<?} else {?>
 			<a href="<?=$config['lien_forum']?>ucp.php?mode=register" title="Pour créer un compte">S'inscrire</a>
 			<a href="<?=$config['lien_forum']?>ucp.php?mode=login" title="Si vous avez déjà un compte">Connexion</a>
@@ -113,10 +113,10 @@ foreach (['menu-normal', 'menu-scroll'] AS $id) {?>
 				</li>
 			<?}?>
 			
-			<? if ($_SESSION['niveau_moderation']>=1) {?>
+			<? if (@$_SESSION['niveau_moderation']>=1) {?>
 				<li>
 					<a href="<?=$config['sous_dossier_installation']?>gestion/" title="Zone de gestion pour les modérateurs">Gestion</a>
-					<?if ($vue->demande_correction) {?>
+					<?if (@$vue->demande_correction) {?>
 						<a href="<?=$config['sous_dossier_installation']?>gestion/?page=commentaires_attente_correction" title="Commentaires en attente d'une correction">*</a>
 					<?}?>
 				</li>

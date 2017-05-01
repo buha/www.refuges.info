@@ -1,5 +1,0 @@
-services:
-    RefugesInfo.wri.listener:
-        class: RefugesInfo\wri\event\listener
-        tags:
-            - { name: event.listener }

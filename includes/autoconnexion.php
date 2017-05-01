@@ -58,14 +58,10 @@ elle est donc lancé sur chaque page qui pourrait nécessiter d'être connecté
 ***/
 function auto_login_phpbb_users()
 {
-  global $pdo, $user_data;
+  global $pdo, $user_data, $config;
   vider_session();
 
-  // Il faut forcer le préfixe des noms de cookies du forum à 'phpbb3_wri'
-  // On pourrait aussi aller le chercher dans phpbb3_config cookie_name mais, bof, ça va plus vite !
-  $cookie_name = 'phpbb3_wri';
-
-  $user_id = @$_COOKIE[$cookie_name.'_u'];
+  $user_id = @$_COOKIE[$config['cookie_prefix'].'_u'];
   if ($user_id <= 1) // Pas connecté ou anonymous
     return FALSE;
 
@@ -74,7 +70,7 @@ function auto_login_phpbb_users()
       JOIN phpbb3_sessions AS s ON u.user_id = s.session_user_id
       JOIN phpbb3_groups AS g USING (group_id)
     WHERE user_id = ".$user_id."
-      AND session_id = '".$_COOKIE[$cookie_name.'_sid']."'";
+      AND session_id = '".$_COOKIE[$config['cookie_prefix'].'_sid']."'";
   $res = $pdo->query($sql);
   if (!$res)
     return FALSE;
@@ -130,64 +126,5 @@ function remplissage_zones_bandeau()
         foreach ($zones as $zone)
             $array_zones [ucfirst($zone->nom_polygone)] = lien_polygone($zone)."?mode_affichage=zone";
     return $array_zones;
-}
-
-// fonction qui va permettre d'exécuter une commande sur le forum
-// l'autoload des classes PHP du modèle MVC/WRI étant incompatible avec celui de PhpBB basé sur Symphony,
-// les modifications du forum sont faites en simulant l'appel d'une URL du forum
-// le forum devra être paramétré de la façon suivante :
-//    GÉNÉRAL / Paramètres de cookie / Nom du cookie = phpbb3_wri
-//    GÉNÉRAL / Paramètres de sécurité / Validation de session IP = Aucune
-//    GÉNÉRAL / Paramètres de sécurité / Valider le navigateur : non
-// TODO : mettre ce fichier à un endroit plus adequat mais inclu par modeles/point.php et modeles/commentaire.php 
-function submit_forum( $cmd, $get, $post )
-{
-	global $user_data, $config;
-
-	$time = time() - 10; // Pour ne pas se faire passer pour un robot, on simule une attente de 1à secondes
-	$url =
-		$_SERVER['REQUEST_SCHEME'].'://'.
-		$_SERVER['SERVER_NAME'].
-		$config['lien_forum'].
-		"$cmd.php";
-	$get += [ // ajout des paramètres exploités par forum/ext/refugesInfo/wri/event/listener.php pour modifier le retour de l'URL
-		'rt' => '', // Rend les data du post sous format JSON
-		'nd' => '', // N'affiche pas la page
-		'nr' => '', // Ne redirige pas la page aprés une modif
-	];
-	$post += [
-		'post' => 'Envoyer',
-		'creation_time' => $time,
-		'form_token' => sha1( $time.$user_data->user_form_salt.$cmd ), //.$user->session_id
-	];
-
-	// On soumet l'url via file_get_contents
-	$rep = file_get_contents(
-		$url.'?'.http_build_query( $get ),
-		false,
-		stream_context_create( ['http' => [
-			'method'  => 'POST',
-			'header'  => implode( "\n", [
-				'Content-type: application/x-www-form-urlencoded',
-				'Cookie: '.http_build_query( $_COOKIE, null, ';' ), // On envoie les mêmes cookies
-			]),
-			'content' => http_build_query( $post ), // Arguments POST
-		]])
-	);
-
-	// On trace tout ça en cas de bug
-	file_put_contents ($config['racine_projet'].'forum/SUBMIT_FORUM.LOG', implode (PHP_EOL, [
-		date('r'),
-		$url,
-		'GET = '.var_export($get,true),
-		'POST = '.var_export($post,true),
-		'COOKIE = '.var_export($_COOKIE,true),
-		'Reponse = '.var_export($rep,true),
-		PHP_EOL
-	]), FILE_APPEND);
-
-	// L'url étant sensée retourner du code JSON, on le décode en PHP avant de le retourner
-	$json = json_decode( $rep );
-	return is_object ($json) ? $json : $rep;
 }
 ?>

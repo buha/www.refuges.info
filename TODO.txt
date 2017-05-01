@@ -1,12 +1,13 @@
+BUG
+// insere la balise bbcode pour la photo => ce n'est plus le bon BBCODE !!!
+
 BEST TODO
-Bandeau forum : remettre recherche dans le forum
-Autorisations repertoires : trier celles pour install de celles pour prod
+note sly 17/08/2013 : j'ajoute un "_" à la suite du nom de l'auteur, c'est un peu curieux, mais ça permet de réduire
+Aprés migration : Mettre à jour structure.sql avec les tables phpbb3_
+Install
+	Autorisations repertoires : trier celles pour install de celles pour prod
 	Mettre les bonnes auth dans PhpBB3 reps & files -> SUR UNIX ?
-Mettre le prefixe cookies et le n° du forum refuge en config ou le récupérer
-Bandeau forum remettre "GESTION" et "*" en fonction des autorisations + liste Wiki
-Ext compare ip ref et serveur au lieu de ne pas comparer l'IP en ident param PhpBB
-Ext Récupérer et ajouter la ref browser au lieu de ne pas vérifier.  Ou inhiber comp .
-Mettre à jour structure.sql avec les tables phpbb3_
+Bandeau forum : manque * et wiki
 
 *************************
 Fork dev-dom : Commits on Mar 28, 2017
@@ -72,7 +73,6 @@ Régler paramètres d'enregistrement
 Mettre une question de confirmation
 Paramètres de cookie / Nom du cookie = phpbb3_wri
 Paramètres de sécurité / Validation de session IP = Aucune
-Paramètres de sécurité / Valider le navigateur : Non
 Paramètres de charge : NON anniversaires / liste moderateurs
 PERSONNALISER : activer ext/wri
 
