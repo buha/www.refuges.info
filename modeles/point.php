@@ -18,7 +18,6 @@ require_once ("commentaire.php");
 require_once ("point_gps.php");
 require_once ("polygone.php");
 require_once ("mise_en_forme_texte.php");
-require_once ($config['racine_projet']."forum/ext/RefugesInfo/couplage/api.php");
 
 /*****************************************************
 Cette fonction récupère sous la forme de plusieurs objets des points de la base qui satisfont des conditions.
@@ -559,42 +558,45 @@ function modification_ajout_point($point)
             return erreur("Requête en erreur, impossible à executer",$query_finale);
 
         /********* Renommage du topic point dans le forum refuges *************/
-        // Recherche du numéro du premier post du forum associé (puisqu'il faut modifier le titre du premier post pour modifier le titre du forum)
-        $sql = "SELECT topic_first_post_id from phpbb3_topics WHERE topic_id = ".$point->topic_id;
-        $res = $pdo->query($sql);
-        $topic_data = $res->fetch();
-
-        // On appelle l'URL du forum qui modifie un topic (en fait son premier post)
-        $rep = submit_forum(
-          'posting', // URL de phpbb3.2+ à appeler
-          [ // Paramètres GET
-            'mode' => 'edit',
-            't' => $point->topic_id, // Le numéro du topic à modifier
-            'p' => $topic_data->topic_first_post_id, // Le numéro du premier post du topic à modifier
-          ],
-          [ // Paramètres POST
-            'subject' => $point->nom, // Le nom du topic
-          ]
+        // On appelle l'API du forum qui renomme un topic
+        $rep = file_get_contents(
+          $config['url_forum'].'posting.php',
+          false,
+          stream_context_create( ['http' => [
+            'method'  => 'POST',
+            'content' => http_build_query( [
+              'api' => 'renommer',
+              't' => $point->topic_id,
+              's' => $point->nom,
+            ]),
+          ]])
         );
-        if (is_string($rep))
-          return erreur( "Erreur renommage forum point<br/>$rep" );
-  }
-  else  // INSERT
-  {
-    // On appelle l'URL du forum qui crée un topic dans le forum refuges
-    $rep = submit_forum(
-      'posting', // URL de phpbb3.2+ à appeler
-      [ // Paramètres GET
-        'mode' => 'post',
-      ],
-      [ // Paramètres POST
-        'subject' => $point->nom, // Le nom du topic
-      ]
-    );
-    if (@!$rep->topic_id)
-      return erreur( "Erreur création forum point<br/>$rep" );
+        $json = json_decode($rep);
 
-    $champs_sql['topic_id'] = $rep->topic_id; // On note le topic_id dans la table point pour faire le lien
+        if (!is_object ($json))
+          return erreur( "Erreur renommage forum point<br/>$rep" );
+   }
+   else  // INSERT
+   {
+    // On appelle l'API du forum qui crée un topic dans le forum refuges
+    $rep = file_get_contents(
+      $config['url_forum'].'posting.php',
+      false,
+      stream_context_create( ['http' => [
+        'method'  => 'POST',
+        'content' => http_build_query( [
+          'api' => 'creer',
+          'f' => $config['forum_refuges'],
+          's' => $point->nom,
+        ]),
+      ]])
+    );
+    $json = json_decode($rep);
+
+    if (!is_object ($json))
+      return erreur( "Erreur création forum point<br/>".var_export($rep,true) );
+
+    $champs_sql['topic_id'] = $json->topic_id; // On note le topic_id dans la table point pour faire le lien
     $query_finale=requete_modification_ou_ajout_generique('points',$champs_sql,'insert');
     if (!$pdo->exec($query_finale))
       return erreur("Requête en erreur, impossible à executer",$query_finale);
@@ -627,17 +629,20 @@ function suppression_point($point)
 
   // On appelle l'URL du forum qui supprime un topic
   $rep = submit_forum(
-    'posting', // URL de phpbb3.2+ à appeler
+    'mcp', // URL de phpbb3.2+ à appeler
     [], // Paramètres GET
     [ // Paramètres POST
       'action' => 'delete_topic',
+//      'mode' => 'delete',//DCMM ??????
       'topic_id_list' => [$point->topic_id],
       'delete_permanent' => 1,
       'confirm' => 'Oui',
     ]
   );
-  if ($rep)
-    return erreur( "Erreur suppresion sujet du forum<br/>$rep" );
+/*DCMM*/echo"<pre style='background-color:white;color:black;font-size:14px;'> = ".var_export($rep->MESSAGE_TEXT,true).'</pre>';
+  if ($rep->MESSAGE_TEXT)
+    return erreur( "Erreur suppresion sujet du forum<br/>$rep->MESSAGE_TEXT" );
+$rep.='rr';//DCMM
 
   // suite à la modification dans la base sur les coordonnées GPS, on va supprimer aussi de la table :
   // point_gps si le point_gps n'est plus utilisé du tout

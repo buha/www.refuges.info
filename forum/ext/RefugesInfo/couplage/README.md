@@ -1,24 +1,34 @@
 RefugesInfo.couplage
 ====================
 
-ARCHITECTURE
-============
-Les fichiers /forum/... proviennent de http://www.phpbb-fr.com/telechargements/ pack complet à l'exception de :
-* /forum/config.php qui est livré avec refuges.info
-* /forum/docs/... qui n'est pas installé
-* /forum/install/... qui n'est pas installé
-* /forum/ext/RefugesInfo/couplage/... qui contient une extension PhpBB V3.1+ livrée avec refuges.info
-Son architecture est spécifiée ici : https://area51.phpbb.com/docs/dev/31x/extensions/tutorial_basics.html
+ARCHITECTURE DES FICHIERS
+=========================
+Le code est séparé en 3 parties indépendantes:
+- Le code de refuges.info dans les répertoires racines.
+- Le code de PhpBB V3.2+ dans le répertoire /forum.
+Ce code est constitué de la dernière [livraison PhpBB](http://www.phpbb-fr.com/telechargements) pack complet,
+à l'exeption de config.php, install/..., docs/...
+Il n'est pas permis de modifier le code de PhpBB de sorte qu'on peut upgrader sans remords.
+- Le fichier /forum/config.php, livré avec le code de refuges.info, appelle ses fichiers de configuration.
+- Une extension ext/RefugesInfo/couplage/...
+[au sens PhpBB V3.1+/Symphony](https://area51.phpbb.com/docs/dev/31x/extensions/tutorial_basics.html)
 
-L'autoload des classes PHP du modèle MVC/WRI étant incompatible avec celui de PhpBB basé sur Symphony,
+EXECUTION DU CODE
+=================
+- L'autoload des classes PHP du modèle MVC/WRI étant incompatible avec celui de PhpBB basé sur Symphony,
 un code ne peut s'exécuter que dans l'un ou l'autre des contextes.
-* Les lectures d'infos du forum sont faites directement en PgSQL dans la base.
-* Les modifications du forum sont faites en simulant l'appel d'une URL du forum (via la fonction submit_forum du fichier /forum/ext/RefugesInfo/couplage/api.php).
+- On s'autorise à lire les tables phpbb3_ à partir du code de refuges.info en passant par PDO.
+- Toute action modifiant le contenu de PhpBB à partir du code refuges.info
+doit être effectuée en appelant (sorte de requête AJAX) l'URL /forum/posting.php
+avec "api" et autres arguments en _POST, afin de préserver les caractères spéciaux.
+Cette requelle est récupérée par /forum/ext/RefugesInfo/event/listerner.php - function api()s qui la traite dans le contexte et avec les routines PbpBB qui vont bien.
+Ceci permet de préserver la structure des tables de PhpBB qui est très complexe et évolutive.
+posting.php n'est pas utilisé pour ses fonctions intrinsèques mais juste comme initialisation du contexte,
+l'extension prenant ausitôt le contrôle.
+Ces fonctions API ne sont exécutées que si la requette AJAX provient de la même machine (adresse IP) que celle qui l'exécute.
 
-INSTALLATION
-============
-* Download http://www.phpbb-fr.com/telechargements/ pack complet
-* Copy * sauf config.php docs install
+PARAMETRES D'INSTALLATION
+=========================
 * Les tables du forum sont préfixées phpbb3_
 
 PARAMETRES DE CONFIGURATION

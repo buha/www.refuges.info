@@ -10,7 +10,7 @@ require_once ('bdd.php');
 require_once ('gestion_erreur.php');
 require_once ('point.php');
 require_once ("mise_en_forme_texte.php");
-require_once ($config['racine_projet']."forum/ext/RefugesInfo/couplage/api.php");
+
 
 /**********************************************************************************************
 Récupère un ensemble de commentaires en fonction des paramètres passer comme conditions
@@ -471,18 +471,6 @@ function suppression_commentaire($commentaire)
 function transfert_forum($commentaire)
 {
   global $config;
-/*DCMM DELETE
-  $querycom="SELECT * FROM phpbb3_topics WHERE topic_id=$commentaire->topic_id";
-
-  $res = $pdo->query($querycom);
-  $forum = $res->fetch() ;
-
-        if ($commentaire->id_createur_commentaire<=0)
-            $commentaire->id_createur_commentaire=-1;
-*/
-        // d'abord declarer le post
-        // les chances qu'on le confondent avec un utilisateur du forum portant le même nom exactement
-        // de plus, toute action de modération sort un message d'erreur indiquant "utilisateur existe déjà, merci d'en choisir un autre"
   
   if ($commentaire->photo_existe)
   {
@@ -509,9 +497,11 @@ function transfert_forum($commentaire)
       'subject' => 'Transféré de la fiche',
       'message' => $commentaire->texte,
       // note sly 17/08/2013 : j'ajoute un "_" à la suite du nom de l'auteur, c'est un peu curieux, mais ça permet de réduire
-      // les chances qu'on le confondent avec un utilisateur du forum portant le même nom exactement
+      // les chances qu'on le confonde avec un utilisateur du forum portant le même nom exactement
       // de plus, toute action de modération sort un message d'erreur indiquant "utilisateur existe déjà, merci d'en choisir un autre"
-//DCMM TODO      'username' => substr($commentaire->auteur_commentaire,0,22).'_',
+      'username' => strlen($commentaire->auteur_commentaire) < 2 // La longueur minimum requise par PhpBB est de 3
+        ? 'Inconnu '.$commentaire->auteur_commentaire
+        : substr($commentaire->auteur_commentaire,0,22).'_',
     ]
   );
   if (is_string($rep))
