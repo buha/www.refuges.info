@@ -26,6 +26,7 @@ if ($_SESSION['niveau_moderation']>=1)
 $vue->lien_wiki=prepare_lien_wiki_du_bandeau();
 $vue->zones_pour_bandeau=remplissage_zones_bandeau();
 include ($config['chemin_vues']."_entete.html");
+include ($config['chemin_vues']."_bandeau.html");
 
 // FIN FIXME
 
@@ -68,7 +69,7 @@ if (isset($_SESSION['id_utilisateur']) )
                     <h4>Pour tout le monde</h4>
                     <ul>
                       <li>
-                        <a href='".$config['lien_forum']."login.php?logout=true'>Se déconnecter</a>
+                        <a href='".$config['lien_forum']."ucp.php?mode=logout&sid=".$_COOKIE[$config['cookie_prefix'].'_sid']."'>Se déconnecter</a>
                       </li>
                     </ul>"); // pas de risque la page est mutante
         }

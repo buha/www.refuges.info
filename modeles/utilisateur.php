@@ -10,7 +10,7 @@ require_once ("gestion_erreur.php");
 function infos_utilisateur($id_utilisateur)
 {
   global $pdo;
-  $query="select * from phpbb_users where user_id=".$id_utilisateur;
+  $query="SELECT * FROM phpbb3_users WHERE user_id=".$id_utilisateur;
   $res=$pdo->query($query);
   $utilisateur=$res->fetch();
   // phpBB intègre un nom d'utilisateur dans sa base après avoir passé un htmlentities, pour les users connectés

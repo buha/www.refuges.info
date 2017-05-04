@@ -55,6 +55,64 @@ switch ($periode)
 }
 
 ?>
+
+/*==================================================================*/
+/* Modification du style du nouveau forum PhpBB3-prosilver          */
+/*==================================================================*/
+/* Pas de ligne vide en haut */
+#phpbb {
+	padding: 0;
+}
+/* Forum de la largeur de la page */
+#phpbb .wrap {
+	max-width: 100%;
+}
+
+#entete,
+.menu,
+#basdepage {
+	font-family: Times New Roman;
+}
+#basdepage {
+	font-size: 16px;
+}
+
+/* Titre des forums de refuges */
+#phpbb .section-viewtopic .topic-title a:first-child {
+	color: black !important;
+}
+#phpbb .wri-link {
+	font-size: 70%;
+}
+/* Zones masquées */
+#phpbb .headerbar,
+#phpbb .navbar .avatar {
+	display: none;
+}
+/* Personnalisation des couleurs */
+#phpbb .navbar,
+#phpbb #basdepage {
+  background-color: #<?=$couleur_fond?>;
+}
+#phpbb .headerbar, .forumbg,
+#phpbb .headerbar, .forabg,
+#phpbb h3 {
+	background-color: #<?=$couleur_lien?>;
+	background-image: none;
+}
+#phpbb .stat-block a,
+#phpbb .postbody a {
+	color: white;
+}
+#phpbb .bg1,
+#phpbb .bg2,
+#phpbb .bg3,
+#phpbb .forabg .forums,
+#phpbb .forumbg .topics > li {
+	background-color: #<?=$couleur_fond?>;
+	background-image: none;
+}
+
 /*==================================================================*/
 /* MISE EN PAGE GENERALE DES TYPES                                  */
 /*==================================================================*/
@@ -471,7 +529,7 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
     height: 20px;
   }
   .menu UL LI UL {
-    position: relative; top: -500px; /* On le cache loin mais on ne fait pas display:none pour avoir la largeur max une fois montré */
+    position: relative; top: -5000px; /* On le cache loin mais on ne fait pas display:none pour avoir la largeur max une fois montré */
     left: 0;
       height: 0;
     padding: 0;
