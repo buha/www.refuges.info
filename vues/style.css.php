@@ -100,6 +100,8 @@ switch ($periode)
 	background-color: #<?=$couleur_lien?>;
 	background-image: none;
 }
+#phpbb .panel h3,
+#phpbb .stat-block h3,
 #phpbb .stat-block a,
 #phpbb .postbody a {
 	color: white;

@@ -2,7 +2,7 @@ BUGS
 http://dom.refuges.info/nouvelles/?quoi=forums
 
 BEST TODO
-Bandeau forum : manque * et wiki
+Bandeau forum : manque *
 Aprés migration : Mettre à jour structure.sql avec les tables phpbb3_
 Install
 	Autorisations repertoires : trier celles pour install de celles pour prod

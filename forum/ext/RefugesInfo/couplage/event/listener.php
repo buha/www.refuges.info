@@ -57,6 +57,16 @@ class listener implements EventSubscriberInterface
 			$_SESSION['login_utilisateur'] = $user->data['username'];
 			$_SESSION['niveau_moderation'] = $auth->acl_gets('m_edit');
 		}
+		@$vue->lien_wiki = array (
+			'index' => '/wiki/index',
+			'licence' => '/wiki/licence',
+			'prudence' => '/wiki/prudence',
+			'qui_est_refuges.info' => '/wiki/qui_est_refuges.info',
+			'liens' => '/wiki/liens',
+			'don' => '/wiki/don',
+			'mentions-legales' => '/wiki/mentions-legales',
+		);
+
 		// Expansion du contenu des fichiers pour inclusion dans les event templates 
 		ob_start();
 		include dirname (__FILE__).'/../../../../../vues/_bandeau.html';
