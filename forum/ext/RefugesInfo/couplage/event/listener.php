@@ -51,7 +51,7 @@ class listener implements EventSubscriberInterface
 		$request->enable_super_globals();
 
 		// Restitution des variables
-		include dirname (__FILE__).'/../../../../../includes/config.php';
+		include (__DIR__.'/../../../../../includes/config.php');
 		if ($user->data['user_id'] > 1) {
 			$_SESSION['id_utilisateur'] = $user->data['user_id'];
 			$_SESSION['login_utilisateur'] = $user->data['username'];

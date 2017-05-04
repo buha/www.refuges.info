@@ -66,12 +66,13 @@ ini_set('include_path',ini_get('include_path').PATH_SEPARATOR.$config['chemin_mo
     les classes ControleurClasse sont déclarése dans controleurs/Classe.php
     les autres classes Classe sont déclarées dans includes/Classe.php
 **/
-spl_autoload_register(function ($class) {
-	if (preg_match ('/([A-Z][a-z]+)(.*)/', $class, $c))
-        require_once '../'.strtolower($c[1]).'s/'.$c[2].'.php';
-    else
-        require_once __DIR__.'/'.$class.'.php';
-});
+if (!defined('IN_PHPBB')) // Mais pas dans le forum !
+	spl_autoload_register(function ($class) {
+		if (preg_match ('/([A-Z][a-z]+)(.*)/', $class, $c))
+			require_once '../'.strtolower($c[1]).'s/'.$c[2].'.php';
+		else
+			require_once __DIR__.'/'.$class.'.php';
+	});
 
 /********** photos / images points ************/
 $config['largeur_max_photo']=700;
