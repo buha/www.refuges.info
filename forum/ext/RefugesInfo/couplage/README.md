@@ -8,23 +8,21 @@ Le code est séparé en 3 parties indépendantes:
 - Le code de PhpBB V3.2+ dans le répertoire /forum.
 Ce code est constitué de la dernière [livraison PhpBB](http://www.phpbb-fr.com/telechargements) pack complet,
 à l'exeption de config.php, install/..., docs/...
-Il n'est pas permis de modifier le code de PhpBB de sorte qu'on peut upgrader sans remords.
+Il n'est pas permis de le modifier de sorte qu'on peut upgrader sans remord.
+- Une extension ext/RefugesInfo/couplage/... suivant
+[l'architecture PhpBB V3.1+/Symphony](https://area51.phpbb.com/docs/dev/31x/extensions/tutorial_basics.html)
+- Un fichier ext/RefugesInfo/couplage/api.php servant à refuges.info d'accés en modification aux données PhpBB
 - Le fichier /forum/config.php, livré avec le code de refuges.info, appelle ses fichiers de configuration.
-- Une extension ext/RefugesInfo/couplage/...
-[au sens PhpBB V3.1+/Symphony](https://area51.phpbb.com/docs/dev/31x/extensions/tutorial_basics.html)
 
 EXECUTION DU CODE
 =================
 - L'autoload des classes PHP du modèle MVC/WRI étant incompatible avec celui de PhpBB basé sur Symphony,
 un code ne peut s'exécuter que dans l'un ou l'autre des contextes.
-- On s'autorise à lire les tables phpbb3_ à partir du code de refuges.info en passant par PDO.
+- On s'autorise à lire les tables phpbb3_ à partir du code de refuges.info via PDO.
 - Toute action modifiant le contenu de PhpBB à partir du code refuges.info
-doit être effectuée en appelant (sorte de requête AJAX) l'URL /forum/posting.php
-avec "api" et autres arguments en _POST, afin de préserver les caractères spéciaux.
-Cette requelle est récupérée par /forum/ext/RefugesInfo/event/listerner.php - function api()s qui la traite dans le contexte et avec les routines PbpBB qui vont bien.
+doit être effectuée en appelant (sorte de requête AJAX) l'URL ext/RefugesInfo/couplage/api.php
+avec "api" et autres arguments en _POST (afin de préserver les caractères spéciaux).
 Ceci permet de préserver la structure des tables de PhpBB qui est très complexe et évolutive.
-posting.php n'est pas utilisé pour ses fonctions intrinsèques mais juste comme initialisation du contexte,
-l'extension prenant ausitôt le contrôle.
 Ces fonctions API ne sont exécutées que si la requette AJAX provient de la même machine (adresse IP) que celle qui l'exécute.
 
 PARAMETRES D'INSTALLATION

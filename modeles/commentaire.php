@@ -475,7 +475,7 @@ function transfert_forum($commentaire)
   if ($commentaire->photo_existe)
   {
     // insere la balise bbcode pour la photo
-    $commentaire->texte.="\n[img]".$config['rep_web_forum_photos'].$commentaire->id_commentaire.".jpeg[/img]";
+    $commentaire->texte.="\n[img]http://".$_SERVER['SERVER_NAME'].$config['rep_web_forum_photos'].$commentaire->id_commentaire.".jpeg[/img]";
     // et deplace la photo, question historique, on peut avoir la réduite et/ou l'originale
     if (isset($commentaire->photo['reduite']))
       $photo_a_conserver=$commentaire->photo['reduite'];
@@ -486,25 +486,28 @@ function transfert_forum($commentaire)
     copy($photo_a_conserver,$config['rep_forum_photos'].$commentaire->id_commentaire.".jpeg");
   }
 
-  // On appelle l'URL du forum qui ajoute un post dans le topic correspondant à la fiche
-  $rep = submit_forum(
-    'posting', // URL de phpbb3.2+ à appeler
-    [ // Paramètres GET
-      'mode' => 'reply',
-      't' => $commentaire->topic_id, // Le numéro du topic à modifier
-	],
-    [ // Paramètres POST
-      'subject' => 'Transféré de la fiche',
-      'message' => $commentaire->texte,
-      // note sly 17/08/2013 : j'ajoute un "_" à la suite du nom de l'auteur, c'est un peu curieux, mais ça permet de réduire
-      // les chances qu'on le confonde avec un utilisateur du forum portant le même nom exactement
-      // de plus, toute action de modération sort un message d'erreur indiquant "utilisateur existe déjà, merci d'en choisir un autre"
-      'username' => strlen($commentaire->auteur_commentaire) < 2 // La longueur minimum requise par PhpBB est de 3
-        ? 'Inconnu '.$commentaire->auteur_commentaire
-        : substr($commentaire->auteur_commentaire,0,22).'_',
-    ]
+  // On appelle l'API WRI du forum qui cree un post
+  $rep = file_get_contents(
+    $config['url_api'],
+    false,
+    stream_context_create( ['http' => [
+      'method'  => 'POST',
+      'content' => http_build_query( [
+        'api' => 'transferer',
+        't' => $commentaire->topic_id,
+        's' => 'Transfert de la fiche',
+        'm' => $commentaire->texte,
+// note sly 17/08/2013 : j'ajoute un "_" à la suite du nom de l'auteur, c'est un peu curieux,
+// mais ça permet de réduire les chances qu'on le confonde avec un utilisateur du forum portant le même nom exactement
+// de plus, toute action de modération sort un message d'erreur indiquant "utilisateur existe déjà, merci d'en choisir un autre"
+       'u' => strlen($commentaire->auteur_commentaire) < 2 // La longueur minimum requise par PhpBB est de 3
+         ? 'Inconnu '.$commentaire->auteur_commentaire
+         : substr($commentaire->auteur_commentaire,0,22).'_',
+      ]),
+    ]])
   );
-  if (is_string($rep))
+  $json = json_decode($rep);
+  if (!is_object ($json))
     return erreur( "Erreur création post du forum<br/>$rep" );
 
   $retour=suppression_commentaire($commentaire);

@@ -1,15 +1,9 @@
-BUG
-// insere la balise bbcode pour la photo => ce n'est plus le bon BBCODE !!!
-Suppression forum de la fiche ne marche plus
-
 BEST TODO
-Traiter toutes les 4 retours d'erreurs submit_forum
-note sly 17/08/2013 : j'ajoute un "_" à la suite du nom de l'auteur, c'est un peu curieux, mais ça permet de réduire
+Bandeau forum : manque * et wiki
 Aprés migration : Mettre à jour structure.sql avec les tables phpbb3_
 Install
 	Autorisations repertoires : trier celles pour install de celles pour prod
 	Mettre les bonnes auth dans PhpBB3 reps & files -> SUR UNIX ?
-Bandeau forum : manque * et wiki
 
 *************************
 Fork dev-dom : Commits on Mar 28, 2017

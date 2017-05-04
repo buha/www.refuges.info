@@ -101,7 +101,7 @@ switch ($periode)
 	background-image: none;
 }
 #phpbb .stat-block a,
-#phpbb .stat-block h3 {
+#phpbb .postbody a {
 	color: white;
 }
 #phpbb .bg1,
