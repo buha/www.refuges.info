@@ -15,9 +15,6 @@ $auth->acl($user->data);
 $user->setup();
 
 					// A ENLEVER APRES MIGRATION ***************************
-//$request->enable_super_globals();
-//error_reporting(E_ALL);
-//ini_set('display_errors', 'on');
 					if (isset ($_GET['init'])) {
 						$sql = "SELECT p.id_point, t.topic_id
 								FROM points AS p
@@ -34,7 +31,6 @@ $user->setup();
 						$db->sql_freeresult($result);
 						exit;
 					}
-if(0)//DCMM À ENLEVER APRÉS TESTS
 					// FIN A ENLEVER APRES MIGRATION ***************************
 
 // L'accés à cet API n'est autorisé que depuis le même serveur

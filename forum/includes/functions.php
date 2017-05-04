@@ -1943,7 +1943,6 @@ function meta_refresh($time, $url, $disable_cd_check = false)
 */
 function send_status_line($code, $message)
 {
-	return;
 	if (substr(strtolower(@php_sapi_name()), 0, 3) === 'cgi')
 	{
 		// in theory, we shouldn't need that due to php doing it. Reality offers a differing opinion, though
@@ -3327,7 +3326,7 @@ function msg_handler($errno, $msg_text, $errfile, $errline)
 			}
 
 			// Do not send 200 OK, but service unavailable on errors
-//			send_status_line(503, 'Service Unavailable');
+			send_status_line(503, 'Service Unavailable');
 
 			garbage_collection();
 
