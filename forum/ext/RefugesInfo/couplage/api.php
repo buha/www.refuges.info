@@ -36,6 +36,7 @@ $user->setup();
 // L'accés à cet API n'est autorisé que depuis le même serveur
 // Aucune autre autorisation n'est vérifiée
 // Les cookies n'étant pas transmis, l'utilisateur est "anonymous"
+$request->enable_super_globals();
 if ($_SERVER['REMOTE_ADDR'] != $_SERVER['SERVER_ADDR'])
 	exit ('Forbidden access');
 

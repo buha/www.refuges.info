@@ -98,7 +98,6 @@ if ($controlleur->avec_entete_et_pied)
     $vue->zones_pour_bandeau=remplissage_zones_bandeau();
     $vue->lien_wiki=prepare_lien_wiki_du_bandeau();
     include ($config['chemin_vues']."_entete.html");
-	include ($config['chemin_vues']."_bandeau.html");
 }	
 
 // Là, c'est bidouille compatibilité avec avant, je pense que chaque controlleur devrait pouvoir décider de la vue sans que soit imposée l'extension

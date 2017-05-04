@@ -1,3 +1,6 @@
+BUGS
+http://dom.refuges.info/nouvelles/?quoi=forums
+
 BEST TODO
 Bandeau forum : manque * et wiki
 Aprés migration : Mettre à jour structure.sql avec les tables phpbb3_

@@ -32,18 +32,16 @@
 			<?php } ?>
 		</div>
 
-		<?php if (isset($vue)) { // Pas dans le forum
-			if (count ($vue->java_lib_foot)) // Pour accélérer le chargement initial de la page, on inclue ici les librairies qui ne sont appelées que quand la page est chargée.
-				foreach ($vue->java_lib_foot as $js_lib) {?>
-					<script type="text/javascript" src="<?=$js_lib?>"></script>
-			<?}
-			if (file_exists ("vues/$vue->type.js")) {?>
-				<script type="text/javascript">
-				//<![CDATA[
-					<?include ("vues/$vue->type.js")?>
-				//]]>
-				</script>
-			<?}
-		}?>
+		<?if (count ($vue->java_lib_foot)) // Pour accélérer le chargement initial de la page, on inclue ici les librairies qui ne sont appelées que quand la page est chargée.
+			foreach ($vue->java_lib_foot as $js_lib) {?>
+				<script type="text/javascript" src="<?=$js_lib?>"></script>
+		<?	}?>
+		<?if (file_exists ("vues/$vue->type.js")) {?>
+			<script type="text/javascript">
+			//<![CDATA[
+				<?include ("vues/$vue->type.js")?>
+			//]]>
+			</script>
+		<?}?>
 	</body>
 </html>
