@@ -12,7 +12,7 @@ class listener implements EventSubscriberInterface
 {
 	static public function getSubscribedEvents () {
 		return [
-			'core.modify_posting_parameters' => 'api',
+//			'core.modify_posting_parameters' => 'api',
 			'core.viewtopic_assign_template_vars_before' => 'viewtopic_assign_template_vars_before',
 //			'core.modify_posting_auth' => 'modify_posting_auth',
 			'core.posting_modify_submission_errors' => 'posting_modify_submission_errors',
@@ -23,9 +23,12 @@ class listener implements EventSubscriberInterface
 		];
 	}
 
-	// Récupère la main au début de posting.php
-	function api ($vars) {
-		global $request, $db;
+	// On arrive ici quand on appelle posting.php avec un paramètre 'api' (GET ou POST)
+	// Dans ce cas, posting.php n'a servi qu'à initialiser les contextes
+	// et on ne ressortira pas de cette fonction
+	// Sinon, posting.php continuera à se dérouler normalement
+	function WWWWapi () {
+		global $request, $db, $phpbb_root_path, $phpEx;
 
 		// Vérifie que la requette provient bien de la même machine
 		$request->enable_super_globals();
@@ -39,6 +42,7 @@ class listener implements EventSubscriberInterface
 				'forum_id' => request_var ('f', 0),
 				'topic_title' => request_var ('s', ''),
 				'message' => request_var ('m', ''),
+				'username' => request_var ('u', 'refuges.info'),
 				'enable_sig' => true,
 				'enable_bbcode' => true,
 				'enable_smilies' => true,
@@ -57,29 +61,27 @@ class listener implements EventSubscriberInterface
 				// Récupère les infos du topic
 				$sql = 'SELECT * FROM '.TOPICS_TABLE.' WHERE topic_id = '.$data['topic_id'];
 				$result = $db->sql_query($sql);
-				$data = array_merge ($data, $db->sql_fetchrow($result));
+				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
+				if ($row) {
+					$data = array_merge ($data, $row);
 
-				// Récupère les infos du premier post
-				$sql = 'SELECT * FROM '.POSTS_TABLE.' WHERE post_id = '.$data['topic_first_post_id'];
-				$result = $db->sql_query($sql);
-				$data = array_merge ($data, $db->sql_fetchrow($result));
-				$data['message'] = $data['post_text'];
-				$db->sql_freeresult($result);
-
-				// La liste des posts
-				$sql = 'SELECT post_id FROM '.POSTS_TABLE.' WHERE topic_id = '.$data['topic_id'];
-				$result = $db->sql_query($sql);
-				while ($row = $db->sql_fetchrow($result))
-					$topic_post_id[] = $row['post_id'];
-				$db->sql_freeresult($result);
+					// Récupère les infos du premier post
+					$sql = 'SELECT * FROM '.POSTS_TABLE.' WHERE post_id = '.$data['topic_first_post_id'];
+					$result = $db->sql_query($sql);
+					$row = $db->sql_fetchrow($result);
+					$db->sql_freeresult($result);
+					if ($row) {
+						$data = array_merge ($data, $row);
+						$data['message'] = $data['post_text'];
+					}
+				}
 			}
 
 			$data['message_md5'] = md5($data['message']);
 
 //*DCMM*/echo"<pre style='background-color:white;color:black;font-size:14px;'>data = ".var_export($data,true).'</pre>';
 //*DCMM*/echo"<pre style='background-color:white;color:black;font-size:14px;'>data = ".var_export($data,true).'</pre>';
-//*DCMM*/echo"<pre style='background-color:white;color:black;font-size:14px;'>topic_post_id = ".var_export($topic_post_id,true).'</pre>';
 
 
 
@@ -87,7 +89,7 @@ class listener implements EventSubscriberInterface
 					case 'creer':
 						submit_post ('post',
 							$data['topic_title'],
-							'refuges.info', // username
+							$data['username'],
 							0, // topic_type
 							$poll, $data
 						);
@@ -98,19 +100,33 @@ class listener implements EventSubscriberInterface
 						$data['post_subject'] = request_var ('s', '');
 						submit_post ('edit',
 							$data['topic_title'],
-							'refuges.info', // username
+							$data['username'],
 							0, // topic_type
 							$poll, $data
 						);
 						exit (json_encode ($data));
 
-					case 'transferer':
+					case 'transferer': // Transfert de commentaire
 						break;
 
 					case 'supprimer':
-	//				function delete_post($forum_id, $topic_id, $post_id, &$data, $is_soft = false, $softdelete_reason = '')
+						// La liste des posts
+						$sql = 'SELECT post_id FROM '.POSTS_TABLE.' WHERE topic_id = '.$data['topic_id'];
+						$result = $db->sql_query($sql);
+						while ($row = $db->sql_fetchrow($result))
+							$pids[] = $row['post_id'];
+						$db->sql_freeresult($result);
 
-						break;
+						if (!isset ($pids))
+							exit ('FORUM : Erreur supression topic inconnu '.$data['topic_id']);
+
+						include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+						// On ne sait pas supprimer un topic: il faut supprimer une lie=ste de posts
+						delete_posts('post_id', $pids);
+						// Et on nettoie un peu tout ça
+						sync('forum');
+					
+						exit ('{}'); // Sortie OK (Json vide)
 			}
 		}
 	}
@@ -166,17 +182,8 @@ class listener implements EventSubscriberInterface
 		global $template, $request, $user, $auth;
 		$request->enable_super_globals();
 
-//		if (defined('IN_ERROR_HANDLER'))
-	//		echo 'xxxxxxxxxxxxxxxxxxx';
-//*DCMM*/echo"<pre style='background-color:white;color:black;font-size:14px;'> = ".var_export($template->context->get_root_ref(),true).'</pre>';
-
-//		if (isset ($_GET['nd']) && !defined('IN_ERROR_HANDLER'))
-//			$vars['page_footer_override'] = true; // Termine sans afficher
-
 //		if ($_SERVER['REMOTE_ADDR'] == $_SERVER['SERVER_ADDR'])
-//*DCMM*/echo"<pre style='background-color:white;color:black;font-size:14px;'> = ".var_export('',true).'</pre>';
-		if ($_SERVER['REMOTE_ADDR'] == $_SERVER['SERVER_ADDR'])
-			send_status_line(200, 'OK'); // Evite l'envoi de status différents
+//			send_status_line(200, 'OK'); // Evite l'envoi de status différents
 
 		// Inclusion du bandeau
 		// Les fichiers template du bandeau et du pied de page étant au format "MVC+template type refuges.info",

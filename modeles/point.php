@@ -558,9 +558,9 @@ function modification_ajout_point($point)
             return erreur("Requête en erreur, impossible à executer",$query_finale);
 
         /********* Renommage du topic point dans le forum refuges *************/
-        // On appelle l'API du forum qui renomme un topic
+        // On appelle l'API WRI du forum qui renomme un topic
         $rep = file_get_contents(
-          $config['url_forum'].'posting.php',
+          $config['url_api'],
           false,
           stream_context_create( ['http' => [
             'method'  => 'POST',
@@ -572,15 +572,14 @@ function modification_ajout_point($point)
           ]])
         );
         $json = json_decode($rep);
-
         if (!is_object ($json))
           return erreur( "Erreur renommage forum point<br/>$rep" );
    }
    else  // INSERT
    {
-    // On appelle l'API du forum qui crée un topic dans le forum refuges
+    // On appelle l'API WRI du forum qui crée un topic dans le forum refuges
     $rep = file_get_contents(
-      $config['url_forum'].'posting.php',
+      $config['url_api'],
       false,
       stream_context_create( ['http' => [
         'method'  => 'POST',
@@ -592,7 +591,6 @@ function modification_ajout_point($point)
       ]])
     );
     $json = json_decode($rep);
-
     if (!is_object ($json))
       return erreur( "Erreur création forum point<br/>".var_export($rep,true) );
 
@@ -613,7 +611,7 @@ function modification_ajout_point($point)
 *******************************************************/
 function suppression_point($point)
 {
-  global $pdo;
+  global $pdo, $config;
   $conditions = new stdClass;
   // On vérifie que le $point passé existe bien dans notre base, qu'il a donc un id et que cela correspond bien à un seul point
   // toujours présent, sinon, on ne tente rien
@@ -627,22 +625,21 @@ function suppression_point($point)
     foreach ($commentaires_a_supprimer as  $commentaire_a_supprimer)
       suppression_commentaire($commentaire_a_supprimer);
 
-  // On appelle l'URL du forum qui supprime un topic
-  $rep = submit_forum(
-    'mcp', // URL de phpbb3.2+ à appeler
-    [], // Paramètres GET
-    [ // Paramètres POST
-      'action' => 'delete_topic',
-//      'mode' => 'delete',//DCMM ??????
-      'topic_id_list' => [$point->topic_id],
-      'delete_permanent' => 1,
-      'confirm' => 'Oui',
-    ]
+  // On appelle l'API WRI du forum qui supprime un topic
+  $rep = file_get_contents(
+    $config['url_api'],
+    false,
+    stream_context_create( ['http' => [
+      'method'  => 'POST',
+      'content' => http_build_query( [
+        'api' => 'supprimer',
+        't' => $point->topic_id,
+      ]),
+    ]])
   );
-/*DCMM*/echo"<pre style='background-color:white;color:black;font-size:14px;'> = ".var_export($rep->MESSAGE_TEXT,true).'</pre>';
-  if ($rep->MESSAGE_TEXT)
-    return erreur( "Erreur suppresion sujet du forum<br/>$rep->MESSAGE_TEXT" );
-$rep.='rr';//DCMM
+  $json = json_decode($rep);
+  if (!is_object ($json))
+    return erreur( "Erreur suppresion sujet du forum<br/>$rep" );
 
   // suite à la modification dans la base sur les coordonnées GPS, on va supprimer aussi de la table :
   // point_gps si le point_gps n'est plus utilisé du tout

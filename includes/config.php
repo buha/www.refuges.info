@@ -42,7 +42,7 @@ $config['base_wiki']=$config['sous_dossier_installation']."wiki/";
 // On centralise ici tous les paramètres PhpBB qui sont figés
 // Des fois qu'on décide de re-bouger le forum, on ne le changera qu'ici
 $config['lien_forum']=$config['sous_dossier_installation']."forum/";
-$config['url_forum']=$_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].$config['lien_forum'];
+$config['url_api']=$_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].$config['lien_forum'].'ext/RefugesInfo/couplage/api.php';
 // Il faut forcer le préfixe des noms de cookies du forum à 'phpbb3_wri'
 // TODO : On pourrait aussi aller le chercher dans phpbb3_config.cookie_name mais, bof, ça va plus vite de le fixer ici !
 $config['cookie_prefix']="phpbb3_wri";
