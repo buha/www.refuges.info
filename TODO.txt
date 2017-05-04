@@ -76,7 +76,7 @@ Paramètres de charge : NON anniversaires / liste moderateurs
 PERSONNALISER : activer ext/wri
 
 SQL : Ajouter points/topic_id dans la structure SQL (doc WRI)
-lancer : ext/RefugesInfo/wri/api.php?init
+lancer : ext/RefugesInfo/couplage/api.php?init
 
 *************************
 	http://dom.refuges.info/forum/images/smiles/icon_eek.gif ne peut pas être copié
