@@ -126,7 +126,7 @@ $config['defaut_max_nombre_point']=121; // NicoM : pourquoi 120 ? sly: pourquoi 
 // lien direct pour se connecter, ou créer un compte sur le forum
 $config['connexion_forum']=$config['lien_forum']."login.php";
 // lien vers le profil d'un utilisateur
-$config['fiche_utilisateur']=$config['lien_forum']."profile.php?mode=viewprofile&u=";
+$config['fiche_utilisateur']=$config['lien_forum']."profile.php?mode=viewprofile&amp;u=";
 $config['forum_refuge']=$config['lien_forum']."viewtopic.php?t=";
 
 // l'id des modérateurs du forum, pour qu'ils puissent devenir modérateur du site
@@ -221,9 +221,8 @@ require_once("config_privee.php");
 $config['chemin_leaflet'].=$config['debug']?'src/':'dist/';
 $config['url_chemin_leaflet'].=$config['debug']?'src/':'dist/';
 
-// Le forum est bourré de warning que je ne compte pas vraiment reprendre, oui, j'ai mis ça après le include de config_privee.php car si debug vaut true dans le config_privee mis avant, on ne veut quand même pas 
-// les warnings du forum qui remplissent l'écran
-if ($config['debug'] and !preg_match("/forum/",$_SERVER['REQUEST_URI']))
+//Note : le forum n'appelle plus ce fichier !
+if ($config['debug'])
 {
   ini_set('error_reporting', E_ALL ^ E_NOTICE);
   ini_set('display_errors', '1');

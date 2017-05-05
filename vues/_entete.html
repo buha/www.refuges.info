@@ -26,6 +26,7 @@
 
 		<meta http-equiv="Content-Script-Type" content="text/javascript" />
 		<script type="text/javascript">
+		//<![CDATA[
 			// Utilisé dans les menus pour mobile
 			// Si Ajoute la classe c si elle n'est pas attribuée à l'élémént HTML e et vice versa
 			function flip(e, c) {
@@ -34,6 +35,7 @@
 				cs.splice(f, f >= 0, f < 0 ? c : '');
 				e.className = cs.join(' ').trim();
 			}
+		//]]>
 		</script>
 	</head>
 
@@ -53,7 +55,7 @@
 					<input type="text" name="nom" size="35" value="Recherche de refuge par le nom" onfocus="javascript:this.value=''" />
                     <input type="hidden" name="ids_types_point" value="<?=$config['tout_type_refuge']?>" />
                     <input type="hidden" name="avec_point_osm" value="1" />
-					<input type="image" src="<?=$config['sous_dossier_installation']?>images/loupe.png" title="Lancer la recherche" />
+					<input type="image" src="<?=$config['sous_dossier_installation']?>images/loupe.png" title="Lancer la recherche" alt="R" />
 				</div>
 				</form>
 			</div>

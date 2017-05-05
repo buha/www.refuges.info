@@ -1,7 +1,5 @@
-BUGS
-http://dom.refuges.info/forum/login.php?logout=true
-
 BEST TODO
+Validations CSS ?
 Aprés migration : Mettre à jour structure.sql avec les tables phpbb3_
 Install
 	Autorisations repertoires : trier celles pour install de celles pour prod

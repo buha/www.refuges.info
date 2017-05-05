@@ -14,11 +14,13 @@ function infos_utilisateur($id_utilisateur)
   $res=$pdo->query($query);
   $utilisateur=$res->fetch();
   // phpBB intègre un nom d'utilisateur dans sa base après avoir passé un htmlentities, pour les users connectés
-  $utilisateur->username=html_entity_decode($utilisateur->username);
   if (!$utilisateur)
     return erreur("Utilisateur inexistant",$query);
-  else
+  else {
+    $utilisateur->username=html_entity_decode($utilisateur->username);
+    $utilisateur->username=html_entity_decode($utilisateur->username);
     return $utilisateur;
+  }
 }
 /**
 On génére une url vers la fiche d'un utilisateur (en fait, sont profil sur le forum
