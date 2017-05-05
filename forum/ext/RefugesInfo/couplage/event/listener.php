@@ -55,7 +55,7 @@ class listener implements EventSubscriberInterface
 
 		// On récupère le HTML de la page d'entrée de WRI
 		$rep = file_get_contents(
-			$a='http://'.$_SERVER['SERVER_NAME'].preg_replace('/forum.*/i','',$_SERVER['REQUEST_URI']), // L'URL d'entrée de refuges.info
+			$a='http://'.$_SERVER['SERVER_NAME'].preg_replace('/forum.*/i','',$_SERVER['REQUEST_URI']).'point_ajout', // L'URL refuges.info la plus économe
 			false,
 			stream_context_create( ['http' => [
 				'header' =>'Cookie: '.http_build_query( $_COOKIE, null, ';' ), // On envoie les mêmes cookies

@@ -41,11 +41,11 @@
 		<div id="entete">
 			<div>
 				<?if ($_SESSION['id_utilisateur']>=1) {?>
-					<a href="<?=$config['sous_dossier_installation']?>forum/profile.php?mode=editprofile" title="Modifier votre profil"><?=$_SESSION['login_utilisateur']?></a>
-					<a href="<?=$config['lien_forum']?>login.php?logout=true">Se déconnecter</a>
+					<a href="<?=$config['lien_forum']?>ucp.php" title="Modifier votre profil"><?=$_SESSION['login_utilisateur']?></a>
+					<a href="<?=$config['lien_forum']?>ucp.php?mode=logout&sid=<?=$_COOKIE[$config['cookie_prefix'].'_sid']?>">Se déconnecter</a>
 				<?} else {?>
-					<a href="<?=$config['lien_forum']?>profile.php?mode=register" title="Pour créer un compte">S'inscrire</a>
-					<a href="<?=$config['lien_forum']?>login.php" title="Si vous avez déjà un compte">Connexion</a>
+					<a href="<?=$config['lien_forum']?>ucp.php?mode=register" title="Pour créer un compte">S'inscrire</a>
+					<a href="<?=$config['lien_forum']?>ucp.php?mode=login" title="Si vous avez déjà un compte">Connexion</a>
 				<?}?>
 				
 				<form method="post" action="<?=$config['sous_dossier_installation']?>point_recherche/">

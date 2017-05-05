@@ -1,3 +1,6 @@
+BUGS
+http://dom.refuges.info/forum/login.php?logout=true
+
 BEST TODO
 Aprés migration : Mettre à jour structure.sql avec les tables phpbb3_
 Install
