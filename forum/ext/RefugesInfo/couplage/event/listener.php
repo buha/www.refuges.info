@@ -48,35 +48,24 @@ class listener implements EventSubscriberInterface
 	// Inclusion du bandeau
 	// Les fichiers template du bandeau et du pied de page étant au format "MVC+template type refuges.info",
 	// il s'agit de les évaluer dans leur contexte PHP et d'introduire le code HTML résultant
-	// dans une variable des templates de PhpBB V3.2
+	// dans des variables des templates de PhpBB V3.2
 	function page_footer ($vars) {
 		global $template, $request, $user, $auth;
 		$request->enable_super_globals();
 
-		// Restitution des variables
-		include (__DIR__.'/../../../../../includes/config.php');
-		if ($user->data['user_id'] > 1) {
-			$_SESSION['id_utilisateur'] = $user->data['user_id'];
-			$_SESSION['login_utilisateur'] = $user->data['username'];
-			$_SESSION['niveau_moderation'] = $auth->acl_gets('m_edit');
-		}
-		@$vue->lien_wiki = array (
-			'index' => '/wiki/index',
-			'licence' => '/wiki/licence',
-			'prudence' => '/wiki/prudence',
-			'qui_est_refuges.info' => '/wiki/qui_est_refuges.info',
-			'liens' => '/wiki/liens',
-			'don' => '/wiki/don',
-			'mentions-legales' => '/wiki/mentions-legales',
+		// On récupère le HTML de la page d'entrée de WRI
+		$rep = file_get_contents(
+			$a='http://'.$_SERVER['SERVER_NAME'].preg_replace('/forum.*/i','',$_SERVER['REQUEST_URI']), // L'URL d'entrée de refuges.info
+			false,
+			stream_context_create( ['http' => [
+				'header' =>'Cookie: '.http_build_query( $_COOKIE, null, ';' ), // On envoie les mêmes cookies
+			]])
 		);
+		// On découpe finement le bandeau et le pied
+		$reps = preg_split('/<div id="(|fin-)(entete|basdepage)">/', $rep);
 
-		// Expansion du contenu des fichiers pour inclusion dans les event templates 
-		ob_start();
-		include __DIR__.'/../../../../../vues/_bandeau.html';
-		$template->assign_var('BANDEAU', ob_get_clean());
-
-		ob_start();
-		include __DIR__.'/../../../../../vues/_pied.html';
-		$template->assign_var('PIED', str_replace (['</body>','</html>'], '', ob_get_clean()));
+		// On les inclue dans des variables template PhpBB pour inclusion dans les event templates 
+		$template->assign_var('BANDEAU', '<div id="entete">'.$reps[1]);
+		$template->assign_var('PIED',  '<div id="basdepage">'.$reps[3]);
 	}
 }
