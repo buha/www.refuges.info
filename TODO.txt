@@ -2,7 +2,7 @@ BUGS
 http://dom.refuges.info/nouvelles/?quoi=forums
 
 BEST TODO
-Bandeau forum : manque *
+Bandeau forum : manque * et zones couvertes
 Remettre recherche dans le forum ???
 Aprés migration : Mettre à jour structure.sql avec les tables phpbb3_
 Install

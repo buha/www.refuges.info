@@ -19,15 +19,18 @@ class listener implements EventSubscriberInterface
 		];
 	}
 
-	// Lien entre fiche et forum refuges
+	// Récupération du numéro de la fiche liée à un topic du forum refuges
 	function viewtopic_assign_template_vars_before ($vars) {
 		global $db, $template;
 
-		$sql = "SELECT id_point FROM points WHERE topic_id = ".$vars['topic_data']['topic_id'];
-		$result = $db->sql_query ($sql);
-		$row = $db->sql_fetchrow ($result);
-		$db->sql_freeresult($result);
-		$template->assign_var('ID_POINT', $row['id_point']);
+		if ($vars['topic_data']['topic_id']) {
+			$sql = "SELECT id_point FROM points WHERE topic_id = ".$vars['topic_data']['topic_id'];
+			$result = $db->sql_query ($sql);
+			$row = $db->sql_fetchrow ($result);
+			$db->sql_freeresult($result);
+			if ($row)
+				$template->assign_var('ID_POINT', $row['id_point']);
+		}
 	}
 
 	// Permet la saisie d'un POST avec un texte vide
@@ -69,11 +72,11 @@ class listener implements EventSubscriberInterface
 
 		// Expansion du contenu des fichiers pour inclusion dans les event templates 
 		ob_start();
-		include dirname (__FILE__).'/../../../../../vues/_bandeau.html';
+		include __DIR__.'/../../../../../vues/_bandeau.html';
 		$template->assign_var('BANDEAU', ob_get_clean());
 
 		ob_start();
-		include dirname (__FILE__).'/../../../../../vues/_pied.html';
+		include __DIR__.'/../../../../../vues/_pied.html';
 		$template->assign_var('PIED', str_replace (['</body>','</html>'], '', ob_get_clean()));
 	}
 }
