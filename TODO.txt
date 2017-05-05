@@ -3,6 +3,7 @@ http://dom.refuges.info/nouvelles/?quoi=forums
 
 BEST TODO
 Bandeau forum : manque *
+Remettre recherche dans le forum ???
 Aprés migration : Mettre à jour structure.sql avec les tables phpbb3_
 Install
 	Autorisations repertoires : trier celles pour install de celles pour prod

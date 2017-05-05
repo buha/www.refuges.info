@@ -486,6 +486,15 @@ function transfert_forum($commentaire)
     copy($photo_a_conserver,$config['rep_forum_photos'].$commentaire->id_commentaire.".jpeg");
   }
 
+// note sly 17/08/2013 : j'ajoute un "_" à la suite du nom de l'auteur, c'est un peu curieux,
+// mais ça permet de réduire les chances qu'on le confonde avec un utilisateur du forum portant le même nom exactement
+// de plus, toute action de modération sort un message d'erreur indiquant "utilisateur existe déjà, merci d'en choisir un autre"
+  $auteur = 'Anonyme';
+  if ($commentaire->auteur_commentaire)
+    $auteur = substr($commentaire->auteur_commentaire,0,22).'_';
+  while (strlen($auteur) < 3)  // La longueur minimum requise par PhpBB est de 3
+    $auteur .= '_';
+
   // On appelle l'API WRI du forum qui cree un post
   $rep = file_get_contents(
     $config['url_api'],
@@ -497,12 +506,8 @@ function transfert_forum($commentaire)
         't' => $commentaire->topic_id,
         's' => 'Transfert de la fiche',
         'm' => $commentaire->texte,
-// note sly 17/08/2013 : j'ajoute un "_" à la suite du nom de l'auteur, c'est un peu curieux,
-// mais ça permet de réduire les chances qu'on le confonde avec un utilisateur du forum portant le même nom exactement
-// de plus, toute action de modération sort un message d'erreur indiquant "utilisateur existe déjà, merci d'en choisir un autre"
-       'u' => strlen($commentaire->auteur_commentaire) < 2 // La longueur minimum requise par PhpBB est de 3
-         ? 'Inconnu '.$commentaire->auteur_commentaire
-         : substr($commentaire->auteur_commentaire,0,22).'_',
+        'i' => $commentaire->id_createur_commentaire, // Si l'auteur était connecté, on garde l'ID
+        'u' => $auteur,
       ]),
     ]])
   );

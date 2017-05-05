@@ -122,6 +122,9 @@ switch (request_var ('api', '')) {
 		$message_parser->parse(true, true, true);
 		$data['message'] = $message_parser->message;
 
+		// Si l'auteur du commentaire transféré était connecté, on force l'ID
+		$user->data['user_id'] = max (1, request_var ('i', 1));
+
 		submit_post ('reply',
 			request_var ('s', ''),
 			request_var ('u', ''),
