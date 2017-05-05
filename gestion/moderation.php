@@ -41,8 +41,7 @@ if ($vue->erreur=="")
         case "transfert_forum":
             // D'abord on le modifie si des changements ont été faits
             $commentaire->texte=stripslashes($_REQUEST["texte"]);
-            if(stripslashes($_REQUEST["auteur_commentaire"]))
-                $commentaire->auteur_commentaire=stripslashes($_REQUEST["auteur_commentaire"]);
+            $commentaire->auteur_commentaire=stripslashes($_REQUEST["auteur_commentaire"]);
             $retour=modification_ajout_commentaire($commentaire);
             
             // ensuite on le transfert sur le forum
@@ -52,8 +51,7 @@ if ($vue->erreur=="")
             
         case "modification":
             $commentaire->texte=stripslashes($_REQUEST["texte"]);
-            if(stripslashes($_REQUEST["auteur_commentaire"]))
-                $commentaire->auteur_commentaire=stripslashes($_REQUEST["auteur_commentaire"]);
+            $commentaire->auteur_commentaire=stripslashes($_REQUEST["auteur_commentaire"]);
             //On suppose qu'après modification par qui que ce soit, on ne veut plus forcément prévenir un modérateur
             //et si c'est le modérateur qui fait la modif, on suppose qu'il à fait la correction.
             $commentaire->demande_correction=0;
@@ -69,8 +67,7 @@ if ($vue->erreur=="")
         case "transfert_autre_point":
             // On le modifie si des changements ont été faits, puis on change d'id point pour le transférer vers une autre fiche
             $commentaire->texte=stripslashes($_REQUEST["texte"]);
-            if(stripslashes($_REQUEST["auteur_commentaire"]))
-                $commentaire->auteur_commentaire=stripslashes($_REQUEST["auteur_commentaire"]);
+            $commentaire->auteur_commentaire=stripslashes($_REQUEST["auteur_commentaire"]);
             $commentaire->id_point=$_REQUEST['id_autre_point'];
             $retour=modification_ajout_commentaire($commentaire);
             if (!$retour->erreur)
