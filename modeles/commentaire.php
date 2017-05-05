@@ -508,6 +508,7 @@ function transfert_forum($commentaire)
         'm' => $commentaire->texte,
         'i' => $commentaire->id_createur_commentaire, // Si l'auteur était connecté, on garde l'ID
         'u' => $auteur,
+        'd' => round ($commentaire->ts_unix_commentaire),
       ]),
     ]])
   );

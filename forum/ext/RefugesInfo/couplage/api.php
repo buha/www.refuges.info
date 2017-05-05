@@ -122,6 +122,9 @@ switch (request_var ('api', '')) {
 		$message_parser->parse(true, true, true);
 		$data['message'] = $message_parser->message;
 
+		// Récupère la date du commentaire
+		$data['post_time'] = request_var ('d', time());
+
 		// Si l'auteur du commentaire transféré était connecté, on force l'ID
 		$user->data['user_id'] = max (1, request_var ('i', 1));
 
