@@ -26,6 +26,8 @@ if ($_SESSION['niveau_moderation']>=1)
 $vue->lien_wiki=prepare_lien_wiki_du_bandeau();
 $vue->zones_pour_bandeau=remplissage_zones_bandeau();
 include ($config['chemin_vues']."_entete.html");
+echo '<body>';
+include ($config['chemin_vues']."_bandeau.html");
 
 // FIN FIXME
 
@@ -101,4 +103,5 @@ else
 
 echo "\n </div><!-- fin du DIV contenu -->";
 include ($config['chemin_vues']."_pied.html");
+echo "</body></html>";
 ?>

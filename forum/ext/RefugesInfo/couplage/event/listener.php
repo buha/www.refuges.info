@@ -46,26 +46,21 @@ class listener implements EventSubscriberInterface
 	}
 
 	// Inclusion du bandeau
-	// Les fichiers template du bandeau et du pied de page étant au format "MVC+template type refuges.info",
-	// il s'agit de les évaluer dans leur contexte PHP et d'introduire le code HTML résultant
-	// dans des variables des templates de PhpBB V3.2
 	function page_footer ($vars) {
-		global $template, $request, $user, $auth;
+		global $template, $request;
 		$request->enable_super_globals();
 
-		// On récupère le HTML de la page d'entrée de WRI
-		$rep = file_get_contents(
-			$a='http://'.$_SERVER['SERVER_NAME'].preg_replace('/forum.*/i','',$_SERVER['REQUEST_URI']).'point_ajout', // L'URL refuges.info la plus économe
+		// Les fichiers template du bandeau et du pied de page étant au format "MVC+template type refuges.info",
+		// on les évalue dans leur contexte PHP et on introduit le code HTML résultant dans des variables des templates de PhpBB V3.2
+		$url_vue = 'http://'.$_SERVER['SERVER_NAME'].preg_replace('/forum.*/i','',$_SERVER['REQUEST_URI']).'vue/';
+		$template->assign_var('BANDEAU', file_get_contents(
+			$url_vue.'_bandeau',
 			false,
 			stream_context_create( ['http' => [
-				'header' =>'Cookie: '.http_build_query( $_COOKIE, null, ';' ), // On envoie les mêmes cookies
+				// On envoie les mêmes cookies pour avoir le bandeau correspondant à l'utilisateur
+				'header' =>'Cookie: '.http_build_query($_COOKIE, null, ';'),
 			]])
-		);
-		// On découpe finement le bandeau et le pied
-		$reps = preg_split('/<div id="(|fin-)(entete|basdepage)">/', $rep);
-
-		// On les inclue dans des variables template PhpBB pour inclusion dans les event templates 
-		$template->assign_var('BANDEAU', '<div id="entete">'.$reps[1]);
-		$template->assign_var('PIED',  '<div id="basdepage">'.$reps[3]);
+		));
+		$template->assign_var('PIED', file_get_contents($url_vue.'_pied'));
 	}
 }

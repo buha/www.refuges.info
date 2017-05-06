@@ -81,7 +81,7 @@ $config['hauteur_max_vignette']=140*3/4;
 $config['qualite_jpeg']=80;
 
 
-/********** id internes liés à certains éléments remarqueable de la base. Merci d'éviter les numéros en dur dans le code, car si ça doit changer, c'est jeu de la fourmis ************/
+/********** id internes liés à certains éléments remarquables de la base. Merci d'éviter les numéros en dur dans le code, car si ça doit changer, c'est jeu de la fourmis ************/
 // sly  27/04/06 je préfère me baser sur l'id pour le retrouver plutôt que son type ( que je viens d'ailleurs de modifier )
 $config['id_massif']=1; //rff 21/03/06 : id du type de polygone correspondant aux 'massifs'
 $config['id_carte']=3; //sly : id du type de polygone correspondant aux 'cartes papier'

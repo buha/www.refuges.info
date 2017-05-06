@@ -35,6 +35,7 @@ switch ($controlleur->url_decoupee[0])
     case "point" :
     case "nav" :
     case "wiki" :
+    case "vue" :
     case "nouvelles" :
     case "point_ajout_commentaire" :
     case "point_recherche" :
@@ -98,6 +99,8 @@ if ($controlleur->avec_entete_et_pied)
     $vue->zones_pour_bandeau=remplissage_zones_bandeau();
     $vue->lien_wiki=prepare_lien_wiki_du_bandeau();
     include ($config['chemin_vues']."_entete.html");
+	echo '<body>';
+    include ($config['chemin_vues']."_bandeau.html");
 }	
 
 // Là, c'est bidouille compatibilité avec avant, je pense que chaque controlleur devrait pouvoir décider de la vue sans que soit imposée l'extension
@@ -109,4 +112,5 @@ include ($config['chemin_vues'].$vue->template);
 if ($controlleur->avec_entete_et_pied)
     include ($config['chemin_vues']."_pied.html");
 
+echo '</body></html>';
 ?>
