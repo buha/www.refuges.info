@@ -87,17 +87,18 @@ if (!isset($vue->type))
 // On appel le controlleur qui pourra, s'il le souhaite, changer le type de vue ($type->vue)
 include ($config['chemin_controlleurs'].$controlleur->type.".php");
 
+// et vérification s'il n'y a pas un commentaire à modérer pour notre équipe de modération
+// FIXME : Dans une logique de rangement parfait, ça ne devrait pas être ici, mais dans chaque contrôleur qui a besoin de modifier le bandeau avec l'étoile, mais la factorisation a eu raison de moi ;-)
+// Si quelqu'un veut le bouger, il a mon feu vert -- sly
+if (isset ($_SESSION['niveau_moderation']) and $_SESSION['niveau_moderation']>=1)
+	$vue->demande_correction=info_demande_correction ();
+
+$vue->zones_pour_bandeau=remplissage_zones_bandeau();
+$vue->lien_wiki=prepare_lien_wiki_du_bandeau();
+
 // FIXME : Chaque controlleur, ou mieux encore, chaque vue (un include ?) devrait être autonome pour dire si il/elle veut l'entête ou non
 if ($controlleur->avec_entete_et_pied)
 {
-    // et vérification s'il n'y a pas un commentaire à modérer pour notre équipe de modération
-    // FIXME : Dans une logique de rangement parfait, ça ne devrait pas être ici, mais dans chaque contrôleur qui a besoin de modifier le bandeau avec l'étoile, mais la factorisation a eu raison de moi ;-)
-    // Si quelqu'un veut le bouger, il a mon feu vert -- sly
-    if (isset ($_SESSION['niveau_moderation']) and $_SESSION['niveau_moderation']>=1)
-        $vue->demande_correction=info_demande_correction ();
-
-    $vue->zones_pour_bandeau=remplissage_zones_bandeau();
-    $vue->lien_wiki=prepare_lien_wiki_du_bandeau();
     include ($config['chemin_vues']."_entete.html");
 	echo '<body>';
     include ($config['chemin_vues']."_bandeau.html");
