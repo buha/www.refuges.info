@@ -11,10 +11,12 @@ Fork dev-dom : Commits on Mar 28, 2017
 MIGRATION
 *************************
 GITHUP
-	delete /forum
-	commit
+	Tortoise delete /forum
 	copy zip dri sauf leaflet
-	add *
+	Tortoise revert unitairement fichiers et dossiers avec une croix rouge
+	copy zip dri sauf leaflet
+	copy phpbb32fr sauf install & docs
+	Tortoise add *
 	commit
 	
 Save files WRI
