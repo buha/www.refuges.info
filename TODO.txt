@@ -1,6 +1,5 @@
 BEST TODO
 Validations CSS ?
-Aprés migration : Mettre à jour structure.sql avec les tables phpbb3_
 Install
 	Autorisations repertoires : trier celles pour install de celles pour prod
 	Mettre les bonnes auth dans PhpBB3 reps & files -> SUR UNIX ?
@@ -8,15 +7,27 @@ Install
 *************************
 Fork dev-dom : Commits on Mar 28, 2017
 
-INTEGRATION PHPBB3
-------------------
-Download http://www.phpbb-fr.com/telechargements/ pack complet
-Copy * sauf config.php docs install
-
-INSTALL
--------
-//git clone https://github.com/DC92/www.refuges.info.git
-git clone -b dev-dom https://github.com/RefugesInfo/www.refuges.info.git
+*************************
+MIGRATION
+*************************
+GITHUP
+	delete /forum
+	commit
+	copy zip dri sauf leaflet
+	add *
+	commit
+	
+Save files WRI
+Bloquer WRI (.htaccess # mon IP)
+	order deny,allow
+	deny from all
+	allow from X.X.X.X
+Save SQL
+Save files (delta taille #)
+Renomme forum => forum2
+Dezip & transfert tout PhpBB32 => /forum
+--- /forum/includes/functions_convert.php
+//		$convert->p_master->error(sprintf($user->lang['COULD_NOT_COPY'], $src_path, $phpbb_root_path . $trg_path), __LINE__, __FILE__, !$die_on_failure);
 chmod 777 www.refuges.info/forum/cache
 chmod 777 www.refuges.info/forum/store
 chmod 777 www.refuges.info/forum/files
@@ -25,6 +36,33 @@ chmod 777 www.refuges.info/forum/images/avatars/upload
 chmod 777 www.refuges.info/forum/images/avatars/gallery
 chmod 777 www.refuges.info/forum/images/ranks
 chmod 777 www.refuges.info/forum/images/smilies
+Install : lancer /forum
+français ==> CHANGE
+phpbb3_
+
+lancer /forum/install
+CONVERTIR
+OPTIONS -> convertir
+phpbb_
+../forum2
+
+rename /forum => /forum3
+cd www.refuges.info
+git checkout .
+git pull
+
+Voir les paramètres phpbb de LISMOI.md
+Purger les cookies & sessions
+Lancer : /forum/ext/RefugesInfo/couplage/api.php?init
+
+Retirer de GIT la partie init du listener
+GIT : Mettre à jour structure.sql avec les tables phpbb3_
+
+
+INSTALL
+-------
+//git clone https://github.com/DC92/www.refuges.info.git
+git clone -b dev-dom https://github.com/RefugesInfo/www.refuges.info.git
 cp www.refuges.info/htaccess.modele.txt www.refuges.info/.htaccess
 cp config_privee.php www.refuges.info/includes/config_privee.php
 mkdir www.refuges.info/photos_points
@@ -36,48 +74,3 @@ SQL delete points > max(phpbb_topics.topic_id_point
 SQL delete Tables phpbb3_ + CASCADE
 SQL delete Séquences phpbb3_ + CASCADE
 SQL delete Domaines varchar_ci + CASCADE
-
-MIGRATION
----------
-Renommer /forum -> /forum2
-Download http://www.phpbb-fr.com/telechargements/ pack complet
-Copy * dans /forum (y compris config.php & install mais pas docs)
---- /forum/includes/functions_convert.php
-//		$convert->p_master->error(sprintf($user->lang['COULD_NOT_COPY'], $src_path, $phpbb_root_path . $trg_path), __LINE__, __FILE__, !$die_on_failure);
-lancer /forum
-français ==> CHANGE
-phpbb3_
-
-Ne pas récupèrer config.php de github wri avant la migration
-lancer /forum/install
-CONVERTIR
-OPTIONS -> convertir
-phpbb_
-../forum2
-delete forum2
-
-git pull (récupère config.php & functions_convert.php)
-delete|renommer /forum/install
-Purger les cookies & sessions
-Se connecter /forum
-
-Admin:
-créer l’index de recherche pour « phpBB Native Fulltext » depuis la page Index de recherche.
-Paramètres des fichiers joints / Quota total de fichiers joints : 0
-Paramètres des fichiers joints / Taille maximale du fichier : 10 Mo
-Régler paramètres d'enregistrement
-Mettre une question de confirmation
-Paramètres de cookie / Nom du cookie = phpbb3_wri
-Paramètres de sécurité / Validation de session IP = Aucune
-Paramètres de charge : NON anniversaires / liste moderateurs
-PERSONNALISER : activer ext/wri
-
-SQL : Ajouter points/topic_id dans la structure SQL (doc WRI)
-lancer : ext/RefugesInfo/couplage/api.php?init
-
-*************************
-	http://dom.refuges.info/forum/images/smiles/icon_eek.gif ne peut pas être copié
-		Commenter convert->p_master->error(sprintf($user->lang['COULD_NOT_COPY'] dans phpBB3\includes\functions_convert.php
-Procédure migration phpbb2 -> 3.2 (/forum/install)
-
-N'a pas copié le contenu du 1er post des forums refuges
