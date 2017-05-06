@@ -111,7 +111,8 @@ if (!isset($vue->template))
 // FIXME : idem entête
 include ($config['chemin_vues'].$vue->template);
 if ($controlleur->avec_entete_et_pied)
+{
     include ($config['chemin_vues']."_pied.html");
-
-echo '</body></html>';
+	echo '</body></html>';
+}
 ?>
