@@ -42,7 +42,9 @@ foreach ($menus AS $id) {?>
 		<a href="<?=$config['sous_dossier_installation']?>" title="Retour à l'accueil">Refuges.info</a>
 		<span onclick="flip(this.parentNode,'deroule')">Menu</span>
 		<ul>
-			<li><a href="<?=$config['sous_dossier_installation']?>">Accueil</a></li>
+			<li>
+				<a href="<?=$config['sous_dossier_installation']?>">Accueil</a>
+			</li>
 			<li class="mobile-only">
 				<?if ($_SESSION['id_utilisateur']>=1) {?>
 					<a href="<?=$config['lien_forum']?>ucp.php?mode=logout&sid=<?=$_COOKIE[$config['cookie_prefix'].'_sid']?>">Déconnexion</a>
@@ -54,7 +56,8 @@ foreach ($menus AS $id) {?>
 					<li><a href="<?=$config['lien_forum']?>ucp.php?mode=register" title="Les entrées les plus récentes">Inscription</a></li>
 				</ul>
 			</li>
-			<li><a href="<?=$config['sous_dossier_installation']?>nouvelles/">Nouvelles</a>
+			<li>
+				<a href="<?=$config['sous_dossier_installation']?>nouvelles/">Nouvelles</a>
 				<span onclick="flip(this.parentNode,'deroule')" title="Plus de fonctions">&nbsp;&nbsp;&raquo;&nbsp;&nbsp;</span>
 				<ul>
 					<li><a href="<?=$config['sous_dossier_installation']?>nouvelles/" title="Les entrées les plus récentes">Toutes</a></li>
@@ -65,16 +68,19 @@ foreach ($menus AS $id) {?>
 					<li><a href="<?=$config['sous_dossier_installation']?>formulaire_rss/">Flux RSS</a></li>
 				</ul>
 			</li>
-			<li><a href="<?=$config['sous_dossier_installation']?>point_ajout" title="Ajouter une nouvelle cabane ou refuge">Ajouter un point</a>
+			<li>
+				<a href="<?=$config['sous_dossier_installation']?>point_ajout" title="Ajouter une nouvelle cabane ou refuge">Ajouter un point</a>
 			</li>
-			<li><a href="<?=$config['sous_dossier_installation']?>point_formulaire_recherche/">Recherche</a>
+			<li>
+				<a href="<?=$config['sous_dossier_installation']?>point_formulaire_recherche/">Recherche</a>
 				<span onclick="flip(this.parentNode,'deroule')" title="Plus de fonctions">&nbsp;&nbsp;&raquo;&nbsp;&nbsp;</span>
 				<ul>
 					<li><a href="<?=$config['sous_dossier_installation']?>point_formulaire_recherche/" title="Formulaire de recherche dans la base de données de refuges">Avancée</a></li>
 					<li><a href="<?=$config['sous_dossier_installation']?>formulaire_exportations/" title="Exportation de la base refuges.info aux formats kmz (googlearth compressé), kml (googlearth), gml (Geography Markup Language), GPS (gpx), GPS (gpx simplifié), Garmin points d'intérêts, csv (tableurs)">Exportations</a></li>
 				</ul>
 			</li>
-			<li>Zones couvertes
+			<li>
+				<div>Zones couvertes</div>
 				<span onclick="flip(this.parentNode,'deroule')" title="Plus de fonctions">&nbsp;&nbsp;&raquo;&nbsp;&nbsp;</span>
 				<ul>
 					<?php if (isset($vue->zones_pour_bandeau)) foreach ($vue->zones_pour_bandeau AS $nom_zone => $lien) {?>
@@ -84,7 +90,8 @@ foreach ($menus AS $id) {?>
 					<?}?>
 				</ul>
 			</li>
-			<li><a href="<?=$config['sous_dossier_installation']?>nav">Cartes</a>
+			<li>
+				<a href="<?=$config['sous_dossier_installation']?>nav">Cartes</a>
 				<span onclick="flip(this.parentNode,'deroule')" title="Plus de fonctions">&nbsp;&nbsp;&raquo;&nbsp;&nbsp;</span>
 				<ul>
 					<li><a href="<?=$config['sous_dossier_installation']?>nav/0/MRI?layer=Refuges.info&amp;lat=45&amp;lon=5&amp;zoom=7">Randonnée</a></li>
@@ -95,7 +102,8 @@ foreach ($menus AS $id) {?>
 					<li><a href="<?=$config['sous_dossier_installation']?>nav/0/ESP?layer=Photo%20Bing&amp;lat=47&amp;lon=3&amp;zoom=6">Satellite</a></li>
 				</ul>
 			</li>
-			<li><a href="<?=$config['lien_forum']?>">Forums</a>
+			<li>
+				<a href="<?=$config['lien_forum']?>">Forums</a>
 				<span onclick="flip(this.parentNode,'deroule')" title="Plus de fonctions">&nbsp;&nbsp;&raquo;&nbsp;&nbsp;</span>
 				<ul>
 					<li><a href="<?=$config['lien_forum']?>">Tous</a></li>
@@ -106,7 +114,8 @@ foreach ($menus AS $id) {?>
 					<li><a href="<?=$config['lien_forum']?>ucp.php?i=pm&folder=inbox" title="Votre boite aux lettres personelle">Messages</a></li>
 				</ul>
 			</li>
-			<li><a href="<?=$vue->lien_wiki["index"]?>">A propos du site</a>
+			<li>
+				<a href="<?=$vue->lien_wiki["index"]?>">A propos du site</a>
 				<span onclick="flip(this.parentNode,'deroule')" title="Plus de fonctions">&nbsp;&nbsp;&raquo;&nbsp;&nbsp;</span>
 				<ul>
 					<li><a href="<?=$vue->lien_wiki["index"]?>">A propos</a></li>
@@ -120,10 +129,19 @@ foreach ($menus AS $id) {?>
 			</li>
 			
 			<? if ($_SESSION['niveau_moderation']>=1) {?>
+				<li style="max-width:80px">
+					<div>Gestion</div>
+					<span onclick="flip(this.parentNode,'deroule')" title="Plus de fonctions">&nbsp;&nbsp;&raquo;&nbsp;&nbsp;</span>
+					<ul style="width:300px">
+						<li><a href='<?=$config['sous_dossier_installation']?>gestion/commentaires_attente_correction'>Commentaires en attente d'une correction</a></li>
+						<li><a href='<?=$config['sous_dossier_installation']?>gestion/modifier_modeles' title="Pré-remplissage des champs lors d'un ajout de point">Modifier les modèles de points</a></li>
+						<li><a href='<?=$config['sous_dossier_installation']?>wiki/contenus_speciaux'> Liste des contenus spéciaux</a></li>
+						<li><a href='<?=$config['sous_dossier_installation']?>nav/0?mode_affichage=edit'>Créer un massif</a></li>
+					</ul>
+				</li>
 				<li>
-					<a href="<?=$config['sous_dossier_installation']?>gestion/" title="Zone de gestion pour les modérateurs">Gestion</a>
 					<?if ($vue->demande_correction) {?>
-						<a href="<?=$config['sous_dossier_installation']?>gestion/?page=commentaires_attente_correction" title="Commentaires en attente d'une correction">*</a>
+						<a href="<?=$config['sous_dossier_installation']?>gestion/commentaires_attente_correction" title="Commentaires en attente d'une correction">*</a>
 					<?}?>
 				</li>
 			<?}?>

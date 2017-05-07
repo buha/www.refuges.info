@@ -76,6 +76,8 @@ function auto_login_phpbb_users()
     return FALSE;
 
   $user_data = $res->fetch();
+  if (!$user_data)
+    return FALSE;
 
   /* on rempli notre session */
   $_SESSION['id_utilisateur']=$user_id;

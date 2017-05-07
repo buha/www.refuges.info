@@ -165,7 +165,7 @@ else // le point est valide
         // ici le lien pour modérer ce commentaire si on est modérateur ou auteur du commentaire
         if (isset($_SESSION['id_utilisateur']) AND ( ($_SESSION['niveau_moderation']>=1) OR ($_SESSION['id_utilisateur']==$commentaire->id_createur_commentaire))) 
         {
-            $commentaire->lien_commentaire='/gestion/?page=moderation&amp;id_point_retour='.$commentaire->id_point.'&amp;id_commentaire='.$commentaire->id_commentaire;
+            $commentaire->lien_commentaire='/gestion-/?page=moderation&amp;id_point_retour='.$commentaire->id_point.'&amp;id_commentaire='.$commentaire->id_commentaire;
             $commentaire->texte_lien_commentaire = 'Modifier';
         } 
         else 

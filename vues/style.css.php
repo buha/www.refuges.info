@@ -570,7 +570,8 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
     padding: 0;
   }
   .menu UL LI UL LI:hover,
-  .menu UL A:hover {
+  .menu UL A:hover,
+  .menu UL DIV:hover {
     background-color: #<?=$couleur_decoration_titres?>;
     color: white;
     text-decoration: none;

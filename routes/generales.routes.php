@@ -42,6 +42,7 @@ switch ($controlleur->url_decoupee[0])
     case "avis_internaute_commentaire" :
     case "formulaire_exportations" :
     case "point_formulaire_recherche" :
+    case "gestion" :
     case "formulaire_rss" :
         auto_login_phpbb_users();
         $controlleur->type=$controlleur->url_decoupee[0];

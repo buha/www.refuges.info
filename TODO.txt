@@ -1,5 +1,5 @@
-BEST TODO
-Validations CSS ?
+Pas de gestion dans le menu déroulant sur mobile !
+GIT: Ajouter les smiles à forum/smilies
 Install
 	Autorisations repertoires : trier celles pour install de celles pour prod
 	Mettre les bonnes auth dans PhpBB3 reps & files -> SUR UNIX ?

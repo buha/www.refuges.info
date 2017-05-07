@@ -139,7 +139,7 @@ if ($vue->erreur=="")
             'suppression' entraine également la suppression de la photo.<br />
             'transfert_forum' entraîne aussi le déplacement de la photo vers le forum
             </p>
-            <!--<a href=\"./?page=moderation&amp;type=suppression&amp;vider=1&amp;id_commentaire=".$_REQUEST['id_commentaire']."&amp;id_point_retour=".$_REQUEST['id_point_retour']."\">supprimer le commentaire</a>-->";
+            <!--<a href=\"../gestion-/?page=moderation&amp;type=suppression&amp;vider=1&amp;id_commentaire=".$_REQUEST['id_commentaire']."&amp;id_point_retour=".$_REQUEST['id_point_retour']."\">supprimer le commentaire</a>-->";
             
     } // fin du switch
     print("<a href=\"".lien_point_lent($_REQUEST['id_point_retour'])."\">Retour au point</a>");
