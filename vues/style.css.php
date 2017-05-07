@@ -101,10 +101,14 @@ switch ($periode)
 	background-image: none;
 }
 #phpbb .panel h3,
+#phpbb .alert_text h3,
 #phpbb .stat-block h3,
 #phpbb .stat-block a,
 #phpbb .postbody a {
 	color: white;
+}
+#phpbb .stat-block strong a {
+	color: #a00;
 }
 #phpbb .bg1,
 #phpbb .bg2,
@@ -113,6 +117,9 @@ switch ($periode)
 #phpbb .forumbg .topics > li {
 	background-color: #<?=$couleur_fond?>;
 	background-image: none;
+}
+.avertissement {
+	color: red;
 }
 
 /*==================================================================*/

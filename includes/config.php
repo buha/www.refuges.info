@@ -126,7 +126,7 @@ $config['defaut_max_nombre_point']=121; // NicoM : pourquoi 120 ? sly: pourquoi 
 // lien direct pour se connecter, ou créer un compte sur le forum
 $config['connexion_forum']=$config['lien_forum']."login.php";
 // lien vers le profil d'un utilisateur
-$config['fiche_utilisateur']=$config['lien_forum']."profile.php?mode=viewprofile&amp;u=";
+$config['fiche_utilisateur']=$config['lien_forum']."memberlist.php?mode=viewprofile&u=";
 $config['forum_refuge']=$config['lien_forum']."viewtopic.php?t=";
 
 // l'id des modérateurs du forum, pour qu'ils puissent devenir modérateur du site

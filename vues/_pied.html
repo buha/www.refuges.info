@@ -39,3 +39,16 @@
 	//]]>
 	</script>
 <?}?>
+
+<script type="text/javascript">
+//<![CDATA[
+	// Utilisé dans les menus pour mobile
+	// Si Ajoute la classe c si elle n'est pas attribuée à l'élémént HTML e et vice versa
+	function flip(e, c) {
+		var cs = e.className.split(' '),
+			f = cs.indexOf(c);
+		cs.splice(f, f >= 0, f < 0 ? c : '');
+		e.className = cs.join(' ').trim();
+	}
+//]]>
+</script>
