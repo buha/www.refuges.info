@@ -22,9 +22,9 @@ $controlleur->url_base=str_replace('RACINE'.$config['sous_dossier_installation']
 //DOM ajout de RACINE évite d'enlever tous les / quand sous_dossier_installation = /
 $controlleur->url_decoupee = explode ('/',$controlleur->url_base);
 
-// Par défaut, on veut un en-tête et pied de page html, mais dans de rare cas (point-json) on ne veut pas
-// le débat étant à poursuivre ici : http://www.refuges.info/forum/viewtopic.php?t=5294
-$controlleur->avec_entete_et_pied=True;
+// Par défaut, on veut un en-tête et pied de page html, => $vue->type.html sera affiché avec ce qui va bien autour
+// mais dans de rare cas (point-json) on ne veut pas => On remplacera $vue->template par le fichier tout seul
+$vue->template='_page.html';
 
 // On pourrait être tenté de faire une conversion direct de url vers controlleur, mais si un filou commence à indiquer
 // n'importe quelle url, il pourrait réussir à ouvrir des trucs pas souhaités, avec une liste, on s'assure
@@ -96,23 +96,5 @@ if (isset ($_SESSION['niveau_moderation']) and $_SESSION['niveau_moderation']>=1
 $vue->zones_pour_bandeau=remplissage_zones_bandeau();
 $vue->lien_wiki=prepare_lien_wiki_du_bandeau();
 
-// FIXME : Chaque controlleur, ou mieux encore, chaque vue (un include ?) devrait être autonome pour dire si il/elle veut l'entête ou non
-if ($controlleur->avec_entete_et_pied)
-{
-    include ($config['chemin_vues']."_entete.html");
-	echo '<body>';
-    include ($config['chemin_vues']."_bandeau.html");
-}	
-
-// Là, c'est bidouille compatibilité avec avant, je pense que chaque controlleur devrait pouvoir décider de la vue sans que soit imposée l'extension
-if (!isset($vue->template))
-    $vue->template=$vue->type.".html";
-
-// FIXME : idem entête
 include ($config['chemin_vues'].$vue->template);
-if ($controlleur->avec_entete_et_pied)
-{
-    include ($config['chemin_vues']."_pied.html");
-	echo '</body></html>';
-}
 ?>

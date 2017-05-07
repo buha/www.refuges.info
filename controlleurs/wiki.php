@@ -49,7 +49,6 @@ else // affichage de la page
 {
     if ($_SESSION ['niveau_moderation'] >= 1)
         $vue->montrer_lien_admin=True;
-    $controlleur->avec_entete_et_pied = $_GET ['head'] != 'no';
 
 	$vue->date=date("d/m/Y",$contenu_brut->ts_unix_page);
     $vue->contenu_html  = wiki_page_html($page);

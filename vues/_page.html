@@ -1,5 +1,5 @@
 <?php
-// Affichage de l'entête des pages de refuges.info.
+// Affichage de l'entête des pages de refuges.info
 
 // Ce fichier est l'unique endroit ou peuvent se trouver des balises HTML
 // Un couple <ouverture de balise> </fermeture de balise> doit se trouver dans le même fichier et avec la même indentation
@@ -21,6 +21,15 @@
 		<?if (count ($vue->css))
 			foreach ($vue->css as $css) {?>
 				<link type="text/css" rel="stylesheet" href="<?=$css?>" />
-		<?	}?>
+		<?}?>
 		<meta http-equiv="Content-Script-Type" content="text/javascript" />
 	</head>
+
+	<body>
+		<?
+			include ($config['chemin_vues'].'_bandeau.html');
+			include ($config['chemin_vues'].$vue->type.'.html');
+			include ($config['chemin_vues'].'_pied.html');
+		?>
+	</body>
+</html>

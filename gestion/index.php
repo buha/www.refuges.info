@@ -25,9 +25,8 @@ if ($_SESSION['niveau_moderation']>=1)
 
 $vue->lien_wiki=prepare_lien_wiki_du_bandeau();
 $vue->zones_pour_bandeau=remplissage_zones_bandeau();
-include ($config['chemin_vues']."_entete.html");
-echo '<body>';
-include ($config['chemin_vues']."_bandeau.html");
+
+ob_start(); // Capture les print & echo qui suivent pour les introduire dans le template
 
 // FIN FIXME
 
@@ -101,7 +100,8 @@ else
         print("<h3>Zone de gestion</h3><h4>Erreur</h4><p>Vous n'avez pas les droits requis pour atteindre cette zone</p>");
 }
 
-echo "\n </div><!-- fin du DIV contenu -->";
-include ($config['chemin_vues']."_pied.html");
-echo "</body></html>";
+// FIXME dom 2017 : Lignes à modifier si la gestion était au format MVC
+$vue->corps = ob_get_clean();
+$vue->type = 'gestion';
+include ($config['chemin_vues']."_page.html");
 ?>
