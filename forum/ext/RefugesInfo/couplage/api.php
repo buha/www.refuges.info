@@ -108,8 +108,19 @@ switch (request_var ('api', '')) {
 		break;
 
 	case 'transferer': // Transfert de commentaire
-		// Si l'auteur du commentaire transféré était connecté, on force l'ID
-		$user->data['user_id'] = max (ANONYMOUS, request_var ('i', 0));
+		$user_id = request_var ('i', 0);
+		if ($user_id > ANONYMOUS) {
+			// Si l'auteur du commentaire transféré était connecté, on force l'ID
+			$user->data['user_id'] = $user_id;
+
+			// Et le nom associé
+			$sql = 'SELECT username FROM '.USERS_TABLE.' WHERE user_id = '.$user_id;
+			$result = $db->sql_query($sql);
+			$row = $db->sql_fetchrow($result);
+			$db->sql_freeresult($result);
+			$data['username'] = $row['username'];
+		}
+
 		$data['post_time'] = strtotime ($_POST['d']); // Recalcule suivant la timezone
 		$action = 'reply';
 		break;
