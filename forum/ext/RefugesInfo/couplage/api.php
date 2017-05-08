@@ -48,7 +48,6 @@ $data = [
 	'forum_id' => request_var ('f', 0),
 	'topic_title' => $_POST['s'], // Important de le prendre dans $_POST car ça préserve les caractères spéciaux
 	'username' => $_POST['u'] ?: 'refuges.info',
-	'post_time' => request_var ('d', time()),
 
 // Données par défaut
 	'enable_sig' => true,
@@ -111,6 +110,7 @@ switch (request_var ('api', '')) {
 	case 'transferer': // Transfert de commentaire
 		// Si l'auteur du commentaire transféré était connecté, on force l'ID
 		$user->data['user_id'] = max (ANONYMOUS, request_var ('i', 0));
+		$data['post_time'] = strtotime ($_POST['d']); // Recalcule suivant la timezone
 		$action = 'reply';
 		break;
 

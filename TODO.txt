@@ -1,9 +1,5 @@
 L'interprétation du "nouveau bbcode" plus riche semble moins bien passer coté site pour ce qui est des quotes
 	https://dom.refuges.info/forum/viewtopic.php?f=4&t=6335&p=19629
-Un message posté à 23h18 après transfert s'affiche datant de 01h18 le lendemain 
-	Doit y avoir un GMT+2 pas pris en compte quelque part ou pris en compte 2 fois
-	https://dom.refuges.info/forum/viewtopic.php?f=4&t=6335&p=19629#p19629 
-	==> Il y a aussi un pb sur le transfert depuis la fiche
 Voir <titre> de chaque page HTML
 MVC moderation
 
@@ -36,6 +32,7 @@ Bloquer WRI (.htaccess # mon IP)
 Save SQL
 Save files (delta taille #)
 Renomme forum => forum2
+Récupérer photo_points
 Dezip & transfert tout PhpBB32 => /forum
 --- /forum/includes/functions_convert.php
 //		$convert->p_master->error(sprintf($user->lang['COULD_NOT_COPY'], $src_path, $phpbb_root_path . $trg_path), __LINE__, __FILE__, !$die_on_failure);
@@ -64,6 +61,7 @@ git checkout .
 git pull
 
 Voir les paramètres phpbb de LISMOI.md
+Affichage date = 18:00
 Purger les cookies & sessions
 Lancer : /forum/ext/RefugesInfo/couplage/api.php?init
 

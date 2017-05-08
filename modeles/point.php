@@ -10,7 +10,6 @@ ci-après pour récupérer les infos des points, en ajouter
 ou en modifier
 
 /**********************************************************************************************/
-//debug_print_backtrace ();//DCMM
 
 require_once ("config.php");
 require_once ("bdd.php");
