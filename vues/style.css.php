@@ -103,8 +103,8 @@ switch ($periode)
 #phpbb .panel h3,
 #phpbb .alert_text h3,
 #phpbb .stat-block h3,
-#phpbb .stat-block a,
-#phpbb .postbody a {
+#phpbb .stat-block h3 a,
+#phpbb .postbody h3 a {
 	color: white;
 }
 #phpbb .stat-block strong a {

@@ -475,7 +475,7 @@ function transfert_forum($commentaire)
   if ($commentaire->photo_existe)
   {
     // insere la balise bbcode pour la photo
-    $commentaire->texte.="\n[img]http://".$_SERVER['SERVER_NAME'].$config['rep_web_forum_photos'].$commentaire->id_commentaire.".jpeg[/img]";
+    $commentaire->texte.="\n[img]".$config['rep_web_forum_photos'].$commentaire->id_commentaire.".jpeg[/img]";
     // et deplace la photo, question historique, on peut avoir la réduite et/ou l'originale
     if (isset($commentaire->photo['reduite']))
       $photo_a_conserver=$commentaire->photo['reduite'];

@@ -1,3 +1,13 @@
+L'interprétation du "nouveau bbcode" plus riche semble moins bien passer coté site pour ce qui est des quotes
+	https://dom.refuges.info/forum/viewtopic.php?f=4&t=6335&p=19629
+Un message posté à 23h18 après transfert s'affiche datant de 01h18 le lendemain 
+	Doit y avoir un GMT+2 pas pris en compte quelque part ou pris en compte 2 fois
+	https://dom.refuges.info/forum/viewtopic.php?f=4&t=6335&p=19629#p19629 
+	==> Il y a aussi un pb sur le transfert depuis la fiche
+si j'ajoute un commentaire avec photo et que je le transfert sur le forum, l'image est référencée en http://...... 
+Voir titre de chaque page
+MVC moderation
+
 Pas de gestion dans le menu déroulant sur mobile !
 GIT: Ajouter les smiles à forum/smilies
 Install
@@ -41,6 +51,7 @@ chmod 777 www.refuges.info/forum/images/smilies
 Install : lancer /forum
 français ==> CHANGE
 phpbb3_
+existe-pas@refuges.info
 
 lancer /forum/install
 CONVERTIR

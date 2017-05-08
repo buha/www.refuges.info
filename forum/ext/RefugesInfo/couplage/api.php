@@ -15,6 +15,7 @@ $auth->acl($user->data);
 $user->setup();
 
 					// A ENLEVER APRES MIGRATION ***************************
+					//Transfert des liens entre fiche et topic forum
 					if (isset ($_GET['init'])) {
 						$sql = "SELECT p.id_point, t.topic_id
 								FROM points AS p
@@ -118,9 +119,10 @@ switch (request_var ('api', '')) {
 	case 'transferer': // Transfert de commentaire
 		// Traduit bbcodes
 		$message_parser = new parse_message();
-		$message_parser->message = $data['message'];
+		$message_parser->message = $_POST['m']; // Important de le prendre dans $_POST car ça préserve les caractères spéciaux
 		$message_parser->parse(true, true, true);
 		$data['message'] = $message_parser->message;
+		$data['message_md5'] = md5($message_parser->message);
 
 		// Récupère la date du commentaire
 		$data['post_time'] = request_var ('d', time());
