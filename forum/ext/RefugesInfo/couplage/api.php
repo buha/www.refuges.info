@@ -46,9 +46,9 @@ $data = [
 	'post_id' => request_var ('p', 0),
 	'topic_id' => request_var ('t', 0),
 	'forum_id' => request_var ('f', 0),
-	'topic_title' => request_var ('s', ''),
-	'message' => request_var ('m', ''),
-	'username' => request_var ('u', 'refuges.info'),
+	'topic_title' => $_POST['s'], // Important de le prendre dans $_POST car ça préserve les caractères spéciaux
+	'username' => $_POST['u'] ?: 'refuges.info',
+	'post_time' => request_var ('d', time()),
 
 // Données par défaut
 	'enable_sig' => true,
@@ -75,7 +75,13 @@ if ($data['topic_id']) {
 		$data = array_merge ($data, $row);
 }
 
-$data['message_md5'] = md5($data['message']);
+// Traduit bbcodes
+$message_parser = new parse_message();
+$message_parser->message = $_POST['m'] ?: '';
+$message_parser->parse(true, true, true);
+$data['message'] = $message_parser->message;
+$data['message_md5'] = md5($message_parser->message);
+
 $poll = [];
 
 // Exécute les fonctions api
@@ -83,18 +89,10 @@ $poll = [];
 // Un string message d'erreur sinon
 switch (request_var ('api', '')) {
 	case 'creer':
-		submit_post ('post',
-			$data['topic_title'],
-			$data['username'],
-			0, // topic_type
-			$poll, $data
-		);
-		exit (json_encode ($data));
+		$action = 'post';
+		break;
 
 	case 'renommer':
-		$data['topic_title'] =
-		$data['post_subject'] = request_var ('s', '');
-
 		if (!$data['topic_first_post_id'])
 			exit ('ERROR : No post in topic '.$data['topic_id']);
 
@@ -107,36 +105,14 @@ switch (request_var ('api', '')) {
 			$data = array_merge ($data, $row);
 			$data['message'] = $data['post_text'];
 		}
-
-		submit_post ('edit',
-			$data['topic_title'],
-			$data['username'],
-			0, // topic_type
-			$poll, $data
-		);
-		exit (json_encode ($data));
+		$action = 'edit';
+		break;
 
 	case 'transferer': // Transfert de commentaire
-		// Traduit bbcodes
-		$message_parser = new parse_message();
-		$message_parser->message = $_POST['m']; // Important de le prendre dans $_POST car ça préserve les caractères spéciaux
-		$message_parser->parse(true, true, true);
-		$data['message'] = $message_parser->message;
-		$data['message_md5'] = md5($message_parser->message);
-
-		// Récupère la date du commentaire
-		$data['post_time'] = request_var ('d', time());
-
 		// Si l'auteur du commentaire transféré était connecté, on force l'ID
-		$user->data['user_id'] = max (1, request_var ('i', 1));
-
-		submit_post ('reply',
-			request_var ('s', ''),
-			request_var ('u', ''),
-			0, // topic_type
-			$poll, $data
-		);
-		exit (json_encode ($data));
+		$user->data['user_id'] = max (ANONYMOUS, request_var ('i', 0));
+		$action = 'reply';
+		break;
 
 	case 'supprimer':
 		// La liste des posts
@@ -149,9 +125,19 @@ switch (request_var ('api', '')) {
 		if (!isset ($pids))
 			exit ('FORUM : Erreur supression topic inconnu '.$data['topic_id']);
 
-		delete_posts('post_id', $pids); // On ne sait pas supprimer un topic: il faut supprimer une lie=ste de posts
+		delete_posts('post_id', $pids); // On ne sait pas supprimer un topic: il faut supprimer tous ses posts
 		sync('forum'); // Et on nettoie un peu tout ça
 		exit ('{}'); // Sortie OK (Json vide)
+
+	default:
+		exit ('Rien à exécuter');
 }
 
-exit ('Rien à exécuter');
+submit_post (
+	$action,
+	$_POST['s'], // Reprend le titre modifié (qui a dû être écrasé par les infos du topic)
+	$data['username'],
+	0, // topic_type
+	$poll, $data
+);
+exit (json_encode ($data));

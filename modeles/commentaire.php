@@ -504,7 +504,7 @@ function transfert_forum($commentaire)
       'content' => http_build_query( [
         'api' => 'transferer',
         't' => $commentaire->topic_id,
-        's' => 'Transfert de la fiche',
+        's' => 'Transféré de la fiche',
         'm' => $commentaire->texte,
         'i' => $commentaire->id_createur_commentaire, // Si l'auteur était connecté, on garde l'ID
         'u' => $auteur,

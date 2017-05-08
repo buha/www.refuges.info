@@ -10,6 +10,7 @@ ci-après pour récupérer les infos des points, en ajouter
 ou en modifier
 
 /**********************************************************************************************/
+//debug_print_backtrace ();//DCMM
 
 require_once ("config.php");
 require_once ("bdd.php");
@@ -538,7 +539,7 @@ function modification_ajout_point($point)
     if ($point->id_point_gps->erreur) // si on a la moindre erreur sur la gestion des coordonnées de notre point, on abandonne
         return erreur($point->id_point_gps->message);
 
-  /********* Préparation des champs à mettre à jour, tous ceuex qui sont dans $point->xx ET dans $config['champs_simples_points'] *************/
+  /********* Préparation des champs à mettre à jour, tous ceux qui sont dans $point->xx ET dans $config['champs_simples_points'] *************/
   // champ ou il faut juste un set=nouvelle_valeur
     foreach ($config['champs_simples_points'] as $champ)
     if (isset($point->$champ))

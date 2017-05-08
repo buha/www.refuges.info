@@ -4,8 +4,7 @@ Un message posté à 23h18 après transfert s'affiche datant de 01h18 le lendema
 	Doit y avoir un GMT+2 pas pris en compte quelque part ou pris en compte 2 fois
 	https://dom.refuges.info/forum/viewtopic.php?f=4&t=6335&p=19629#p19629 
 	==> Il y a aussi un pb sur le transfert depuis la fiche
-si j'ajoute un commentaire avec photo et que je le transfert sur le forum, l'image est référencée en http://...... 
-Voir titre de chaque page
+Voir <titre> de chaque page HTML
 MVC moderation
 
 Pas de gestion dans le menu déroulant sur mobile !
