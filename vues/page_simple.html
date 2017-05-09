@@ -12,13 +12,18 @@ rien de bien extraordinaire, faite votre propre vue si vous voulez plus compliqu
 **/
 ?>
 <p>
-    <?=$vue->titre?>
+	<? if ($vue->http_status_code) {
+		header('HTTP/1.0 '.$vue->http_status_code.' '.$vue->http_status_txt)?>
+		Erreur <?=$vue->http_status_code?> - <?=$vue->http_status_txt?>
+	<?}?>
+	<?=$vue->titre?>
 </p>	
-<?php if ($vue->contenu or $vue->lien) { ?>
 <p>
-    <?=$vue->contenu?>
-    <?php if ($vue->lien) { ?>
-    <a href="<?=$vue->lien?>"><?=$vue->titre_lien?></a>
-    <?php } ?>
+	<?=$vue->contenu?>
+	<? if ($vue->lien){?>
+		<a href="<?=$vue->lien?>"><?=$vue->titre_lien?></a>
+	<?}?>
+	<? if ($vue->lien_special){?>
+		<a href="<?=$vue->lien_special?>"><?=$vue->titre_lien?></a>
+	<?}?>
 </p>
-<?php } ?>

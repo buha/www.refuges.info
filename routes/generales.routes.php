@@ -42,7 +42,6 @@ switch ($controlleur->url_decoupee[0])
     case "avis_internaute_commentaire" :
     case "formulaire_exportations" :
     case "point_formulaire_recherche" :
-    case "gestion" :
     case "formulaire_rss" :
         auto_login_phpbb_users();
         $controlleur->type=$controlleur->url_decoupee[0];
@@ -71,6 +70,10 @@ switch ($controlleur->url_decoupee[0])
     case "test" :
         $controlleur->type="test";
         $controlleur->avec_entete_et_pied=false;
+        break;
+    case "gestion" :
+        auto_login_phpbb_users();
+        require_once ("gestion.routes.php");
         break;
     case "api" :
         require_once ("api.routes.php");

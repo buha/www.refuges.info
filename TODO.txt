@@ -1,14 +1,24 @@
+Reload image fiche aprés retournement => ajouter ?time()
+Test de basculement avec avatars et images à planifier.
+Sur CHROME Template plus gros en général (base WRI et encore plus forum)
 L'interprétation du "nouveau bbcode" plus riche semble moins bien passer coté site pour ce qui est des quotes
 	https://dom.refuges.info/forum/viewtopic.php?f=4&t=6335&p=19629
 Voir <titre> de chaque page HTML
 MVC moderation
+	Ajouter bouton annuler sur modération fiche
+dossier controleurs/api ?
+Remplacer vues/page_interdite par page_simple ?
+Remplacer vues/page_interdite&erreur par Contrôleur status ??
 
 Pas de gestion dans le menu déroulant sur mobile !
-GIT: Ajouter les smiles à forum/smilies
 Install
 	Autorisations repertoires : trier celles pour install de celles pour prod
 	Mettre les bonnes auth dans PhpBB3 reps & files -> SUR UNIX ?
 
+*************************
+user 207 -> 216
+topic 1202
+posts 2760 2765 2810 14055
 *************************
 Fork dev-dom : Commits on Mar 28, 2017
 
@@ -21,6 +31,7 @@ GITHUP
 	Tortoise revert unitairement fichiers et dossiers avec une croix rouge
 	copy zip dri sauf leaflet
 	copy phpbb32fr sauf install & docs
+	Ajouter les smiles à forum/smilies
 	Tortoise add *
 	commit
 	
@@ -54,6 +65,7 @@ CONVERTIR
 OPTIONS -> convertir
 phpbb_
 ../forum2
+passer tous les moderateurs par défaut
 
 rename /forum => /forum3
 cd www.refuges.info
