@@ -4,12 +4,7 @@ Sur CHROME Template plus gros en général (base WRI et encore plus forum)
 L'interprétation du "nouveau bbcode" plus riche semble moins bien passer coté site pour ce qui est des quotes
 	https://dom.refuges.info/forum/viewtopic.php?f=4&t=6335&p=19629
 Voir <titre> de chaque page HTML
-MVC moderation
-	Ajouter bouton annuler sur modération fiche
 dossier controleurs/api ?
-Remplacer vues/page_interdite par page_simple ?
-Remplacer vues/page_interdite&erreur par Contrôleur status ??
-
 Pas de gestion dans le menu déroulant sur mobile !
 Install
 	Autorisations repertoires : trier celles pour install de celles pour prod
