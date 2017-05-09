@@ -49,7 +49,6 @@ switch ($controlleur->url_decoupee[0])
     case "point-json":
         $controlleur->type="point";
         $vue->template="point.json";
-        $controlleur->avec_entete_et_pied=False;
         break;
     case "index": case "" :
         auto_login_phpbb_users();
@@ -69,7 +68,6 @@ switch ($controlleur->url_decoupee[0])
         break;
     case "test" :
         $controlleur->type="test";
-        $controlleur->avec_entete_et_pied=false;
         break;
     case "gestion" :
         auto_login_phpbb_users();

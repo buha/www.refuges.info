@@ -34,7 +34,7 @@ if ($contenu_brut->erreur and $_GET['form_modifier']!=1)
     if ($_SESSION ['niveau_moderation'] >= 1)
     {
         $vue->contenu="Toutefois, vous pouvez la créér si besoin car vous êtes modérateur en : ";
-        $vue->lien_special=lien_wiki($page)."?form_modifier=1";
+        $vue->lien=lien_wiki($page)."?form_modifier=1";
         $vue->titre_lien="Cliquant ici";
     }
 } // Un modérateur a demandé à la modifier
