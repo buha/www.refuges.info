@@ -28,8 +28,8 @@ $vue->nom_page= $page;
 // La page n'existe pas (ou pas encore !)
 if ($contenu_brut->erreur and $_GET['form_modifier']!=1)
 {
-    header("HTTP/1.0 404 Not Found");
-    $vue->type="page_introuvable";
+    $vue->http_status_code = 404;
+    $vue->type = 'page_simple';
     $vue->titre=$contenu_brut->message;
     if ($_SESSION ['niveau_moderation'] >= 1)
     {

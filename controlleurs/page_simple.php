@@ -1,14 +1,21 @@
 <?php 
 // Conteneur standard de l'entête et pied de page
 
-switch ($vue->status) {
+switch ($vue->http_status_code) {
 	case 403:
-		$vue->http_status_txt = 'Forbidden ';
-		$vue->titre = "Vous n'avez pas les droits d'accès à la page \"$controlleur->url_base\"";
+		header("HTTP/1.0 403 Forbidden");
+		$vue->titre = "Erreur 403 - Vous n'avez pas les droits d'accès à la page \"$controlleur->url_base\"";
 		break;
 
 	case 404:
-		$vue->http_status_txt = 'Not Found';
-		$vue->titre = "Impossible d'accéder à la page \"$controlleur->url_base\" : vous n'y êtes pas autorisé !";
+		header("HTTP/1.0 404 Not Found");
+		$vue->titre = "Erreur 404 - La page demandée \"$controlleur->url_base\" est introuvable sur refuges.info";
+
+	case 200:
+		break;
+
+	default:
+		if ($vue->http_status_code)
+			$vue->titre = "Erreur ".$vue->http_status_code;
 }
 ?>

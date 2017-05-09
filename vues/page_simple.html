@@ -12,10 +12,6 @@ rien de bien extraordinaire, faite votre propre vue si vous voulez plus compliqu
 **/
 ?>
 <p>
-	<? if ($vue->http_status_code) {
-		header('HTTP/1.0 '.$vue->http_status_code.' '.$vue->http_status_txt)?>
-		Erreur <?=$vue->http_status_code?> - <?=$vue->http_status_txt?>
-	<?}?>
 	<?=$vue->titre?>
 </p>	
 <p>

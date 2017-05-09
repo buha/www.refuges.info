@@ -2,21 +2,21 @@
 /**************************************************
  *              ROUTEUR de la gestion
  * Ce fichier appelle juste le bon controlleur.
- * La vue et le modèle sont appellés par le controlleur.
+ * La vue et le modÃ¨le sont appellÃ©s par le controlleur.
  * cf. : http://bpesquet.developpez.com/tutoriels/php/evoluer-architecture-mvc/images/3.png
  *
  * Changelog :
  *   * 08/05/2017 - Dom - Version intiale :
- *          découpage URL, redirection sur le bon
+ *          dÃ©coupage URL, redirection sur le bon
  *          controleur.
  * 
 **************************************************/
 
-// Par défaut
+// Par dÃ©faut
+$vue->http_status_code = 403; // (uniquement affichÃ© par page_simple)
 $controlleur->type = 'page_simple';
-$vue->status = 403; // (uniquement affiché par page_simple)
 
-// C'est le point unique qui contrôle les autorisations de toutes les URL /gestion...
+// C'est le point unique qui contrÃ´le les autorisations de toutes les URL /gestion...
 switch ($controlleur->url_decoupee[1]) {
 	case 'moderation':
 		$commentaire = infos_commentaire($_REQUEST['id_commentaire'],true);
@@ -30,7 +30,7 @@ switch ($controlleur->url_decoupee[1]) {
 		break;
 
 	default:
-		$vue->status = 404;
+		$vue->http_status_code = 404;
 }
 
 ?>
