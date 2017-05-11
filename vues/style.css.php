@@ -421,6 +421,10 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 #entete {
 	position: relative;
 	z-index: 40000;
+	font-size: 13.33px;;
+	font-family:
+Arial
+;
 }
 #entete > DIV { /* Définit le bloc à positionner à droite */
 	float: right;
@@ -435,7 +439,6 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 @media screen and (max-width: 800px) {
   #entete > A,
   #entete IMG {
-	max-width: 50%;
 	height: 50px;
   }
 }
@@ -455,6 +458,8 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
     border: solid 1px #<?=$couleur_decoration_titres?>;
 	height: 18px;
 	position: relative; top: -3px;
+	width: 306px;
+	margin-top: 5px;
 }
 #entete A:hover {
     color: white;
