@@ -1,11 +1,7 @@
-Reload image fiche aprés retournement => ajouter ?time()
-Test de basculement avec avatars et images à planifier.
 Sur CHROME Template plus gros en général (base WRI et encore plus forum)
 L'interprétation du "nouveau bbcode" plus riche semble moins bien passer coté site pour ce qui est des quotes
 	https://dom.refuges.info/forum/viewtopic.php?f=4&t=6335&p=19629
 Voir <titre> de chaque page HTML
-dossier controleurs/api ?
-Pas de gestion dans le menu déroulant sur mobile !
 Install
 	Autorisations repertoires : trier celles pour install de celles pour prod
 	Mettre les bonnes auth dans PhpBB3 reps & files -> SUR UNIX ?
@@ -14,6 +10,7 @@ Install
 user 207 -> 216
 topic 1202
 posts 2760 2765 2810 14055
+Dom92 2714
 *************************
 Fork dev-dom : Commits on Mar 28, 2017
 
@@ -39,6 +36,7 @@ Save SQL
 Save files (delta taille #)
 Renomme forum => forum2
 Récupérer photo_points
+Récupérer les avatars et images
 Dezip & transfert tout PhpBB32 => /forum
 --- /forum/includes/functions_convert.php
 //		$convert->p_master->error(sprintf($user->lang['COULD_NOT_COPY'], $src_path, $phpbb_root_path . $trg_path), __LINE__, __FILE__, !$die_on_failure);

@@ -155,7 +155,8 @@ function infos_commentaires ($conditions)
         if (is_file($config['rep_photos_points'].$nom_fichier))
         {
           $commentaire->photo[$taille]=$config['rep_photos_points'].$nom_fichier;
-          $commentaire->lien_photo[$taille]=$config['rep_web_photos_points'].$nom_fichier;
+          $commentaire->lien_photo[$taille]=$config['rep_web_photos_points'].$nom_fichier
+            .'?'.filemtime($commentaire->photo[$taille]); // Permet de recharger si on bascule laphoto par exemple
         }
       }
       // Ce cas peut exister quand la photo originale est la même que la réduite (déjà suffisament petite, ou raisons historiques)
@@ -277,13 +278,13 @@ function modification_ajout_commentaire($commentaire)
                     $commentaire->date_photo = "$m[1]-$m[2]-$m[3] $m[4]:$m[5]:$m[6]";
     }
 
-	// Rotation manuelle des photos
-	if ($_REQUEST['rotation']) {
-		$nom_fichier = $config['rep_photos_points'].$_REQUEST['id_commentaire'].".jpeg";
-		$image=imagecreatefromjpeg($nom_fichier);//on chope le jpeg
-		$image = imagerotate ($image, $_REQUEST['rotation'], 0); // On le fait tourner
-		imagejpeg($image,$nom_fichier);// On l'écrit sur le disque
-	}
+    // Rotation manuelle des photos
+    if ($_REQUEST['rotation']) {
+        $nom_fichier = $config['rep_photos_points'].$_REQUEST['id_commentaire'].".jpeg";
+        $image=imagecreatefromjpeg($nom_fichier);//on chope le jpeg
+        $image = imagerotate ($image, $_REQUEST['rotation'], 0); // On le fait tourner
+        imagejpeg($image,$nom_fichier);// On l'écrit sur le disque
+    }
 
     // reparation crado:
     // FIXME, tout correspond, y'a pas moyen de faire un foreach sur $commentaire et remplir les champs SQL ?

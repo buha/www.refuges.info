@@ -33,6 +33,17 @@
 			<textarea name="texte" rows="10" cols="100"><?=protege($commentaire->texte)?></textarea>
 			<br /><br />
 
+			<? if ($commentaire->photo_existe==1) { ?>
+				Rotation photo: &nbsp;
+				<input type="radio" name="rotation" value="0" checked="checked">aucune &nbsp;
+				<input type="radio" name="rotation" value="90"><img src="<?=$config['sous_dossier_installation']?>images/270.png" /> &nbsp;
+				<input type="radio" name="rotation" value="180"><img src="<?=$config['sous_dossier_installation']?>images/180.png" /> &nbsp;
+				<input type="radio" name="rotation" value="270"><img src="<?=$config['sous_dossier_installation']?>images/90.png" />
+				<br />
+				<input name="type" value="suppression_photo" type="submit" />
+				<br /><br />
+			<?}?>
+
 			<? if ($commentaire->id_createur_commentaire==0) { ?><!-- Seulement modifiable si n'était pas authentifié -->
 				<label>Auteur:
 					<input type="text" name="auteur_commentaire" value="<?=$commentaire->auteur_commentaire?>" />
@@ -49,18 +60,6 @@
 			<input name="type" value="transfert_autre_point" label="x" type="submit" />
 			Indiquez le numéro de l'autre point :
 			<input type="text" name="id_autre_point" value="" size="16"/>
-				<br /><br />
-
-			<? if ($commentaire->photo_existe==1) { ?>
-				Rotation photo: &nbsp;
-				<input type="radio" name="rotation" value="0" checked="checked">aucune &nbsp;
-				<input type="radio" name="rotation" value="90"><img src="<?=$config['sous_dossier_installation']?>images/270.png" /> &nbsp;
-				<input type="radio" name="rotation" value="180"><img src="<?=$config['sous_dossier_installation']?>images/180.png" /> &nbsp;
-				<input type="radio" name="rotation" value="270"><img src="<?=$config['sous_dossier_installation']?>images/90.png" />
-				(Ne pas oublier de rafraichir la page [F5] au retour sur la fiche)
-				<br />
-				<input name="type" value="suppression_photo" type="submit" />
-			<?}?>
 		</form>
 		<p>
 		'suppression' entraine également la suppression de la photo.<br />

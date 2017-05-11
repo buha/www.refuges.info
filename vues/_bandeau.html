@@ -80,7 +80,7 @@ foreach ($menus AS $id) {?>
 				</ul>
 			</li>
 			<li>
-				<div>Zones couvertes</div>
+				<a>Zones couvertes</a>
 				<span onclick="flip(this.parentNode,'deroule')" title="Plus de fonctions">&nbsp;&nbsp;&raquo;&nbsp;&nbsp;</span>
 				<ul>
 					<?php if (isset($vue->zones_pour_bandeau)) foreach ($vue->zones_pour_bandeau AS $nom_zone => $lien) {?>
@@ -129,8 +129,8 @@ foreach ($menus AS $id) {?>
 			</li>
 			
 			<? if ($_SESSION['niveau_moderation']>=1) {?>
-				<li style="max-width:80px">
-					<div>Gestion</div>
+				<li style="max-width:90px">
+					<a>Gestion</a>
 					<span onclick="flip(this.parentNode,'deroule')" title="Plus de fonctions">&nbsp;&nbsp;&raquo;&nbsp;&nbsp;</span>
 					<ul style="width:300px">
 						<li><a href='<?=$config['sous_dossier_installation']?>gestion/commentaires_attente_correction'>Commentaires en attente d'une correction</a></li>
