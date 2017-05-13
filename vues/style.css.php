@@ -442,14 +442,15 @@ Arial
 	height: 50px;
   }
 }
-#entete A, #entete SPAN {
+#entete A,
+#entete SPAN,
+#entete > A {
 	font-size: 18px;
 	font-weight: bold;
-	float: right;
-}
-#entete > A, #entete A:first-child {
-    color: #<?=$couleur_lien_visite?>;
 	float: none;
+}
+#entete DIV A:first-child {
+	float: right;
 }
 #entete FORM {
 	display: block;

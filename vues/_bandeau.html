@@ -10,16 +10,21 @@
 <div id="entete">
 	<div>
 		<?if ($_SESSION['login_utilisateur']) {?>
-			<a href="<?=$config['lien_forum']?>ucp.php" title="Modifier votre profil"><?=$_SESSION['login_utilisateur']?></a>
 			<a href="<?=$config['lien_forum']?>ucp.php?mode=logout&sid=<?=$_COOKIE[$config['cookie_prefix'].'_sid']?>">Se déconnecter</a>
+			<a href="<?=$config['lien_forum']?>ucp.php" title="Modifier votre profil"><?=$_SESSION['login_utilisateur']?></a> /
+			<a href="<?=$config['lien_forum']?>ucp.php?mode=reg_details&i=ucp_profile" title="Changer votre mot de passe">mdp</a>
 		<?} else {?>
-			<a href="<?=$config['lien_forum']?>ucp.php?mode=register" title="Pour créer un compte">S'inscrire</a>
 			<a href="<?=$config['lien_forum']?>ucp.php?mode=login" title="Si vous avez déjà un compte">Connexion</a>
+			<a href="<?=$config['lien_forum']?>ucp.php?mode=register" title="Pour créer un compte">S'inscrire</a> /
+			<a href="<?=$config['lien_forum']?>ucp.php?mode=sendpassword" title="Récupérer votre mot de passe">mdp</a>
 		<?}?>
 		
 		<form method="post" action="<?=$config['sous_dossier_installation']?>point_recherche/">
 		<div>
-			<input type="text" name="nom" size="35" value="Recherche de refuge par le nom" onfocus="javascript:this.value=''" />
+			<input type="text" name="nom" size="35"
+				value="Recherche de refuge par le nom"
+				onfocus="javascript:if(this.value=='Recherche de refuge par le nom')this.value=''"
+			/>
 			<input type="hidden" name="ids_types_point" value="<?=$config['tout_type_refuge']?>" />
 			<input type="hidden" name="avec_point_osm" value="1" />
 			<input type="image" src="<?=$config['sous_dossier_installation']?>images/loupe.png" title="Lancer la recherche" alt="R" />

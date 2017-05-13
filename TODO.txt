@@ -1,3 +1,4 @@
+Recherche en haut a droite de recherche par le nom, sur ma tablette, je clique dans le rectangle et il n'est pas possible d'y écrire quelque chose.
 L'interprétation du "nouveau bbcode" plus riche semble moins bien passer coté site pour ce qui est des quotes
 	https://dom.refuges.info/forum/viewtopic.php?f=4&t=6335&p=19629
 Install
@@ -12,6 +13,15 @@ Dom92 2714
 *************************
 Fork dev-dom : Commits on Mar 28, 2017
 
+chmod 777 www.refuges.info/forum/cache
+chmod 777 www.refuges.info/forum/store
+chmod 777 www.refuges.info/forum/files
+chmod 777 www.refuges.info/forum/config.php
+chmod 777 www.refuges.info/forum/images/avatars/upload
+chmod 777 www.refuges.info/forum/images/avatars/gallery
+chmod 777 www.refuges.info/forum/images/ranks
+chmod 777 www.refuges.info/forum/images/smilies
+
 *************************
 MIGRATION
 *************************
@@ -23,29 +33,28 @@ GITHUP
 	copy phpbb32fr sauf install & docs
 	Ajouter les smiles à forum/smilies
 	Tortoise add *
+	Retirer la partie init du listener
 	commit
 	
 Save files WRI
-Bloquer WRI (.htaccess # mon IP)
-	order deny,allow
-	deny from all
-	allow from X.X.X.X
-Save SQL
-Save files (delta taille #)
-Renomme forum => forum2
-Récupérer photo_points
-Récupérer les avatars et images
-Dezip & transfert tout PhpBB32 => /forum
---- /forum/includes/functions_convert.php
+Dezip & transfert tout PhpBB32 => /forum3
+--- /forum3/includes/functions_convert.php
 //		$convert->p_master->error(sprintf($user->lang['COULD_NOT_COPY'], $src_path, $phpbb_root_path . $trg_path), __LINE__, __FILE__, !$die_on_failure);
-chmod 777 www.refuges.info/forum/cache
-chmod 777 www.refuges.info/forum/store
-chmod 777 www.refuges.info/forum/files
-chmod 777 www.refuges.info/forum/config.php
-chmod 777 www.refuges.info/forum/images/avatars/upload
-chmod 777 www.refuges.info/forum/images/avatars/gallery
-chmod 777 www.refuges.info/forum/images/ranks
-chmod 777 www.refuges.info/forum/images/smilies
+
+Bloquer WRI (.htaccess # mon IP)
+Save files (delta taille #)
+Save SQL
+Renommer forum => forum2
+Renommer forum3 => forum
+Récupérer forum2/photo_points => forum/photo_points
+chmod 777 www.refuges.info/forum3/cache
+chmod 777 www.refuges.info/forum3/store
+chmod 777 www.refuges.info/forum3/files
+chmod 777 www.refuges.info/forum3/config.php
+chmod 777 www.refuges.info/forum3/images/avatars/upload
+chmod 777 www.refuges.info/forum3/images/avatars/gallery
+chmod 777 www.refuges.info/forum3/images/ranks
+chmod 777 www.refuges.info/forum3/images/smilies
 Install : lancer /forum
 français ==> CHANGE
 phpbb3_
@@ -56,19 +65,19 @@ CONVERTIR
 OPTIONS -> convertir
 phpbb_
 ../forum2
-passer tous les moderateurs par défaut
+Lancer : /forum/ext/RefugesInfo/couplage/api.php?init
 
 rename /forum => /forum3
 cd www.refuges.info
 git checkout .
 git pull
 
+Enlever blocage htaccess
+
 Voir les paramètres phpbb de LISMOI.md
 Affichage date = 18:00
 Purger les cookies & sessions
-Lancer : /forum/ext/RefugesInfo/couplage/api.php?init
 
-Retirer de GIT la partie init du listener
 GIT : Mettre à jour structure.sql avec les tables phpbb3_
 
 
