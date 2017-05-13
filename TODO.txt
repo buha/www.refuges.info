@@ -13,6 +13,8 @@ Dom92 2714
 *************************
 Fork dev-dom : Commits on Mar 28, 2017
 
+//chmod 777 www.refuges.info/photos_points
+
 chmod 777 www.refuges.info/forum/cache
 chmod 777 www.refuges.info/forum/store
 chmod 777 www.refuges.info/forum/files
@@ -21,6 +23,7 @@ chmod 777 www.refuges.info/forum/images/avatars/upload
 chmod 777 www.refuges.info/forum/images/avatars/gallery
 chmod 777 www.refuges.info/forum/images/ranks
 chmod 777 www.refuges.info/forum/images/smilies
+chmod 777 www.refuges.info/forum/photos-points
 
 *************************
 MIGRATION
@@ -80,15 +83,21 @@ Si debug
 
 Renommer /forum/install -> install-
 Supprimer les cokies du forum
-Se connecter admin
+Se connecter Dominique
 Voir les paramètres phpbb de LISMOI.md
 Purger les cookies & sessions
 Lancer : /forum/ext/RefugesInfo/couplage/api.php?init
+
+Voir avatars
+Voir photos-points
 
 rename /forum => /forum3
 cd www.refuges.info
 git checkout .
 git pull
+Refaire les chmod...
+Move /forum3/images/avatars/upload/* => /forum/images/avatars/upload
+Move /forum3/photos-points/* => /forum/photos-points
 
 Enlever blocage htaccess
 
