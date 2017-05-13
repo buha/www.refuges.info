@@ -38,15 +38,6 @@ GITHUP
 	
 Save files WRI
 Dezip & transfert tout PhpBB32 => /forum3
---- /forum3/includes/functions_convert.php
-//		$convert->p_master->error(sprintf($user->lang['COULD_NOT_COPY'], $src_path, $phpbb_root_path . $trg_path), __LINE__, __FILE__, !$die_on_failure);
-
-Bloquer WRI (.htaccess # mon IP)
-Save files (delta taille #)
-Save SQL
-Renommer forum => forum2
-Renommer forum3 => forum
-Récupérer forum2/photo_points => forum/photo_points
 chmod 777 www.refuges.info/forum3/cache
 chmod 777 www.refuges.info/forum3/store
 chmod 777 www.refuges.info/forum3/files
@@ -55,16 +46,43 @@ chmod 777 www.refuges.info/forum3/images/avatars/upload
 chmod 777 www.refuges.info/forum3/images/avatars/gallery
 chmod 777 www.refuges.info/forum3/images/ranks
 chmod 777 www.refuges.info/forum3/images/smilies
+--- /forum3/includes/functions_convert.php
+//		$convert->p_master->error(sprintf($user->lang['COULD_NOT_COPY'], $src_path, $phpbb_root_path . $trg_path), __LINE__, __FILE__, !$die_on_failure);
+
+Bloquer WRI (.htaccess # mon IP)
+Save files (delta taille #)
+Save SQL
+Renommer forum => forum2
+Renommer forum3 => forum
+Transférer forum2/photo_points => forum/photo_points
+
 Install : lancer /forum
-français ==> CHANGE
-phpbb3_
-existe-pas@refuges.info
+	français ==> CHANGE
+	admin -> Idem refuges
+	existe-pas@refuges.info
+	-> Voir privé
+	phpbb3_
 
 lancer /forum/install
-CONVERTIR
-OPTIONS -> convertir
-phpbb_
-../forum2
+	CONVERTIR
+	OPTIONS -> convertir
+	phpbb_
+	../forum2
+
+Si debug
+	Remplacer dans /forum/config.php
+	@define('PHPBB_INSTALLED', true);
+	// @define('PHPBB_DISPLAY_LOAD_TIME', true);
+	//@define('PHPBB_ENVIRONMENT', 'production');
+	@define('DEBUG_CONTAINER', true);
+	error_reporting(E_ALL);
+	ini_set('display_errors', 'on');
+
+Renommer /forum/install -> install-
+Supprimer les cokies du forum
+Se connecter admin
+Voir les paramètres phpbb de LISMOI.md
+Purger les cookies & sessions
 Lancer : /forum/ext/RefugesInfo/couplage/api.php?init
 
 rename /forum => /forum3
@@ -74,9 +92,7 @@ git pull
 
 Enlever blocage htaccess
 
-Voir les paramètres phpbb de LISMOI.md
 Affichage date = 18:00
-Purger les cookies & sessions
 
 GIT : Mettre à jour structure.sql avec les tables phpbb3_
 

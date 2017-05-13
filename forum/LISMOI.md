@@ -34,11 +34,13 @@ PARAMETRES D'INSTALLATION
 
 PARAMETRES DE CONFIGURATION
 ===========================
-* Créer l’index de recherche pour « phpBB Native Fulltext » depuis la page Index de recherche.
+* GENERAL / Décocher rapport statistiques + VigLink / Envoyer
+* GENERAL / Créer l’index de recherche pour « phpBB Native Fulltext » depuis la page Index de recherche.
 * GÉNÉRAL / Paramètres des fichiers joints / Quota total de fichiers joints : 0
 * GÉNÉRAL / Paramètres des fichiers joints / Taille maximale du fichier : 10 Mo
-* GÉNÉRAL / Régler paramètres d'enregistrement : Mettre une question de confirmation
+* GÉNÉRAL / Paramètres de la confirmation visuelle / Plugins installés : / Q&A
+* GÉNÉRAL / Paramètres de la confirmation visuelle / Configurer les plugins : Configurer
 * GÉNÉRAL / Paramètres de cookie / Nom du cookie = phpbb3_wri
-* GÉNÉRAL / Paramètres de sécurité / Validation de session IP = Aucune
 * GÉNÉRAL / Paramètres de charge : NON anniversaires / liste moderateurs
 * PERSONNALISER : activer Couplage "refuges.info"
+* SYSTEME / Paneau de l'utilisateur / Amis et ignorés / Désactiver
