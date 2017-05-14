@@ -410,7 +410,7 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 }
 
 /*=========PUBLICITE==========*/
-@media screen and (max-width: 940px), screen and (max-height: 550px) {
+@media screen and (max-width: 940px), screen and (max-device-height: 550px) {
   .publicite {
     display: none;
   }
@@ -422,9 +422,7 @@ A.infobulle:hover SPAN { /* qd on passe dessus, ca affiche */
 	position: relative;
 	z-index: 40000;
 	font-size: 13.33px;;
-	font-family:
-Arial
-;
+	font-family: Arial;
 }
 #entete > DIV { /* Définit le bloc à positionner à droite */
 	float: right;
@@ -512,7 +510,7 @@ Arial
 
 /* ==========MENU POUR ECRANS ========== */
 /* Paramétrage commun aux deux menus en mode ecran large */
-@media screen and (min-width: 641px) and (min-height: 361px) {
+@media screen and (min-width: 641px) and (min-device-height: 361px) {
   /* On inhibe les affichages non souhaités */
   .menu > A,
   .menu SPAN,
@@ -605,7 +603,7 @@ Arial
 /* ==========MENU POUR MOBILES ========== */
 /* Menu simplifié pour petits écrans */
  
-@media screen and (max-width: 640px), screen and (max-height: 360px) {
+@media screen and (max-width: 640px), screen and (max-device-height: 360px) {
   /* On inhibe les affichages non souhaités */
   .screen-only,
   #entete,
@@ -815,13 +813,13 @@ Arial
   margin-bottom: 5px;
 }
 /* Menu deplié */
-@media screen and (min-width: 641px) and (min-height: 361px) {
+@media screen and (min-width: 641px) and (min-device-height: 361px) {
   #carte-nav {
     max-height: calc(100% - 126px);
   }
 }
 /* Carte NAV présentation mobile horizontale */
-@media screen and (min-aspect-ratio: 1/1) and (max-height: 360px) and (min-width: 365px) {
+@media screen and (min-aspect-ratio: 1/1) and (min-width: 365px) and (max-device-height: 360px) {
   #carte-nav {
     float: right;
     width: 67%;
