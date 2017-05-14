@@ -46,6 +46,9 @@ foreach ($menus AS $id) {?>
 	<div id="<?=$id?>" class="menu">
 		<a href="<?=$config['sous_dossier_installation']?>" title="Retour à l'accueil">Refuges.info</a>
 		<span onclick="flip(this.parentNode,'deroule')">Menu</span>
+		<?if (!$_SESSION['login_utilisateur']) {?>
+			<a href="<?=$config['lien_forum']?>ucp.php?mode=login" style="float:right">Connexion</a>
+		<?}?>
 		<ul>
 			<li>
 				<a href="<?=$config['sous_dossier_installation']?>">Accueil</a>
@@ -161,8 +164,8 @@ foreach ($menus AS $id) {?>
 <?if (!$_SESSION['login_utilisateur']) {?>
 <div><b>
 	<p style="color:red; text-align:center; margin: 0">Nous avons procédé à une évolution conséquente du logiciel du forum.</p>
-	<p style="color:red; text-align:center; margin: 0">Si votre mot de passe ne fonctionne plus, récupérez le <a href="/forum/ucp.php?mode=sendpassword">ICI</a>.</p>
-	<p style="color:red; text-align:center; margin: 0">Si vous êtes bloqués, envoyez moi un mail <a href="mailto:refuges@la-foret.info?subject=Compte%20bloqué">à cette adresse</a>.</p>
+	<p style="color:red; text-align:center; margin: 0">Si votre mot de passe ne fonctionne plus, récupérez le <a href="/forum/ucp.php?mode=sendpassword">ICI.</a></p>
+	<p style="color:red; text-align:center; margin: 0">Si vous êtes bloqués, envoyez moi un mail <a href="mailto:refuges@la-foret.info?subject=Compte%20refuges.info%20bloqué&body=Bonjour%0a%0aJe%20n&#39;arrive%20pas%20&agrave;%20me%20connecter%20ou%20&agrave;%20réinitialiser%20mon%20mot%20de%20passe%0aNom%20du%20compte:%20XXXXXXXXX">à cette adresse.</a></p>
 	<hr/>
 </b></div>
 <?}?>

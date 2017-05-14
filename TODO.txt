@@ -29,12 +29,10 @@ chmod 777 www.refuges.info/forum/photos-points
 MIGRATION
 *************************
 GITHUP
-	Tortoise delete /forum
-	copy zip dri sauf leaflet
-	Tortoise revert unitairement fichiers et dossiers avec une croix rouge
-	copy zip dri sauf leaflet
-	copy phpbb32fr sauf install & docs
-	Ajouter les smiles à forum/smilies
+	Tortoise delete /forum /gestion
+	commit
+	Delete all sauf /leaflet
+	copy zip dri sauf /leaflet & TODO
 	Tortoise add *
 	Retirer la partie init du listener
 	commit
