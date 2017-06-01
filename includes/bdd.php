@@ -25,13 +25,13 @@ class PDO_wri extends PDO
     }
     function __construct()
     {
-        global $config;
+        global $wri;
         try
         {
             parent::__construct(
-				"pgsql:host=".$config['serveur_pgsql'] . ";dbname=" . $config['base_pgsql'] ,
-				$config['utilisateur_pgsql'],
-				$config['mot_de_passe_pgsql']);
+				"pgsql:host=".$wri['serveur_pgsql'] . ";dbname=" . $wri['base_pgsql'] ,
+				$wri['utilisateur_pgsql'],
+				$wri['mot_de_passe_pgsql']);
             $this->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
         }
 	catch(Exception $e) 

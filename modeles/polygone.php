@@ -108,7 +108,7 @@ function infos_polygones($conditions)
           SELECT id_polygone
           FROM polygones AS zones
           WHERE
-            zones.id_polygone_type=".$config['id_zone']."
+            zones.id_polygone_type=".$wri['id_zone']."
             AND
             ST_INTERSECTS(polygones.geom, zones.geom) LIMIT 1
         ) AS id_zone ,
@@ -116,7 +116,7 @@ function infos_polygones($conditions)
           SELECT nom_polygone
           FROM polygones AS zones
           WHERE
-            zones.id_polygone_type=".$config['id_zone']."
+            zones.id_polygone_type=".$wri['id_zone']."
             AND
             ST_INTERSECTS(polygones.geom, zones.geom) LIMIT 1
         ) AS nom_zone
@@ -203,9 +203,9 @@ function lien_polygone($polygone,$local=True)
   if ($local)
     $url_complete="";
   else
-    $url_complete="$schema://".$config['nom_hote'];
+    $url_complete="$schema://".$wri['nom_hote'];
 
-return $url_complete.$config['sous_dossier_installation']."nav/$polygone->id_polygone/".replace_url($type_polygone)."/".replace_url($polygone->nom_polygone)."/";
+return $url_complete.$wri['sous_dossier_installation']."nav/$polygone->id_polygone/".replace_url($type_polygone)."/".replace_url($polygone->nom_polygone)."/";
 }
 
 /********************************************

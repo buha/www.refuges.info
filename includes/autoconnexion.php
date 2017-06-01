@@ -58,10 +58,10 @@ elle est donc lancé sur chaque page qui pourrait nécessiter d'être connecté
 ***/
 function auto_login_phpbb_users()
 {
-  global $pdo, $user_data, $config;
+  global $pdo, $user_data, $wri;
   vider_session();
 
-  $user_id = @$_COOKIE[$config['cookie_prefix'].'_u'];
+  $user_id = @$_COOKIE[$wri['cookie_prefix'].'_u'];
   if ($user_id <= 1) // Pas connecté ou anonymous
     return FALSE;
 
@@ -70,9 +70,9 @@ function auto_login_phpbb_users()
       JOIN phpbb3_sessions ON (session_user_id = user_id)
       LEFT JOIN phpbb3_sessions_keys USING (user_id)
       JOIN phpbb3_groups USING (group_id)
-    WHERE user_id = ".$_COOKIE[$config['cookie_prefix'].'_u']."
-      AND (session_id = '".$_COOKIE[$config['cookie_prefix'].'_sid']."'
-           OR key_id = '".md5($_COOKIE[$config['cookie_prefix'].'_k'])."')";
+    WHERE user_id = ".$_COOKIE[$wri['cookie_prefix'].'_u']."
+      AND (session_id = '".$_COOKIE[$wri['cookie_prefix'].'_sid']."'
+           OR key_id = '".md5($_COOKIE[$wri['cookie_prefix'].'_k'])."')";
   $res = $pdo->query($sql);
   if (!$res) {
     echo $pdo->errorInfo()[2];
@@ -128,10 +128,10 @@ function info_demande_correction ()
 // FIXME : pas mieux que info_demande_correction tout ça est lié au bandeau et devrait filer dans un autre fichier
 function remplissage_zones_bandeau()
 {
-    global $config;
+    global $wri;
     // Ajoute les liens vers les autres zones
     $conditions = new stdClass;
-    $conditions->ids_polygone_type=$config['id_zone'];
+    $conditions->ids_polygone_type=$wri['id_zone'];
     $zones=infos_polygones($conditions);
     if ($zones)
         foreach ($zones as $zone)

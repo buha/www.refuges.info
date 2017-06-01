@@ -39,7 +39,7 @@ function modification_ajout_point_gps($point_gps)
   }
   // si aucune précision gps, on les suppose approximatives
   if ($point_gps->id_type_precision_gps=="")
-    $point_gps->id_type_precision_gps=$config['id_coordonees_gps_approximative'];
+    $point_gps->id_type_precision_gps=$wri['id_coordonees_gps_approximative'];
 
     // si aucune altitude, on la suppose à 0
     if (!isset($point_gps->altitude))

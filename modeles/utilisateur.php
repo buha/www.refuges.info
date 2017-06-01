@@ -37,7 +37,7 @@ function lien_utilisateur($utilisateur,$local=True)
   if ($local)
     $url_complete="";
   else
-    $url_complete="$schema://".$config['nom_hote'];
-  return $url_complete.$config['fiche_utilisateur'].$utilisateur->user_id;
+    $url_complete="$schema://".$wri['nom_hote'];
+  return $url_complete.$wri['fiche_utilisateur'].$utilisateur->user_id;
 }
 ?>

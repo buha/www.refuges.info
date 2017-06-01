@@ -20,9 +20,9 @@ require_once ("bdd.php");
 require_once ("meta_donnee.php");
 require_once ("polygone.php");
 
-$vue->css           [] = $config['url_chemin_leaflet'].'leaflet.css?'.filemtime($config['chemin_leaflet'].'leaflet.css');
-$vue->java_lib_foot [] = $config['url_chemin_leaflet'].'leaflet.js?' .filemtime($config['chemin_leaflet'].'leaflet.js');
-$vue->java_lib_foot [] = $config['sous_dossier_installation'].'vues/wiki.js';
+$vue->css           [] = $wri['url_chemin_leaflet'].'leaflet.css?'.filemtime($wri['chemin_leaflet'].'leaflet.css');
+$vue->java_lib_foot [] = $wri['url_chemin_leaflet'].'leaflet.js?' .filemtime($wri['chemin_leaflet'].'leaflet.js');
+$vue->java_lib_foot [] = $wri['sous_dossier_installation'].'vues/wiki.js';
 
 // Récupère les infos de type "méta informations" sur les points et les polygones
 $vue->infos_base = infos_base ();
