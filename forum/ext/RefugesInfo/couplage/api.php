@@ -1,5 +1,5 @@
 <?php
-// Interface API PhpBB 3.1+ pour refuges.info
+// Ce fichier est appelé en requette AJAX par refuges.info pour modifier les données du forum
 
 define('IN_PHPBB', true);
 $phpbb_root_path = '../../../';
@@ -13,26 +13,6 @@ include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
 $user->session_begin();
 $auth->acl($user->data);
 $user->setup();
-
-					// A ENLEVER APRES MIGRATION ***************************
-					//Transfert des liens entre fiche et topic forum
-					if (isset ($_GET['init'])) {
-						$sql = "SELECT p.id_point, t.topic_id
-								FROM points AS p
-								JOIN phpbb_topics AS t ON t.topic_id_point = p.id_point";
-						$result = $db->sql_query($sql);
-
-						while ($row = $db->sql_fetchrow($result))
-						{
-							$sql = "UPDATE points SET topic_id = {$row['topic_id']} WHERE id_point = {$row['id_point']}";
-					/*DCMM*/echo"<pre style='background-color:white;color:black;font-size:14px;'> = ".var_export($row,true).'</pre>';
-					/*DCMM*/echo"<pre style='background-color:white;color:black;font-size:14px;'> = ".var_export($sql,true).'</pre>';
-							$db->sql_query($sql);
-						}
-						$db->sql_freeresult($result);
-						exit;
-					}
-					// FIN A ENLEVER APRES MIGRATION ***************************
 
 // L'accés à cet API n'est autorisé que depuis le même serveur
 // Aucune autre autorisation n'est vérifiée
@@ -152,3 +132,5 @@ submit_post (
 	$poll, $data
 );
 exit (json_encode ($data));
+
+?>

@@ -1,5 +1,5 @@
-RefugesInfo.couplage
-====================
+PhpBB V3.2+ & extension RefugesInfo.couplage
+============================================
 
 Adaptation de PhpBB V3.2+ à refuges.info
 
@@ -40,6 +40,7 @@ PARAMETRES DE CONFIGURATION
 * GÉNÉRAL / Paramètres des fichiers joints / Taille maximale du fichier : 10 Mo
 * GÉNÉRAL / Paramètres de la confirmation visuelle / Plugins installés : / Q&A
 * GÉNÉRAL / Paramètres de la confirmation visuelle / Configurer les plugins : Configurer
+* GÉNÉRAL / Paramètres de la page de contact / Activer la page de contact : Désactivé
 * GÉNÉRAL / Paramètres de cookie / Nom du cookie = phpbb3_wri
 * GÉNÉRAL / Paramètres de charge : NON anniversaires / liste moderateurs
 * PERSONNALISER : activer Couplage "refuges.info"
