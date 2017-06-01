@@ -23,7 +23,7 @@ le reste sera présuposé si non présent
 ********************************************************/
 function modification_ajout_point_gps($point_gps)
 {
-  global $config,$pdo;
+  global $wri,$pdo;
   if (!$point_gps->geojson) { // Plus besoin de faire ces vérifs avec le nouveau format geojson
     // désolé, les coordonnées ne peuvent être vide ou non numérique
     $erreur_coordonnee="du point doit être au format degré décimaux, par exemple : 45.789, la valeur reçue est :";

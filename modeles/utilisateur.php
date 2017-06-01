@@ -28,7 +28,7 @@ si local est False un lien absolu sera généré
 **/
 function lien_utilisateur($utilisateur,$local=True)
 {
-  global $config;
+  global $wri;
   if (isset($_SERVER['HTTPS']))
       $schema="https";
   else

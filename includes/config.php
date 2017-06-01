@@ -56,6 +56,11 @@ $wri['url_chemin_leaflet']=$wri['sous_dossier_installation'].'leaflet/';
 // En version opérationnelle, deviendra www.refuges.info, mais permet aux zones de dev sur d'autres domaine d'être plus dynamique
 $wri['nom_hote']=$_SERVER['HTTP_HOST'];
 
+// Permet d'ajouter le chemin des includes et des modeles au path de recherche, ainsi, il suffit d'inclure le config.php
+// afin de pouvoir faire des require_once('modele.php');
+// ATTENTION ! on pourait être tenté de faire de même pour les controlleurs et les vues, mais les conflits en nom identiques seraient trop important
+ini_set('include_path',ini_get('include_path').PATH_SEPARATOR.$wri['chemin_modeles'].PATH_SEPARATOR.$wri['chemin_routes'].PATH_SEPARATOR.__DIR__);
+
 /********** photos / images points ************/
 $wri['largeur_max_photo']=700;
 $wri['hauteur_max_photo']=600;

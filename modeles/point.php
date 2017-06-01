@@ -90,7 +90,7 @@ Je commence, elle retourne un texte d'erreur avec $objet->erreur=True et $objet-
 
 function infos_points($conditions)
 {
-    global $config,$pdo;
+    global $wri,$pdo;
     $champs_en_plus="";
     $conditions_sql="";
     $tables_en_plus="";
@@ -335,7 +335,7 @@ Mais postgis étant super rapide, je pense que l'on peut peut fusioner
 function infos_point($id_point,$meme_si_censure=False)
 {
   // inutile de faire tout deux fois, j'utilise la fonction plus bas pour n'en récupérer qu'un
-  global $config,$pdo;
+  global $wri,$pdo;
   $conditions = new stdClass();
   $conditions->ids_points=$id_point;
   if (empty($id_point))
@@ -388,7 +388,7 @@ $point->polygones[$x]->nom_polygone
 *******************************************************************************************************************************/
 function lien_point($point,$lien_local=false)
 {
-  global $config;
+  global $wri;
   if (isset($_SERVER['HTTPS']))
       $schema="https";
   else
@@ -424,7 +424,7 @@ function lien_point_lent($id_point)
 // adapté
 function param_cartes ($point)
 {
-    global $config;
+    global $wri;
     // Pour chaque polygones auquel appartient le point, on cherche voir s'il existe un fournisseur de fond de carte "recommandé"
     // Si plusieurs sont possible, le premier trouvé est renvoyé
     if ($point->polygones)
@@ -442,7 +442,7 @@ function param_cartes ($point)
 // le texte en utilisant la table point_type, donc en dur dans le code
 function texte_non_ouverte($point)
 {
-    global $config;
+    global $wri;
   //Si elle/il est fermé, on l'indique directement en haut en rouge
   switch ($point->conditions_utilisation)
   {
@@ -467,7 +467,7 @@ function texte_non_ouverte($point)
 // on affiche les commentaires+photos en plus
 function infos_point_forum ($point)
 {
-  global $pdo,$config;
+  global $pdo,$wri;
   $q="SELECT *
       FROM phpbb3_topics AS t
         JOIN phpbb3_posts AS p ON p.post_id = t.topic_last_post_id
@@ -509,7 +509,7 @@ Si une erreur grave survient, rien n'est fait et un retour par la fonction erreu
 
 function modification_ajout_point($point)
 {
-  global $config,$pdo;
+  global $wri,$pdo;
   // désolé, le nom du point ne peut être vide
   if ( trim($point->nom) =="" )
     return erreur("Le nom ne peut être vide");
@@ -611,7 +611,7 @@ function modification_ajout_point($point)
 *******************************************************/
 function suppression_point($point)
 {
-  global $pdo, $config;
+  global $pdo,$wri;
   $conditions = new stdClass;
   // On vérifie que le $point passé existe bien dans notre base, qu'il a donc un id et que cela correspond bien à un seul point
   // toujours présent, sinon, on ne tente rien
@@ -666,7 +666,7 @@ de style permettant de choisir l'icone selon les critères d'un point
 *******************************************************/
 function choix_icone($point)
 {
-    global $config;
+    global $wri;
     // par défaut, et sauf modification ultérieure, le nom de l'icone à choisir porte, par défaut, le nom du type de point (dans une version convertie sans accents,guillemet ou espace)
     $nom_icone=replace_url($point->nom_type);
 
@@ -697,7 +697,7 @@ function choix_icone($point)
 }
 function chemin_icone($nom_icone,$absolu=true)
 {
-    global $config;
+    global $wri;
     if (isset($_SERVER['HTTPS']))
         $schema="https";
     else

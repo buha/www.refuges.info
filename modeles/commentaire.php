@@ -66,7 +66,7 @@ blabla
 
 function infos_commentaires ($conditions)
 {
-  global $pdo,$config;
+  global $pdo,$wri;
   $conditions_sql="";
 
   // conditions de limite
@@ -222,7 +222,7 @@ Possibilité d'ajouter une photo en provenance d'un autre site (pour éviter de 
 ************/
 function modification_ajout_commentaire($commentaire)
 {
-    global $config,$pdo;
+    global $wri,$pdo;
     $retour = new stdClass;
     $photo_valide=False;
 
@@ -370,7 +370,7 @@ function bloquage_internaute($code="")
 
 function redimensionnement_photo($chemin_photo, $type = 'photo')
 {
-  global $config;
+  global $wri;
     $image=imagecreatefromjpeg($chemin_photo);//on chope le jpeg
 
     // Detect orientation
@@ -411,7 +411,7 @@ du commentaire, ça l'est.
 *******************************************************/
 function suppression_photos($commentaire,$force=False)
 {
-  global $config;
+  global $wri;
   if (isset($commentaire->photo) or $commentaire->photo_existe)
   {
     $commentaire->photo_existe=0;
@@ -449,7 +449,7 @@ une ancienne version du commentaire d'id X... disons pas une priorité ;-) sly -
 *******************************************************/
 function suppression_commentaire($commentaire)
 {
-  global $config,$pdo;
+  global $wri,$pdo;
 
   /****** On supprime les photo (de différentes taille) si elle existe ******/
   if ($commentaire->photo_existe)
@@ -471,7 +471,7 @@ function suppression_commentaire($commentaire)
 /*******************************************************/
 function transfert_forum($commentaire)
 {
-  global $config;
+  global $wri;
   
   if ($commentaire->photo_existe)
   {

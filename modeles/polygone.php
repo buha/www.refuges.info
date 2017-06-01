@@ -53,7 +53,7 @@ Array
 ******************************************************************/
 function infos_polygones($conditions)
 {
-    global $pdo,$config;
+    global $pdo,$wri;
     $conditions_sql="";
     $champs_en_plus="";
     $table_en_plus="";
@@ -190,7 +190,7 @@ si local est False un lien absolu sera généré
 *********************************************/
 function lien_polygone($polygone,$local=True)
 {
-  global $config;
+  global $wri;
   if (isset($_SERVER['HTTPS']))
       $schema="https";
   else

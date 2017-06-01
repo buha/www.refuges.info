@@ -1,3 +1,7 @@
+*************************
+includes/config.php -> config.php
+includes/conf_privee.php : $config -> $wri
+*************************
 Recherche en haut a droite de recherche par le nom, sur ma tablette, je clique dans le rectangle et il n'est pas possible d'y écrire quelque chose.
 L'interprétation du "nouveau bbcode" plus riche semble moins bien passer coté site pour ce qui est des quotes
 	https://dom.refuges.info/forum/viewtopic.php?f=4&t=6335&p=19629

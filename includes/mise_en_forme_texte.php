@@ -46,7 +46,7 @@ return strtr($str, $normalizeChars);
 
 function protege($texte)
 {
-    global $config;
+    global $wri;
     return htmlspecialchars($texte,ENT_QUOTES,$wri['encodage_des_contenu_web']);
 }
 /**********************************************************************************************
@@ -60,7 +60,7 @@ retourne : le code en HTML
 **********************************************************************************************/
 function bbcode2html($texte_avec_bbcode,$autoriser_html=False,$autoriser_balise_img=True,$crypter_texte_sensible=True)
 {
-global $config;
+global $wri;
 /** étape 1
 nouvelle fonction qui permet de faire des liens internes entre les fiches :
 [->457] créer un lien qui pointe vers la fiche du point d'id 457 et donne le nom du lien égal au nom du
