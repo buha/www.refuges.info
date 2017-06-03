@@ -3,7 +3,7 @@
 // Do not change anything in this file!
 
 // Récupère les données locales
-require(str_replace(basename(__DIR__),'',__DIR__)."/includes/config_privee.php");
+require(__DIR__.'/../config_privee.php');
 
 $dbms = 'phpbb\\db\\driver\\postgres';
 $dbhost = $wri['serveur_pgsql'];
