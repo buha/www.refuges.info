@@ -4,7 +4,8 @@ On trouve les fonctions permettant de faire des modifications dans le forum
 ( création & suppresion de topic, modification du titre, création de post pour transfert depuis la fiche )
 
 /**********************************************************************************************/
-// Rècupère l'environnement du forum
+// Récupère l'environnement du forum
+// Cette séquence ne peut pas être dans une function
 if (!defined('IN_PHPBB')) {
 	define('IN_PHPBB', true);
 	$phpbb_root_path = $wri['rep_forum'];
@@ -14,9 +15,12 @@ if (!defined('IN_PHPBB')) {
 	include($phpbb_root_path . 'includes/message_parser.' . $phpEx);
 	include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
 
-	$request->enable_super_globals(); // Pour avoir le droit aux variables globales $_SERVER, ...
+	$request->enable_super_globals(); // Pour avoir accés aux variables globales $_SERVER, ...
 	$user->session_begin();
 	$auth->acl($user->data);
+
+	// On restitue le contexte WRI qui a été écrasé
+	include ("config.php");
 }
 
 // Fonction générique qui permet - entre autre - de créer un topic, modifier le titre et ajouter un post

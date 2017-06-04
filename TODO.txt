@@ -16,20 +16,26 @@ Install
 
 *************************
 J'ai rendu compatibles les environnements WRI et PhpBB
-- supression de l'autoload WRI dont je n'ai pas trouvé à quoi il servait. Si je n'ai pas vu quelque chose, merci de me le signaler.
-- remplacement de la variable $config de WRI par $wri pour ne pas interférer avec la variable de PhpBB
-- descend d'un cran /includes/config_privee.php qui rejoint la racine. Ceci n'est pas absolument nécéssaire mais ça fait un moment que j'en ai envie parce que :
+- Le gros avantage est que autoconnexion.php gère la connexion aux fiches en appelant la fonction d'autorisation du forum. Donc plus de différences !
+et le code devient très simple 
+- Il n'y a plus d'appels AJAX intra serveur entre les fiches et le forum.
+Conditions nécéssaires:
+- Supression de l'autoload WRI dont je n'ai pas trouvé à quoi il servait. Si je n'ai pas vu quelque chose, merci de me le signaler.
+- Remplacement de la variable $config de WRI par $wri pour ne pas interférer avec la variable de PhpBB
+Autres modifs:
+- Les fonctions de modification du forum passent de /forum/ext/RefugesInfo/couplage/api.php dans un nouveau modèle /modeles/forum.php et sont appellées en sous-programme
+ccc...
+- Le passage du bandeau et du pied des templates WRI aux templates phpBB devient simple et sans appel externe
+ccc
+- On descend d'un cran /includes/config_privee.php qui rejoint la racine parce que :
+* ça me fait plaisir
 * c'est plus facile à trouver pour le modifier
 * l'autre fichier à renommer (le modèle .htaccess) est aussi à la racine
-* c'est un peu la tradition dans le ogiciel forum, ...
-* ça garde l'intégrité de /includes/... qui constitue les fichiers à include du soft WRI
-* /includes/config.php a /forum/config.php appellent tous 2 /config_privee.php, ce qui rend logique sa position dans un espace racine
-* ça permet de gérer la rupture d'interface ($config -> $wri) lors de l'upgrade
+* c'est un peu la tradition dans le logiciel forum, ...
+* ça préserve l'intégrité du répertoire /includes/... qui contient des fichiers sources
+* étant appelé à la fois de WRI (/includes/config.php) et de PhpBB (/forum/config.php), il est logique qu'il soit à la racine
+* ça permet de gérer la rupture d'interface ($config -> $wri) lors de l'upgrade puisque l'ancien pourra rester temporairement dans /includes
 Enfin, si ça fâche trop, on peut le remettre dans /includes
-- le contexte WRI ($pdo, autoconnexion, ...) est récupéré dans /forum/ext/RefugesInfo/couplage/event/listener.php pour expansion des templates bandeau et pied.
-- le contexte du forum est récupéré dans autoconnexion.php pour gérer la connexion aux fiches exactement avec les mêmes critères que ceux du forum
-- les fonctions de modification du forum sont mises dans un nouveau modèle /modeles/forum.php
-- il n'y a plus d'appels AJAX intra serveur entre les fiches et le forum.
 
 Pour avis, relecture et tests avant basculement
 

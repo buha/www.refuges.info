@@ -47,8 +47,10 @@ class listener implements EventSubscriberInterface
 
 	function page_footer () {
 		global $template, $request; // Contexte PhpBB
+		$request->enable_super_globals(); // Pour avoir accés aux variables globales $_SERVER, ...
+
 		global $wri, $pdo; // Contexte WRI
-		$request->enable_super_globals(); // Pour avoir le droit aux variables globales $_SERVER, ...
+		include (__DIR__.'/../../../../../includes/config.php');
 
 		// Calcule la date du fichier style pour la mettre en paramètre pour pouvoir l'uploader quand il évolue
 		$template->assign_var('STYLE_CSS_TIME', filemtime($wri['chemin_vues'].'style.css.php'));

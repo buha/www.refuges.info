@@ -5,11 +5,11 @@ Fichiers regroupant les fonctions sur les commentaires des points
 sly 23/11/2012
 **********************************************************************************************/
 
-require_once ("config.php");
+require_once ('config.php');
 require_once ('bdd.php');
 require_once ('gestion_erreur.php');
 require_once ('point.php');
-require_once ("mise_en_forme_texte.php");
+require_once ('mise_en_forme_texte.php');
 
 
 /**********************************************************************************************

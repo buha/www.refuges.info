@@ -11,23 +11,6 @@ toute bête ou des controlleurs n'ayant pas besoin de session par exemple
 *******************************************************************************/
 
 
-//DCMM TEST A METTRE AILLEURS
-if(0){/////////////////////////////
-define('IN_PHPBB', true);
-$phpbb_root_path = 'forum/';
-$phpEx = substr(strrchr(__FILE__, '.'), 1);
-include($phpbb_root_path . 'common.' . $phpEx);
-//include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
-// Start session management
-$user->session_begin();
-//$auth->acl($user->data);
-//$user->setup('viewforum');
-$request->enable_super_globals();
-}//////////////////////////////////////////////
-
-
-//*DCMM*/echo"<pre style='background-color:white;color:black;font-size:14px;'> = ".var_export($user->data,true).'</pre>';
-
 // quasi obligatoire pour tout le site
 require_once ('includes/config.php');
 
