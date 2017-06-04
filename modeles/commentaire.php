@@ -496,27 +496,18 @@ function transfert_forum($commentaire)
   while (strlen($auteur) < 3)  // La longueur minimum requise par PhpBB est de 3
     $auteur .= '_';
 
-  // On appelle l'API WRI du forum qui cree un post
-  $rep = file_get_contents(
-    $wri['url_api'],
-    false,
-    stream_context_create( ['http' => [
-      'method'  => 'POST',
-      'content' => http_build_query( [
-        'api' => 'transferer',
-        't' => $commentaire->topic_id,
-        's' => 'Transféré de la fiche',
-        'm' => $commentaire->texte,
-        'i' => $commentaire->id_createur_commentaire, // Si l'auteur était connecté, on garde l'ID
-        'u' => $auteur,
-        'd' => $commentaire->date,
-      ]),
-    ]])
-  );
-  $json = json_decode($rep);
-  if (!is_object ($json))
-    return erreur( "Erreur création post du forum<br/>$rep" );
+  // On appelle la fonction du forum qui cree un post
+  forum_submit_post ([
+    'action' => 'reply',
+    'topic_id' => $commentaire->topic_id,
+    'topic_title' => 'Transféré de la fiche',
+    'message' => $commentaire->texte,
+    'topic_poster' => $commentaire->id_createur_commentaire, // Si l'auteur était connecté, on garde l'ID
+    'username' => $auteur,
+    'post_time' => strtotime ($commentaire->date), // Recalcule suivant la timezone
+  ]);
 
+  // On s'occupe du commentaire
   $retour=suppression_commentaire($commentaire);
 
   if ($retour->erreur)

@@ -559,37 +559,27 @@ function modification_ajout_point($point)
             return erreur("Requête en erreur, impossible à executer",$query_finale);
 
         /********* Renommage du topic point dans le forum refuges *************/
-        // On appelle l'API WRI du forum qui renomme un topic
-        $rep = file_get_contents(
-          $wri['url_api'],
-          false,
-          stream_context_create( ['http' => [
-            'method'  => 'POST',
-            'content' => http_build_query( [
-              'api' => 'renommer',
-              't' => $point->topic_id,
-              's' => $point->nom,
-            ]),
-          ]])
-        );
-        $json = json_decode($rep);
-        if (!is_object ($json))
-          return erreur( "Erreur renommage forum point<br/>$rep" );
+        forum_submit_post ([
+            'action' => 'edit',
+            'topic_id' => $point->topic_id,
+            'topic_title' => $point->nom,
+        ]);
    }
    else  // INSERT
    {
     // On appelle la fonction du forum qui crée un topic dans le forum refuges
     $r = forum_submit_post ([
         'action' => 'post',
+		'forum_id' => $wri['forum_refuges'],
         'topic_title' => $point->nom,
     ]);
     if (!$r['topic_id'])
-      return erreur( "Erreur création forum point<br/>".var_export($r,true) );
+        return erreur( "Erreur création forum point<br/>".var_export($r,true) );
 
     $champs_sql['topic_id'] = $r['topic_id']; // On note le topic_id dans la table point pour faire le lien
     $query_finale=requete_modification_ou_ajout_generique('points',$champs_sql,'insert');
     if (!$pdo->exec($query_finale))
-      return erreur("Requête en erreur, impossible à executer",$query_finale);
+        return erreur("Requête en erreur, impossible à executer",$query_finale);
 
     $point->id_point = $pdo->lastInsertId();
   }
@@ -617,21 +607,8 @@ function suppression_point($point)
     foreach ($commentaires_a_supprimer as  $commentaire_a_supprimer)
       suppression_commentaire($commentaire_a_supprimer);
 
-  // On appelle l'API WRI du forum qui supprime un topic
-  $rep = file_get_contents(
-    $wri['url_api'],
-    false,
-    stream_context_create( ['http' => [
-      'method'  => 'POST',
-      'content' => http_build_query( [
-        'api' => 'supprimer',
-        't' => $point->topic_id,
-      ]),
-    ]])
-  );
-  $json = json_decode($rep);
-  if (!is_object ($json))
-    return erreur( "Erreur suppresion sujet du forum<br/>$rep" );
+  // On appelle la fonction du forum qui supprime un topic
+  forum_delete_topic ($point->topic_id);
 
   // suite à la modification dans la base sur les coordonnées GPS, on va supprimer aussi de la table :
   // point_gps si le point_gps n'est plus utilisé du tout
