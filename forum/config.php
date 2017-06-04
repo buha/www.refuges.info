@@ -3,6 +3,7 @@
 // Do not change anything in this file!
 
 // Récupère les données locales
+require(__DIR__.'/../includes/config.php');
 require(__DIR__.'/../config_privee.php');
 
 $dbms = 'phpbb\\db\\driver\\postgres';
@@ -16,9 +17,9 @@ $phpbb_adm_relative_path = 'adm/';
 $acm_type = 'phpbb\\cache\\driver\\file';
 
 @define('PHPBB_INSTALLED', true);
-// @define('PHPBB_DISPLAY_LOAD_TIME', true);
 
 if (!@$wri['debug'])
 	@define('PHPBB_ENVIRONMENT', 'production');
 
+// @define('PHPBB_DISPLAY_LOAD_TIME', true);
 // @define('DEBUG_CONTAINER', true);

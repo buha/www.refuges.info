@@ -32,6 +32,7 @@ $wri['url_chemin_icones']=$wri['sous_dossier_installation']."images/icones/";
 $wri['chemin_icones']=$wri['racine_projet']."images/icones/";
 
 //jmb 04/07 on continue avec des rep de moderation
+$wri['rep_forum']=$wri['racine_projet']."forum/";
 $wri['rep_moder_photos_backup']=$wri['racine_projet']."gestion/sauvegardes-photos/";
 $wri['rep_forum_photos']=$wri['racine_projet']."forum/photos-points/";
 $wri['rep_web_forum_photos']=$wri['sous_dossier_installation']."forum/photos-points/";
@@ -200,7 +201,7 @@ $wri['debug']=false;
 // un autre comportement
 // Le problème c'est que le tableau ci-après re-fait appel à la variable $wri['carte_base'] que j'aimerais pouvoir surcharger dans 
 // config_privee.php, c'est donc un peu merdique comme méthode, mais j'ai pas trouvé mieux
-require_once("config_privee.php");
+require_once($wri['racine_projet']."config_privee.php");
 
 // *** NON NON : *** N'ajoutez rien après ce require_once("config_privee.php"); sauf si vous savez pourquoi, car ajouter après empêche de "surdéfinir" certaines variables du fichier privé à chaque instance ci avant
 // mettez par contre tout ce que vous voulez avant le require_once("config_privee.php");
@@ -209,7 +210,6 @@ require_once("config_privee.php");
 $wri['chemin_leaflet'].=$wri['debug']?'src/':'dist/';
 $wri['url_chemin_leaflet'].=$wri['debug']?'src/':'dist/';
 
-//Note : le forum n'appelle plus ce fichier !
 if ($wri['debug'])
 {
   ini_set('error_reporting', E_ALL ^ E_NOTICE);

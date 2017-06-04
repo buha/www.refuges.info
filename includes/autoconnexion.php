@@ -30,11 +30,22 @@ l'idéal serait sûrement de vider la session au niveau du forum
 15/02/13 jmb : PDO migration , petite etoile mise en commentaire ? g pas compris
 *********************************************************************************************/
 
+// Contexte WRI
 require_once ("config.php");
 require_once ("bdd.php");
 require_once ("gestion_erreur.php");
 require_once ("commentaire.php");
 
+// Contexte PhpBB
+if (!defined('IN_PHPBB')) {
+  define('IN_PHPBB', true);
+  $phpbb_root_path = $wri['rep_forum'];
+  $phpEx = substr(strrchr(__FILE__, '.'), 1);
+  include($phpbb_root_path . 'common.' . $phpEx);
+  $request->enable_super_globals(); // Pour avoir le droit aux variables globales $_SERVER, ...
+  $user->session_begin();
+  $auth->acl($user->data);
+}
 
 /***
     fonction de reconnaissance d'un utilisateur déjà connecté sur le forum, on lui épargne le double login
@@ -58,57 +69,15 @@ elle est donc lancé sur chaque page qui pourrait nécessiter d'être connecté
 ***/
 function auto_login_phpbb_users()
 {
-  global $pdo, $user_data, $wri;
+  global $user, $auth; // Contexte PhpBB
   vider_session();
 
-  $user_id = @$_COOKIE[$wri['cookie_prefix'].'_u'];
-  if ($user_id <= 1) // Pas connecté ou anonymous
-    return FALSE;
-
-  $sql = "SELECT username, group_name, user_form_salt
-    FROM phpbb3_users
-      JOIN phpbb3_sessions ON (session_user_id = user_id)
-      LEFT JOIN phpbb3_sessions_keys USING (user_id)
-      JOIN phpbb3_groups USING (group_id)
-    WHERE user_id = ".$_COOKIE[$wri['cookie_prefix'].'_u']."
-      AND (session_id = '".$_COOKIE[$wri['cookie_prefix'].'_sid']."'
-           OR key_id = '".md5($_COOKIE[$wri['cookie_prefix'].'_k'])."')";
-  $res = $pdo->query($sql);
-  if (!$res) {
-    echo $pdo->errorInfo()[2];
-    return FALSE;
-  }
-  $user_data = $res->fetch();
-  if (!$user_data) {
-    echo $pdo->errorInfo()[2];
-    return FALSE;
-  }
-
   /* on rempli notre session */
-  $_SESSION['id_utilisateur']=$user_id;
-  $_SESSION['login_utilisateur']=$user_data->username;
-
-  switch ($user_data->group_name)
-  {
-    // 3 = admin
-    case 'ADMINISTRATORS':
-      $_SESSION['niveau_moderation']=3;
-      return TRUE;
-
-    // 2 = programmeur, ça n'existe plus pour l'instant
-
-    // 1 = modérateur
-    case 'Modérateurs':
-    case 'GLOBAL_MODERATORS':
-      $_SESSION['niveau_moderation']=1;
-      return TRUE;
-
-    // S'il n'y a un autre niveau (Bot, ...) on, préfère dire qu'on n'est pas connecté
-    // case 'REGISTERED':
-    // case 'REGISTERED_COPPA':
-    // case 'NEWLY_REGISTERED':
-  }
-  return FALSE;
+  $_SESSION['id_utilisateur']=$user->data['user_id'];
+  $_SESSION['login_utilisateur']=$user->data['username'];
+  return $_SESSION['niveau_moderation']=$auth->acl_get('m_warn');
+  // m_warn est la seule autorisation moderateur ne dépendant pas d'un forum particulier
+  // Il n'y a que 2 niveaux dans WRI aujourd'hui : 0 = rien, >= 1 = tout
 }
 
 // Fonction qui va permettre ensuite d'afficher la "petite étoile :*" en haut à coté du nom du modérateur

@@ -47,14 +47,8 @@ class listener implements EventSubscriberInterface
 
 	function page_footer () {
 		global $template, $request; // Contexte PhpBB
+		global $wri, $pdo; // Contexte WRI
 		$request->enable_super_globals(); // Pour avoir le droit aux variables globales $_SERVER, ...
-
-		// Récupère le contexte WRI
-		global $wri, $vue, $pdo, $_SESSION;
-		require_once (__DIR__.'/../../../../../includes/config.php');
-		require_once ('wiki.php');
-		require_once ('autoconnexion.php');
-        auto_login_phpbb_users();
 
 		// Calcule la date du fichier style pour la mettre en paramètre pour pouvoir l'uploader quand il évolue
 		$template->assign_var('STYLE_CSS_TIME', filemtime($wri['chemin_vues'].'style.css.php'));
@@ -62,6 +56,9 @@ class listener implements EventSubscriberInterface
 		// Les fichiers template du bandeau et du pied de page étant au format "MVC+template type refuges.info",
 		// on les évalue dans leur contexte PHP et on introduit le code HTML résultant
 		// dans des variables des templates de PhpBB V3.2
+		require_once ('wiki.php');
+		require_once ('autoconnexion.php');
+		auto_login_phpbb_users();
 		$vue = new \stdClass;
 		$vue->type = '';
 		$vue->java_lib_foot = [];
