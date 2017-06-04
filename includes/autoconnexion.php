@@ -6,16 +6,12 @@ comme une session est démarrée, c'est à faire avant tout affichage
 
 Afin de simplifier grandement la gestion des utilisateurs
 Il n'y a plus de table moderateur, le niveau de moderation
-d'un utilisateur est récupérée dans la table phpbb_users
-Ensuite sont stocké dans la session ( accessible par toutes
-les pages ):
+est récupéré avec la fonction d'autorisatin de PhpBB
+Ensuite sont stocké dans la session ( accessible par toutes les pages ):
 $_SESSION['login_utilisateur']
 $_SESSION['id_utilisateur'] ( celui de la table phpbb_users )
 $_SESSION['niveau_moderation'] ayant pour signification
-0 = utilisateur normal
-1 = modérateur général du site
-2 = programmeur du site
-3 = administrateur du site
+Il n'y a que 2 niveaux dans WRI aujourd'hui : 0 = rien, >= 1 = tout
 
 REMARQUE :
 En lisant ce code vous allez vous dire qu'il est dommage
@@ -63,7 +59,6 @@ function auto_login_phpbb_users()
   $_SESSION['login_utilisateur']= $user->data['username'];
   $_SESSION['niveau_moderation'] = $auth->acl_get('m_warn');
   // m_warn est la seule autorisation moderateur ne dépendant pas d'un forum particulier
-  // Il n'y a que 2 niveaux dans WRI aujourd'hui : 0 = rien, >= 1 = tout
   return true;
 }
 

@@ -17,16 +17,20 @@ Install
 *************************
 J'ai rendu compatibles les environnements WRI et PhpBB
 - Le gros avantage est que autoconnexion.php gère la connexion aux fiches en appelant la fonction d'autorisation du forum. Donc plus de différences !
-et le code devient très simple 
+Il n'y a que 2 niveaux dans WRI aujourd'hui : 0 = rien, >= 1 = tout et le code devient très simple :
+https://github.com/RefugesInfo/www.refuges.info/blob/dev-dom/modeles/forum.php
 - Il n'y a plus d'appels AJAX intra serveur entre les fiches et le forum.
 Conditions nécéssaires:
 - Supression de l'autoload WRI dont je n'ai pas trouvé à quoi il servait. Si je n'ai pas vu quelque chose, merci de me le signaler.
 - Remplacement de la variable $config de WRI par $wri pour ne pas interférer avec la variable de PhpBB
 Autres modifs:
 - Les fonctions de modification du forum passent de /forum/ext/RefugesInfo/couplage/api.php dans un nouveau modèle /modeles/forum.php et sont appellées en sous-programme
-ccc...
+https://github.com/RefugesInfo/www.refuges.info/blob/dev-dom/modeles/point.php#L562-L566
+https://github.com/RefugesInfo/www.refuges.info/blob/dev-dom/modeles/point.php#L571-L575
+https://github.com/RefugesInfo/www.refuges.info/blob/dev-dom/modeles/point.php#L611
+https://github.com/RefugesInfo/www.refuges.info/blob/dev-dom/modeles/forum.php
 - Le passage du bandeau et du pied des templates WRI aux templates phpBB devient simple et sans appel externe
-ccc
+https://github.com/RefugesInfo/www.refuges.info/blob/dev-dom/forum/ext/RefugesInfo/couplage/event/listener.php#L61-L76
 - On descend d'un cran /includes/config_privee.php qui rejoint la racine parce que :
 * ça me fait plaisir
 * c'est plus facile à trouver pour le modifier
@@ -38,6 +42,8 @@ ccc
 Enfin, si ça fâche trop, on peut le remettre dans /includes
 
 Pour avis, relecture et tests avant basculement
+https://github.com/RefugesInfo/www.refuges.info/tree/dev-dom
+http://dom.refuges.info/
 
 *************************
 user 207 -> 216
