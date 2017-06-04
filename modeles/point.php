@@ -18,6 +18,7 @@ require_once ("commentaire.php");
 require_once ("point_gps.php");
 require_once ("polygone.php");
 require_once ("mise_en_forme_texte.php");
+require_once ("forum.php");
 
 /*****************************************************
 Cette fonction récupère sous la forme de plusieurs objets des points de la base qui satisfont des conditions.
@@ -577,24 +578,15 @@ function modification_ajout_point($point)
    }
    else  // INSERT
    {
-    // On appelle l'API WRI du forum qui crée un topic dans le forum refuges
-    $rep = file_get_contents(
-      $wri['url_api'],
-      false,
-      stream_context_create( ['http' => [
-        'method'  => 'POST',
-        'content' => http_build_query( [
-          'api' => 'creer',
-          'f' => $wri['forum_refuges'],
-          's' => $point->nom,
-        ]),
-      ]])
-    );
-    $json = json_decode($rep);
-    if (!is_object ($json))
-      return erreur( "Erreur création forum point<br/>".var_export($rep,true) );
+    // On appelle la fonction du forum qui crée un topic dans le forum refuges
+    $r = forum_submit_post ([
+        'action' => 'post',
+        'topic_title' => $point->nom,
+    ]);
+    if (!$r['topic_id'])
+      return erreur( "Erreur création forum point<br/>".var_export($r,true) );
 
-    $champs_sql['topic_id'] = $json->topic_id; // On note le topic_id dans la table point pour faire le lien
+    $champs_sql['topic_id'] = $r['topic_id']; // On note le topic_id dans la table point pour faire le lien
     $query_finale=requete_modification_ou_ajout_generique('points',$champs_sql,'insert');
     if (!$pdo->exec($query_finale))
       return erreur("Requête en erreur, impossible à executer",$query_finale);

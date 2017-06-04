@@ -37,6 +37,7 @@ require_once ("gestion_erreur.php");
 require_once ("commentaire.php");
 
 // Contexte PhpBB
+// Cette séquence ne peut pas être dans une function
 if (!defined('IN_PHPBB')) {
   define('IN_PHPBB', true);
   $phpbb_root_path = $wri['rep_forum'];
