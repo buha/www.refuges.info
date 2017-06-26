@@ -8,7 +8,7 @@ On trouve les fonctions permettant de faire des modifications dans le forum
 // Cette séquence ne peut pas être dans une function
 if (!defined('IN_PHPBB')) {
 	define('IN_PHPBB', true);
-	$phpbb_root_path = $wri['rep_forum'];
+	$phpbb_root_path = $config_wri['rep_forum'];
 	$phpEx = substr(strrchr(__FILE__, '.'), 1);
 	include($phpbb_root_path . 'common.' . $phpEx);
 	include($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
@@ -25,7 +25,12 @@ if (!defined('IN_PHPBB')) {
 
 // Fonction générique qui permet - entre autre - de créer un topic, modifier le titre et ajouter un post
 function forum_submit_post ($args) {
-	global $wri, $db;
+	global $config_wri, $db, $user;
+
+	// On se fait passer pour l'auteur du commentaire
+	$mem_user = $user->data['user_id'];
+	$user->data['user_id'] = $args['topic_poster'] = max (ANONYMOUS, $args['topic_poster']);
+	$user->data['is_registered'] = false;
 
 	$data = [ // Données par défaut
 		'forum_name' => '',
@@ -82,6 +87,11 @@ function forum_submit_post ($args) {
 		$poll,
 		$data
 	);
+
+	// On redevient nous même
+	$user->data['user_id'] = $mem_user;
+	$user->data['is_registered'] = true;
+
 	return $data;
 }
 

@@ -49,11 +49,11 @@ class listener implements EventSubscriberInterface
 		global $template, $request; // Contexte PhpBB
 		$request->enable_super_globals(); // Pour avoir accés aux variables globales $_SERVER, ...
 
-		global $wri, $pdo; // Contexte WRI
+		global $config_wri, $pdo; // Contexte WRI
 		include (__DIR__.'/../../../../../includes/config.php');
 
 		// Calcule la date du fichier style pour la mettre en paramètre pour pouvoir l'uploader quand il évolue
-		$template->assign_var('STYLE_CSS_TIME', filemtime($wri['chemin_vues'].'style.css.php'));
+		$template->assign_var('STYLE_CSS_TIME', filemtime($config_wri['chemin_vues'].'style.css.php'));
 
 		// Les fichiers template du bandeau et du pied de page étant au format "MVC+template type refuges.info",
 		// on les évalue dans leur contexte PHP et on introduit le code HTML résultant
@@ -68,11 +68,11 @@ class listener implements EventSubscriberInterface
 		$vue->lien_wiki=prepare_lien_wiki_du_bandeau();
 
 		ob_start();
-		include ($wri['chemin_vues'].'_bandeau.html');
+		include ($config_wri['chemin_vues'].'_bandeau.html');
 		$template->assign_var('BANDEAU', ob_get_clean());
 
 		ob_start();
-		include ($wri['chemin_vues'].'_pied.html');
+		include ($config_wri['chemin_vues'].'_pied.html');
 		$template->assign_var('PIED', ob_get_clean());
 	}
 }

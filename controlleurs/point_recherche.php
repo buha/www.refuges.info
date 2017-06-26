@@ -84,11 +84,11 @@ if (!empty($_REQUEST))
         {
             $nominatim = new stdClass();
             $vue->recherche_osm_active=True;
-            $appel_nominatim = $wri['url_appel_nominatim'] .http_build_query 
+            $appel_nominatim = $config_wri['url_appel_nominatim'] .http_build_query 
             (
             array 
             (
-            'email' => $wri['email_contact_nominatim'],
+            'email' => $config_wri['email_contact_nominatim'],
              'format' => 'xml',
              'countrycodes' => 'fr,ch,it,es',
              'accept-language' => 'fr',
@@ -105,7 +105,7 @@ if (!empty($_REQUEST))
              if ($nominatim->nb_points>1)
                  $nominatim->pluriel="s";
              
-             $nominatim->url_site=$wri['url_nominatim'];
+             $nominatim->url_site=$config_wri['url_nominatim'];
              $vue->nominatim=$nominatim;
         }
         $vue->titre = 'Dernières nouvelles du site et informations ajoutées sur les refuges';

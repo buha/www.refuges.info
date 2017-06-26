@@ -11,7 +11,7 @@ require_once("bdd.php");
 Fonction donnant plusieurs informations générales sur la base
 ***************************************/
 function infos_base () {
-	global $wri,$pdo;
+	global $config_wri,$pdo;
 	
 	$sql = "SELECT * 
 		FROM point_type 

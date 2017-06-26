@@ -86,7 +86,8 @@ switch ($periode)
 }
 /* Zones masquées */
 #phpbb .headerbar,
-#phpbb .navbar .avatar {
+#phpbb .navbar .avatar,
+label[for=viewonline] { /* Masquer "Cacher mon statut en ligne pour cette session" */
 	display: none;
 }
 /* Personnalisation des couleurs */
@@ -104,6 +105,8 @@ switch ($periode)
 #phpbb .alert_text h3,
 #phpbb .stat-block h3,
 #phpbb .stat-block h3 a,
+#phpbb .headerspace h3,
+#phpbb .headerspace h3 a,
 #phpbb .postbody h3,
 #phpbb .postbody h3 a,
 #phpbb #postform .review,

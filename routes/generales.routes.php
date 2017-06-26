@@ -18,7 +18,7 @@ $controlleur->url_complete=$_SERVER['REQUEST_URI'];
 $sans_parametres=explode ('?',$controlleur->url_complete);
 
 // Uniquement /point/5/toto/sfsdf (pas les ?toto=coucou...) et pas le sous dossier dans lequel wri pourrait être installé
-$controlleur->url_base=str_replace('RACINE'.$wri['sous_dossier_installation'],'','RACINE'.$sans_parametres[0]);
+$controlleur->url_base=str_replace('RACINE'.$config_wri['sous_dossier_installation'],'','RACINE'.$sans_parametres[0]);
 //DOM ajout de RACINE évite d'enlever tous les / quand sous_dossier_installation = /
 $controlleur->url_decoupee = explode ('/',$controlleur->url_base);
 
@@ -87,7 +87,7 @@ if (!isset($vue->type))
     $vue->type=$controlleur->type;
 
 // On appel le controlleur qui pourra, s'il le souhaite, changer le type de vue ($type->vue)
-include ($wri['chemin_controlleurs'].$controlleur->type.".php");
+include ($config_wri['chemin_controlleurs'].$controlleur->type.".php");
 
 // et vérification s'il n'y a pas un commentaire à modérer pour notre équipe de modération
 // FIXME : Dans une logique de rangement parfait, ça ne devrait pas être ici, mais dans chaque contrôleur qui a besoin de modifier le bandeau avec l'étoile, mais la factorisation a eu raison de moi ;-)
@@ -98,5 +98,5 @@ if (isset ($_SESSION['niveau_moderation']) and $_SESSION['niveau_moderation']>=1
 $vue->zones_pour_bandeau=remplissage_zones_bandeau();
 $vue->lien_wiki=prepare_lien_wiki_du_bandeau();
 
-include ($wri['chemin_vues'].$vue->template);
+include ($config_wri['chemin_vues'].$vue->template);
 ?>

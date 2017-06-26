@@ -2,7 +2,7 @@
 
 // Ce fichier ne doit contenir que du code javascript destiné à être inclus dans la page
 // $vue contient les données passées par le fichier PHP
-// $wri les données communes à tout WRI
+// $config_wri les données communes à tout WRI
 
 ?>
 

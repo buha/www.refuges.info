@@ -79,10 +79,10 @@ function info_demande_correction ()
 // FIXME : pas mieux que info_demande_correction tout ça est lié au bandeau et devrait filer dans un autre fichier
 function remplissage_zones_bandeau()
 {
-    global $wri;
+    global $config_wri;
     // Ajoute les liens vers les autres zones
     $conditions = new stdClass;
-    $conditions->ids_polygone_type=$wri['id_zone'];
+    $conditions->ids_polygone_type=$config_wri['id_zone'];
     $zones=infos_polygones($conditions);
     if ($zones)
         foreach ($zones as $zone)
